@@ -22,13 +22,13 @@ const recentSales = [
 export default function DashboardOverview() {
   return (
     <DashboardLayout type="agent">
-      <div className="space-y-6">
+      <div className="space-y-4 sm:space-y-6">
         <div>
-          <h2 className="text-2xl font-bold tracking-tight">Dashboard</h2>
-          <p className="text-muted-foreground">Welcome back! Here's your performance overview.</p>
+          <h2 className="text-xl sm:text-2xl font-bold tracking-tight">Dashboard</h2>
+          <p className="text-sm text-muted-foreground">Welcome back! Here's your performance overview.</p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
           {stats.map((s) => (
             <StatCard key={s.title} {...s} />
           ))}
@@ -36,10 +36,12 @@ export default function DashboardOverview() {
 
         {/* Recent Sales */}
         <div className="rounded-lg border bg-card shadow-card">
-          <div className="p-5 border-b">
-            <h3 className="font-semibold">Recent Sales</h3>
+          <div className="px-4 py-3 sm:p-5 border-b">
+            <h3 className="font-semibold text-sm sm:text-base">Recent Sales</h3>
           </div>
-          <div className="overflow-x-auto">
+
+          {/* Desktop table */}
+          <div className="hidden sm:block overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b bg-muted/50">
@@ -61,17 +63,32 @@ export default function DashboardOverview() {
                     <td className="px-5 py-3 font-medium text-success">{sale.commission}</td>
                     <td className="px-5 py-3">
                       <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
-                        sale.status === "completed"
-                          ? "bg-success/10 text-success"
-                          : "bg-warning/10 text-warning"
-                      }`}>
-                        {sale.status}
-                      </span>
+                        sale.status === "completed" ? "bg-success/10 text-success" : "bg-warning/10 text-warning"
+                      }`}>{sale.status}</span>
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
+          </div>
+
+          {/* Mobile cards */}
+          <div className="sm:hidden divide-y">
+            {recentSales.map((sale) => (
+              <div key={sale.id} className="px-4 py-3 space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <span className="font-medium text-sm">{sale.id}</span>
+                  <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
+                    sale.status === "completed" ? "bg-success/10 text-success" : "bg-warning/10 text-warning"
+                  }`}>{sale.status}</span>
+                </div>
+                <div className="text-xs text-muted-foreground">{sale.date}</div>
+                <div className="flex items-center justify-between text-sm">
+                  <span>{sale.price}</span>
+                  <span className="font-medium text-success">{sale.commission}</span>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
