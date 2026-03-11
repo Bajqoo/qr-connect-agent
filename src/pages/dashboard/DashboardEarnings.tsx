@@ -25,17 +25,17 @@ export default function DashboardEarnings() {
 
   return (
     <DashboardLayout type="agent">
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-bold tracking-tight">Earnings</h2>
+      <div className="space-y-4 sm:space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <h2 className="text-xl sm:text-2xl font-bold tracking-tight">Earnings</h2>
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-              <Button className="gradient-primary border-0 text-primary-foreground hover:opacity-90">
-                <ArrowUpRight className="h-4 w-4 mr-2" />
+              <Button size="sm" className="gradient-primary border-0 text-primary-foreground hover:opacity-90 self-start sm:self-auto">
+                <ArrowUpRight className="h-4 w-4 mr-1.5" />
                 Request Payout
               </Button>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent className="mx-4 sm:mx-auto max-w-md">
               <DialogHeader>
                 <DialogTitle>Request Payout</DialogTitle>
               </DialogHeader>
@@ -68,17 +68,19 @@ export default function DashboardEarnings() {
           </Dialog>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
           <StatCard title="Total Earnings" value="€624.00" icon={DollarSign} subtitle="all time" />
-          <StatCard title="Available Balance" value="€124.00" icon={Wallet} subtitle="ready to withdraw" />
-          <StatCard title="Pending Payout" value="€0.00" icon={Clock} subtitle="processing" />
+          <StatCard title="Available" value="€124.00" icon={Wallet} subtitle="ready to withdraw" />
+          <StatCard title="Pending" value="€0.00" icon={Clock} subtitle="processing" className="col-span-2 sm:col-span-1" />
         </div>
 
         <div className="rounded-lg border bg-card shadow-card">
-          <div className="p-5 border-b">
-            <h3 className="font-semibold">Payout History</h3>
+          <div className="px-4 py-3 sm:p-5 border-b">
+            <h3 className="font-semibold text-sm sm:text-base">Payout History</h3>
           </div>
-          <div className="overflow-x-auto">
+
+          {/* Desktop table */}
+          <div className="hidden sm:block overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b bg-muted/50">
@@ -105,6 +107,22 @@ export default function DashboardEarnings() {
                 ))}
               </tbody>
             </table>
+          </div>
+
+          {/* Mobile cards */}
+          <div className="sm:hidden divide-y">
+            {payoutHistory.map((p) => (
+              <div key={p.id} className="px-4 py-3 space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <span className="font-medium text-sm">{p.id}</span>
+                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-success/10 text-success">
+                    {p.status}
+                  </span>
+                </div>
+                <div className="text-xs text-muted-foreground">{p.date} · {p.method}</div>
+                <div className="text-sm font-medium">{p.amount}</div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
