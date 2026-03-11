@@ -20,6 +20,11 @@ import AdminSales from "./pages/admin/AdminSales";
 import AdminCommissions from "./pages/admin/AdminCommissions";
 import AdminPayouts from "./pages/admin/AdminPayouts";
 import AdminFraud from "./pages/admin/AdminFraud";
+import ManagerLogin from "./pages/ManagerLogin";
+import ManagerOverview from "./pages/manager/ManagerOverview";
+import ManagerAgents from "./pages/manager/ManagerAgents";
+import ManagerSales from "./pages/manager/ManagerSales";
+import ManagerEarnings from "./pages/manager/ManagerEarnings";
 
 const queryClient = new QueryClient();
 
@@ -45,6 +50,11 @@ const App = () => (
           <Route path="/admin/commissions" element={<AdminCommissions />} />
           <Route path="/admin/payouts" element={<AdminPayouts />} />
           <Route path="/admin/fraud" element={<AdminFraud />} />
+          <Route path="/manager/login" element={<ManagerLogin />} />
+          <Route path="/manager" element={<ManagerOverview />} />
+          <Route path="/manager/agents" element={<ManagerAgents />} />
+          <Route path="/manager/sales" element={<ManagerSales />} />
+          <Route path="/manager/earnings" element={<ManagerEarnings />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

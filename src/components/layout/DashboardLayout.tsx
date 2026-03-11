@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
-  type: "agent" | "admin";
+  type: "agent" | "admin" | "manager";
 }
 
 const agentLinks = [
@@ -29,11 +29,18 @@ const adminLinks = [
   { href: "/admin/fraud", label: "Fraud Detection", icon: Shield },
 ];
 
+const managerLinks = [
+  { href: "/manager", label: "Overview", icon: LayoutDashboard },
+  { href: "/manager/agents", label: "My Agents", icon: Users },
+  { href: "/manager/sales", label: "Sales", icon: ShoppingCart },
+  { href: "/manager/earnings", label: "Earnings", icon: DollarSign },
+];
+
 export function DashboardLayout({ children, type }: DashboardLayoutProps) {
   const location = useLocation();
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const links = type === "admin" ? adminLinks : agentLinks;
+  const links = type === "admin" ? adminLinks : type === "manager" ? managerLinks : agentLinks;
 
   return (
     <div className="min-h-screen bg-background flex">
@@ -58,7 +65,7 @@ export function DashboardLayout({ children, type }: DashboardLayoutProps) {
             <div>
               <h1 className="text-sm font-semibold text-sidebar-foreground">Next eSIM</h1>
               <p className="text-xs text-sidebar-foreground/60">
-                {type === "admin" ? "Admin Panel" : "Agent Portal"}
+                {type === "admin" ? "Admin Panel" : type === "manager" ? "Manager Portal" : "Agent Portal"}
               </p>
             </div>
           </div>
