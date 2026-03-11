@@ -19,7 +19,7 @@ export default function Index() {
       {/* Nav */}
       <nav className="border-b bg-card/80 backdrop-blur-sm sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-5 h-14 flex items-center justify-between">
-          <img src={logoRed} alt="Next eSIM" className="h-8" />
+          <img src={logoRed} alt="Next eSIM" className="h-14" />
           <div className="flex items-center gap-3">
             <Link to="/login">
               <Button variant="ghost" size="sm">Sign In</Button>
