@@ -15,6 +15,7 @@ import DashboardSales from "./pages/dashboard/DashboardSales";
 import DashboardEarnings from "./pages/dashboard/DashboardEarnings";
 import DashboardSettings from "./pages/dashboard/DashboardSettings";
 import AdminOverview from "./pages/admin/AdminOverview";
+import AdminManagers from "./pages/admin/AdminManagers";
 import AdminAgents from "./pages/admin/AdminAgents";
 import AdminSales from "./pages/admin/AdminSales";
 import AdminCommissions from "./pages/admin/AdminCommissions";
@@ -45,6 +46,7 @@ const App = () => (
           <Route path="/dashboard/earnings" element={<DashboardEarnings />} />
           <Route path="/dashboard/settings" element={<DashboardSettings />} />
           <Route path="/admin" element={<AdminOverview />} />
+          <Route path="/admin/managers" element={<AdminManagers />} />
           <Route path="/admin/agents" element={<AdminAgents />} />
           <Route path="/admin/sales" element={<AdminSales />} />
           <Route path="/admin/commissions" element={<AdminCommissions />} />

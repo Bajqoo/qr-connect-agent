@@ -22,6 +22,7 @@ const agentLinks = [
 
 const adminLinks = [
   { href: "/admin", label: "Overview", icon: LayoutDashboard },
+  { href: "/admin/managers", label: "Managers", icon: Users },
   { href: "/admin/agents", label: "Agents", icon: Users },
   { href: "/admin/sales", label: "Sales", icon: ShoppingCart },
   { href: "/admin/commissions", label: "Commissions", icon: DollarSign },
