@@ -16,10 +16,10 @@ export default function ManagerOverview() {
         <h2 className="text-xl sm:text-2xl font-bold tracking-tight">Manager Overview</h2>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-          <StatCard title="My Agents" value="12" icon={Users} trend="+2 this month" />
-          <StatCard title="Total Sales" value="487" icon={ShoppingCart} trend="+34 this week" />
-          <StatCard title="My Earnings" value="€1,245" icon={DollarSign} trend="+€180 this week" />
-          <StatCard title="Avg per Agent" value="€103.75" icon={TrendingUp} trend="+8%" />
+          <StatCard title="My Agents" value="12" icon={Users} subtitle="+2 this month" />
+          <StatCard title="Total Sales" value="487" icon={ShoppingCart} subtitle="+34 this week" />
+          <StatCard title="My Earnings" value="€1,245" icon={DollarSign} subtitle="+€180 this week" />
+          <StatCard title="Avg per Agent" value="€103.75" icon={TrendingUp} subtitle="+8%" />
         </div>
 
         {/* Desktop table */}

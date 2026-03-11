@@ -65,7 +65,7 @@ export function DashboardLayout({ children, type }: DashboardLayoutProps) {
             <div>
               <h1 className="text-sm font-semibold text-sidebar-foreground">Next eSIM</h1>
               <p className="text-xs text-sidebar-foreground/60">
-                {type === "admin" ? "Admin Panel" : "Agent Portal"}
+                {type === "admin" ? "Admin Panel" : type === "manager" ? "Manager Portal" : "Agent Portal"}
               </p>
             </div>
           </div>

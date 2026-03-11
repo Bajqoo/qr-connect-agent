@@ -17,9 +17,9 @@ export default function ManagerSales() {
         <h2 className="text-xl sm:text-2xl font-bold tracking-tight">Sales Overview</h2>
 
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-          <StatCard title="Total Sales" value="487" icon={ShoppingCart} trend="+34 this week" />
-          <StatCard title="Revenue Generated" value="€9,690" icon={TrendingUp} trend="+€676 this week" />
-          <StatCard title="My Total Cut" value="€1,245" icon={DollarSign} trend="+€180 this week" />
+          <StatCard title="Total Sales" value="487" icon={ShoppingCart} subtitle="+34 this week" />
+          <StatCard title="Revenue Generated" value="€9,690" icon={TrendingUp} subtitle="+€676 this week" />
+          <StatCard title="My Total Cut" value="€1,245" icon={DollarSign} subtitle="+€180 this week" />
         </div>
 
         {/* Desktop table */}

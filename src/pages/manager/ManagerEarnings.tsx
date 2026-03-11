@@ -26,10 +26,10 @@ export default function ManagerEarnings() {
         </div>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-          <StatCard title="Total Earned" value="€1,245" icon={DollarSign} trend="All time" />
-          <StatCard title="This Month" value="€320" icon={TrendingUp} trend="+18%" />
-          <StatCard title="Pending" value="€30.75" icon={Wallet} trend="4 sales" />
-          <StatCard title="Paid Out" value="€894.25" icon={DollarSign} trend="Last: Jan 10" />
+          <StatCard title="Total Earned" value="€1,245" icon={DollarSign} subtitle="All time" />
+          <StatCard title="This Month" value="€320" icon={TrendingUp} subtitle="+18%" />
+          <StatCard title="Pending" value="€30.75" icon={Wallet} subtitle="4 sales" />
+          <StatCard title="Paid Out" value="€894.25" icon={DollarSign} subtitle="Last: Jan 10" />
         </div>
 
         {/* Desktop table */}

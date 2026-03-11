@@ -50,6 +50,11 @@ const App = () => (
           <Route path="/admin/commissions" element={<AdminCommissions />} />
           <Route path="/admin/payouts" element={<AdminPayouts />} />
           <Route path="/admin/fraud" element={<AdminFraud />} />
+          <Route path="/manager/login" element={<ManagerLogin />} />
+          <Route path="/manager" element={<ManagerOverview />} />
+          <Route path="/manager/agents" element={<ManagerAgents />} />
+          <Route path="/manager/sales" element={<ManagerSales />} />
+          <Route path="/manager/earnings" element={<ManagerEarnings />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
