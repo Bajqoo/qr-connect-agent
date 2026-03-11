@@ -1,7 +1,9 @@
 import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Wifi, Clock, Shield, Zap, CheckCircle2, Globe, CreditCard, Lock, ArrowLeft, Loader2 } from "lucide-react";
+import { Wifi, Clock, Shield, Zap, CheckCircle2, Globe, CreditCard, Lock, ArrowLeft, Loader2, Download, Copy } from "lucide-react";
+import { QRCodeSVG } from "qrcode.react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
