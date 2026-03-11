@@ -15,6 +15,7 @@ import DashboardSales from "./pages/dashboard/DashboardSales";
 import DashboardEarnings from "./pages/dashboard/DashboardEarnings";
 import DashboardSettings from "./pages/dashboard/DashboardSettings";
 import AdminOverview from "./pages/admin/AdminOverview";
+import AdminManagers from "./pages/admin/AdminManagers";
 import AdminAgents from "./pages/admin/AdminAgents";
 import AdminSales from "./pages/admin/AdminSales";
 import AdminCommissions from "./pages/admin/AdminCommissions";
