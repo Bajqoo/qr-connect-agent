@@ -43,7 +43,7 @@ export default function CustomerLanding() {
   return (
     <div className="min-h-screen bg-background">
       <div className="relative overflow-hidden">
-        <div className="absolute inset-0 gradient-primary opacity-[0.03]" />
+        <div className="absolute inset-0 gradient-primary opacity-[0.03] pointer-events-none" />
         <div className="max-w-lg mx-auto px-5 pt-12 pb-8">
           <AnimatePresence mode="wait">
             {step === "landing" && (
