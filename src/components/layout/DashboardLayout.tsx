@@ -40,7 +40,7 @@ export function DashboardLayout({ children, type }: DashboardLayoutProps) {
   const location = useLocation();
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const links = type === "admin" ? adminLinks : agentLinks;
+  const links = type === "admin" ? adminLinks : type === "manager" ? managerLinks : agentLinks;
 
   return (
     <div className="min-h-screen bg-background flex">
