@@ -40,66 +40,67 @@ export default function DashboardQRCode() {
 
   return (
     <DashboardLayout type="agent">
-      <div className="space-y-6">
+      <div className="space-y-4 sm:space-y-6">
         <div>
-          <h2 className="text-2xl font-bold tracking-tight">Your QR Code</h2>
-          <p className="text-muted-foreground">Share this QR code with customers to earn commissions.</p>
+          <h2 className="text-xl sm:text-2xl font-bold tracking-tight">Your QR Code</h2>
+          <p className="text-sm text-muted-foreground">Share this QR code with customers to earn commissions.</p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-6">
+        <div className="grid lg:grid-cols-2 gap-4 sm:gap-6">
           {/* QR Code Card */}
-          <div className="rounded-lg border bg-card shadow-card p-8 flex flex-col items-center">
-            <div id="agent-qr" className="bg-card p-4 rounded-xl border mb-6">
+          <div className="rounded-lg border bg-card shadow-card p-5 sm:p-8 flex flex-col items-center">
+            <div id="agent-qr" className="bg-card p-3 sm:p-4 rounded-xl border mb-4 sm:mb-6">
               <QRCodeSVG
                 value={REFERRAL_URL}
-                size={200}
+                size={160}
                 level="H"
                 bgColor="transparent"
                 fgColor="hsl(220, 20%, 10%)"
+                className="sm:w-[200px] sm:h-[200px]"
               />
             </div>
             <p className="text-sm font-medium mb-1">Your Referral Code</p>
             <p className="text-lg font-bold text-primary mb-4">{REFERRAL_CODE}</p>
-            <div className="flex gap-3 w-full max-w-xs">
-              <Button onClick={downloadQR} className="flex-1 gradient-primary border-0 text-primary-foreground hover:opacity-90">
-                <Download className="h-4 w-4 mr-2" />
+            <div className="flex gap-2 sm:gap-3 w-full max-w-xs">
+              <Button onClick={downloadQR} size="sm" className="flex-1 gradient-primary border-0 text-primary-foreground hover:opacity-90">
+                <Download className="h-4 w-4 mr-1.5" />
                 PNG
               </Button>
-              <Button variant="outline" className="flex-1">
-                <Download className="h-4 w-4 mr-2" />
+              <Button variant="outline" size="sm" className="flex-1">
+                <Download className="h-4 w-4 mr-1.5" />
                 Flyer PDF
               </Button>
             </div>
           </div>
 
           {/* Referral Link Card */}
-          <div className="rounded-lg border bg-card shadow-card p-8">
-            <h3 className="font-semibold mb-4">Referral Link</h3>
-            <div className="flex items-center gap-2 p-3 rounded-lg bg-muted mb-4">
-              <code className="text-sm flex-1 truncate">{REFERRAL_URL}</code>
-              <Button variant="ghost" size="icon" onClick={copyLink}>
+          <div className="rounded-lg border bg-card shadow-card p-5 sm:p-8">
+            <h3 className="font-semibold mb-3 sm:mb-4 text-sm sm:text-base">Referral Link</h3>
+            <div className="flex items-center gap-2 p-2.5 sm:p-3 rounded-lg bg-muted mb-3 sm:mb-4">
+              <code className="text-xs sm:text-sm flex-1 truncate">{REFERRAL_URL}</code>
+              <Button variant="ghost" size="icon" className="h-8 w-8 flex-shrink-0" onClick={copyLink}>
                 <Copy className="h-4 w-4" />
               </Button>
             </div>
-            <Button variant="outline" className="w-full" onClick={() => window.open(REFERRAL_URL, "_blank")}>
+            <Button variant="outline" size="sm" className="w-full" onClick={() => window.open(REFERRAL_URL, "_blank")}>
               <ExternalLink className="h-4 w-4 mr-2" />
               Preview Landing Page
             </Button>
 
-            <div className="mt-8">
-              <h4 className="font-medium mb-3">How it works</h4>
-              <div className="space-y-3">
+            <div className="mt-6 sm:mt-8">
+              <h4 className="font-medium mb-3 text-sm">How it works</h4>
+              <div className="space-y-2.5 sm:space-y-3">
                 {[
                   { step: "1", text: "Share your QR code or referral link with customers" },
                   { step: "2", text: "Customer scans and lands on your personalized page" },
                   { step: "3", text: "When they purchase, you earn commission automatically" },
                   { step: "4", text: "Track earnings and request payouts from your dashboard" },
                 ].map((item) => (
-                  <div key={item.step} className="flex items-start gap-3">
-                    <div className="h-6 w-6 rounded-full gradient-primary flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <span className="text-xs font-bold text-primary-foreground">{item.step}</span>
+                  <div key={item.step} className="flex items-start gap-2.5 sm:gap-3">
+                    <div className="h-5 w-5 sm:h-6 sm:w-6 rounded-full gradient-primary flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <span className="text-[10px] sm:text-xs font-bold text-primary-foreground">{item.step}</span>
                     </div>
-                    <span className="text-sm text-muted-foreground">{item.text}</span>
+                    <span className="text-xs sm:text-sm text-muted-foreground">{item.text}</span>
                   </div>
                 ))}
               </div>
