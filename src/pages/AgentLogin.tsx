@@ -4,9 +4,10 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Globe, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";
+import logoRed from "@/assets/logo-red.png";
 
 export default function AgentLogin() {
   const navigate = useNavigate();
@@ -35,11 +36,8 @@ export default function AgentLogin() {
         animate={{ opacity: 1, y: 0 }}
         className="w-full max-w-sm"
       >
-        <div className="flex items-center gap-2 mb-8 justify-center">
-          <div className="h-10 w-10 rounded-xl gradient-primary flex items-center justify-center">
-            <Globe className="h-5 w-5 text-primary-foreground" />
-          </div>
-          <span className="text-xl font-bold">Next eSIM</span>
+        <div className="flex justify-center mb-8">
+          <img src={logoRed} alt="Next eSIM" className="h-10" />
         </div>
 
         <h1 className="text-2xl font-bold text-center mb-1">Welcome back</h1>

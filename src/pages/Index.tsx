@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Globe, Users, QrCode, DollarSign, ArrowRight, Shield, BarChart3, Wallet } from "lucide-react";
+import { Users, QrCode, DollarSign, ArrowRight, Shield, BarChart3, Wallet } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import logoRed from "@/assets/logo-red.png";
 
 const features = [
   { icon: QrCode, title: "Auto QR Codes", desc: "Unique referral QR code generated for every agent instantly" },
@@ -18,12 +19,7 @@ export default function Index() {
       {/* Nav */}
       <nav className="border-b bg-card/80 backdrop-blur-sm sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-5 h-14 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="h-8 w-8 rounded-lg gradient-primary flex items-center justify-center">
-              <Globe className="h-4 w-4 text-primary-foreground" />
-            </div>
-            <span className="font-bold">Next eSIM</span>
-          </div>
+          <img src={logoRed} alt="Next eSIM" className="h-8" />
           <div className="flex items-center gap-3">
             <Link to="/login">
               <Button variant="ghost" size="sm">Sign In</Button>
@@ -46,7 +42,6 @@ export default function Index() {
           className="text-center max-w-2xl mx-auto"
         >
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent text-accent-foreground text-xs font-medium mb-6">
-            <Globe className="h-3.5 w-3.5" />
             Agent Platform
           </div>
           <h1 className="text-4xl sm:text-5xl font-bold tracking-tight mb-4">
@@ -64,9 +59,9 @@ export default function Index() {
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>
-            <Link to="/admin">
+            <Link to="/admin/login">
               <Button size="lg" variant="outline" className="h-12 px-8">
-                Admin Demo
+                Admin Login
               </Button>
             </Link>
           </div>

@@ -7,6 +7,7 @@ import {
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
+import logoWhite from "@/assets/logo-white.png";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -67,15 +68,10 @@ export function DashboardLayout({ children, type }: DashboardLayoutProps) {
       )}>
         <div className="p-5 border-b border-sidebar-border">
           <div className="flex items-center gap-2">
-            <div className="h-8 w-8 rounded-lg gradient-primary flex items-center justify-center">
-              <span className="text-sm font-bold text-primary-foreground">N</span>
-            </div>
-            <div>
-              <h1 className="text-sm font-semibold text-sidebar-foreground">Next eSIM</h1>
-              <p className="text-xs text-sidebar-foreground/60">
-                {type === "admin" ? "Admin Panel" : type === "manager" ? "Manager Portal" : "Agent Portal"}
-              </p>
-            </div>
+            <img src={logoWhite} alt="Next eSIM" className="h-7" />
+            <p className="text-xs text-sidebar-foreground/60">
+              {type === "admin" ? "Admin Panel" : type === "manager" ? "Manager Portal" : "Agent Portal"}
+            </p>
           </div>
         </div>
 
