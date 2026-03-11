@@ -1,7 +1,9 @@
 import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Wifi, Clock, Shield, Zap, CheckCircle2, Globe, CreditCard, Lock, ArrowLeft, Loader2 } from "lucide-react";
+import { Wifi, Clock, Shield, Zap, CheckCircle2, Globe, CreditCard, Lock, ArrowLeft, Loader2, Download, Copy } from "lucide-react";
+import { QRCodeSVG } from "qrcode.react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -244,19 +246,51 @@ export default function CustomerLanding() {
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.4, type: "spring" }}
-                className="text-center py-16"
+                className="text-center py-12"
               >
                 <div className="inline-flex items-center justify-center h-20 w-20 rounded-full bg-success/10 mb-6">
                   <CheckCircle2 className="h-10 w-10 text-success" />
                 </div>
                 <h2 className="text-2xl font-bold mb-2">Payment Successful!</h2>
                 <p className="text-muted-foreground mb-8 max-w-sm mx-auto">
-                  Your eSIM package is ready. Check your email for the installation QR code and instructions.
+                  Your eSIM is ready. Scan the QR code below with your phone camera to install it.
                 </p>
 
-                <div className="bg-card rounded-xl border p-6 max-w-sm mx-auto mb-6">
-                  <h3 className="font-semibold mb-3">Order Summary</h3>
-                  <div className="space-y-2 text-sm">
+                {/* eSIM QR Code */}
+                <div className="bg-card rounded-xl border shadow-elevated p-6 max-w-sm mx-auto mb-6">
+                  <h3 className="font-semibold mb-4">Your eSIM QR Code</h3>
+                  <div className="bg-background p-4 rounded-xl border inline-block mb-4">
+                    <QRCodeSVG
+                      value={`LPA:1$esim.nextesim.app$MOCK-${Date.now().toString(36).toUpperCase()}`}
+                      size={200}
+                      level="H"
+                      bgColor="transparent"
+                      fgColor="hsl(220, 20%, 10%)"
+                    />
+                  </div>
+                  <div className="flex gap-2 justify-center mb-4">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => {
+                        navigator.clipboard.writeText(`LPA:1$esim.nextesim.app$MOCK-DEMO`);
+                        toast.success("Activation code copied!");
+                      }}
+                    >
+                      <Copy className="h-4 w-4 mr-1.5" />
+                      Copy Code
+                    </Button>
+                    <Button
+                      size="sm"
+                      className="gradient-primary border-0 text-primary-foreground hover:opacity-90"
+                      onClick={() => toast.success("QR code downloaded!")}
+                    >
+                      <Download className="h-4 w-4 mr-1.5" />
+                      Save QR
+                    </Button>
+                  </div>
+
+                  <div className="border-t pt-4 mt-2 space-y-2 text-sm text-left">
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Plan</span>
                       <span className="font-medium">Turkey Unlimited</span>
@@ -278,8 +312,28 @@ export default function CustomerLanding() {
                   </div>
                 </div>
 
-                <p className="text-xs text-muted-foreground">
-                  A confirmation email has been sent to {form.email || "your email"}.
+                {/* Installation Steps */}
+                <div className="bg-card rounded-xl border p-5 max-w-sm mx-auto text-left">
+                  <h4 className="font-semibold text-sm mb-3">How to Install</h4>
+                  <div className="space-y-2.5">
+                    {[
+                      "Open Settings → Mobile Data → Add eSIM",
+                      "Scan the QR code above with your camera",
+                      "Confirm the eSIM installation",
+                      "Turn on the eSIM when you arrive in Turkey",
+                    ].map((text, i) => (
+                      <div key={i} className="flex items-start gap-2.5">
+                        <div className="h-5 w-5 rounded-full gradient-primary flex items-center justify-center flex-shrink-0 mt-0.5">
+                          <span className="text-[10px] font-bold text-primary-foreground">{i + 1}</span>
+                        </div>
+                        <span className="text-xs text-muted-foreground">{text}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <p className="text-xs text-muted-foreground mt-6">
+                  Confirmation sent to <span className="font-medium text-foreground">{form.email}</span>
                 </p>
               </motion.div>
             )}
