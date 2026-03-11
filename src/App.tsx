@@ -20,6 +20,11 @@ import AdminSales from "./pages/admin/AdminSales";
 import AdminCommissions from "./pages/admin/AdminCommissions";
 import AdminPayouts from "./pages/admin/AdminPayouts";
 import AdminFraud from "./pages/admin/AdminFraud";
+import ManagerLogin from "./pages/ManagerLogin";
+import ManagerOverview from "./pages/manager/ManagerOverview";
+import ManagerAgents from "./pages/manager/ManagerAgents";
+import ManagerSales from "./pages/manager/ManagerSales";
+import ManagerEarnings from "./pages/manager/ManagerEarnings";
 
 const queryClient = new QueryClient();
 
