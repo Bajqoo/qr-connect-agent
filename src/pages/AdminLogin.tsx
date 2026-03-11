@@ -4,11 +4,11 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Globe, ArrowRight, Users } from "lucide-react";
+import { Globe, ArrowRight, Shield } from "lucide-react";
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";
 
-export default function ManagerLogin() {
+export default function AdminLogin() {
   const navigate = useNavigate();
   const { signIn } = useAuth();
   const [loading, setLoading] = useState(false);
@@ -23,8 +23,8 @@ export default function ManagerLogin() {
     if (error) {
       toast.error(error.message);
     } else {
-      toast.success("Welcome back, Manager!");
-      navigate("/manager");
+      toast.success("Welcome back, Admin!");
+      navigate("/admin");
     }
   };
 
@@ -43,17 +43,17 @@ export default function ManagerLogin() {
         </div>
 
         <div className="flex items-center justify-center gap-2 mb-2">
-          <Users className="h-5 w-5 text-primary" />
-          <h1 className="text-2xl font-bold text-center">Manager Portal</h1>
+          <Shield className="h-5 w-5 text-primary" />
+          <h1 className="text-2xl font-bold text-center">Admin Panel</h1>
         </div>
         <p className="text-muted-foreground text-center mb-6">
-          Sign in to manage your agents and sales
+          Sign in to manage the platform
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
-            <Input id="email" type="email" placeholder="manager@example.com" required value={email} onChange={(e) => setEmail(e.target.value)} />
+            <Input id="email" type="email" placeholder="admin@example.com" required value={email} onChange={(e) => setEmail(e.target.value)} />
           </div>
           <div className="space-y-2">
             <Label htmlFor="password">Password</Label>
@@ -64,13 +64,6 @@ export default function ManagerLogin() {
             {!loading && <ArrowRight className="ml-2 h-4 w-4" />}
           </Button>
         </form>
-
-        <p className="text-sm text-muted-foreground mt-6 text-center">
-          Are you an agent?{" "}
-          <Link to="/login" className="text-primary font-medium hover:underline">
-            Agent Login
-          </Link>
-        </p>
       </motion.div>
     </div>
   );
