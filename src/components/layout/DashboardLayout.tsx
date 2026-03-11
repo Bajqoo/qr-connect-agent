@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
-  type: "agent" | "admin";
+  type: "agent" | "admin" | "manager";
 }
 
 const agentLinks = [
