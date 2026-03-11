@@ -14,16 +14,116 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      manager_agents: {
+        Row: {
+          agent_id: string
+          created_at: string | null
+          id: string
+          manager_id: string
+        }
+        Insert: {
+          agent_id: string
+          created_at?: string | null
+          id?: string
+          manager_id: string
+        }
+        Update: {
+          agent_id?: string
+          created_at?: string | null
+          id?: string
+          manager_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "manager_agents_agent_id_fkey"
+            columns: ["agent_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "manager_agents_manager_id_fkey"
+            columns: ["manager_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          agent_type: Database["public"]["Enums"]["agent_type"] | null
+          commission_rate: number | null
+          created_at: string | null
+          email: string
+          full_name: string
+          id: string
+          manager_cut: number | null
+          phone: string | null
+          status: Database["public"]["Enums"]["account_status"] | null
+          user_id: string
+        }
+        Insert: {
+          agent_type?: Database["public"]["Enums"]["agent_type"] | null
+          commission_rate?: number | null
+          created_at?: string | null
+          email: string
+          full_name: string
+          id?: string
+          manager_cut?: number | null
+          phone?: string | null
+          status?: Database["public"]["Enums"]["account_status"] | null
+          user_id: string
+        }
+        Update: {
+          agent_type?: Database["public"]["Enums"]["agent_type"] | null
+          commission_rate?: number | null
+          created_at?: string | null
+          email?: string
+          full_name?: string
+          id?: string
+          manager_cut?: number | null
+          phone?: string | null
+          status?: Database["public"]["Enums"]["account_status"] | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      account_status: "active" | "blocked"
+      agent_type: "airport" | "hotel" | "tour_guide" | "taxi" | "affiliate"
+      app_role: "admin" | "manager" | "agent"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +250,10 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      account_status: ["active", "blocked"],
+      agent_type: ["airport", "hotel", "tour_guide", "taxi", "affiliate"],
+      app_role: ["admin", "manager", "agent"],
+    },
   },
 } as const
