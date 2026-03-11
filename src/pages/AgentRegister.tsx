@@ -5,8 +5,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Globe, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { toast } from "sonner";
+import logoRed from "@/assets/logo-red.png";
+import logoWhite from "@/assets/logo-white.png";
 
 const agentTypes = [
   { value: "airport", label: "Airport Agent" },
@@ -23,7 +25,6 @@ export default function AgentRegister() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
-    // Mock registration
     setTimeout(() => {
       setLoading(false);
       toast.success("Registration successful! Welcome to Next eSIM.");
@@ -41,11 +42,8 @@ export default function AgentRegister() {
           transition={{ duration: 0.6 }}
           className="max-w-md"
         >
-          <div className="flex items-center gap-2 mb-8">
-            <div className="h-10 w-10 rounded-xl gradient-primary flex items-center justify-center">
-              <Globe className="h-5 w-5 text-primary-foreground" />
-            </div>
-            <span className="text-xl font-bold text-sidebar-foreground">Next eSIM</span>
+          <div className="mb-8">
+            <img src={logoWhite} alt="Next eSIM" className="h-10" />
           </div>
           <h2 className="text-3xl font-bold text-sidebar-foreground mb-4">
             Earn commission on every eSIM sale
@@ -76,11 +74,8 @@ export default function AgentRegister() {
           animate={{ opacity: 1, y: 0 }}
           className="w-full max-w-md"
         >
-          <div className="lg:hidden flex items-center gap-2 mb-8">
-            <div className="h-8 w-8 rounded-lg gradient-primary flex items-center justify-center">
-              <Globe className="h-4 w-4 text-primary-foreground" />
-            </div>
-            <span className="font-bold">Next eSIM</span>
+          <div className="lg:hidden mb-8">
+            <img src={logoRed} alt="Next eSIM" className="h-8" />
           </div>
 
           <h1 className="text-2xl font-bold mb-1">Create your agent account</h1>
