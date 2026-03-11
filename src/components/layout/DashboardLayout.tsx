@@ -29,6 +29,13 @@ const adminLinks = [
   { href: "/admin/fraud", label: "Fraud Detection", icon: Shield },
 ];
 
+const managerLinks = [
+  { href: "/manager", label: "Overview", icon: LayoutDashboard },
+  { href: "/manager/agents", label: "My Agents", icon: Users },
+  { href: "/manager/sales", label: "Sales", icon: ShoppingCart },
+  { href: "/manager/earnings", label: "Earnings", icon: DollarSign },
+];
+
 export function DashboardLayout({ children, type }: DashboardLayoutProps) {
   const location = useLocation();
   const navigate = useNavigate();
