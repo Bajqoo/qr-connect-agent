@@ -1,10 +1,11 @@
-export type Locale = "en" | "tr" | "ru" | "sq";
+export type Locale = "en" | "tr" | "ru" | "sq" | "de";
 
 export const localeNames: Record<Locale, string> = {
   en: "English",
   tr: "Türkçe",
   ru: "Русский",
   sq: "Shqip",
+  de: "Deutsch",
 };
 
 export const localeFlags: Record<Locale, string> = {
@@ -12,6 +13,7 @@ export const localeFlags: Record<Locale, string> = {
   tr: "🇹🇷",
   ru: "🇷🇺",
   sq: "🇦🇱",
+  de: "🇩🇪",
 };
 
 const en = {
