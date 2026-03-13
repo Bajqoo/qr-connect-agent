@@ -41,7 +41,16 @@ export default function CustomerLanding() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background relative">
+      {/* Dotted grid background */}
+      <div 
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage: 'radial-gradient(circle, hsl(220, 20%, 10%) 1px, transparent 1px)',
+          backgroundSize: '24px 24px',
+          opacity: 0.08
+        }}
+      />
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 gradient-primary opacity-[0.03] pointer-events-none" />
         <div className="max-w-lg mx-auto px-5 pt-12 pb-8">
