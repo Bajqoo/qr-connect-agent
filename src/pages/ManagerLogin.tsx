@@ -7,11 +7,14 @@ import { Label } from "@/components/ui/label";
 import { ArrowRight, Users } from "lucide-react";
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";
+import { useTranslation } from "@/i18n/LanguageContext";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import logoRed from "@/assets/logo-red.png";
 
 export default function ManagerLogin() {
   const navigate = useNavigate();
   const { signIn } = useAuth();
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -24,7 +27,7 @@ export default function ManagerLogin() {
     if (error) {
       toast.error(error.message);
     } else {
-      toast.success("Welcome back, Manager!");
+      toast.success(t("welcomeBackManager"));
       navigate("/manager");
     }
   };
@@ -36,37 +39,38 @@ export default function ManagerLogin() {
         animate={{ opacity: 1, y: 0 }}
         className="w-full max-w-sm"
       >
-        <div className="flex justify-center mb-8">
+        <div className="flex justify-between items-center mb-8">
           <img src={logoRed} alt="Next eSIM" className="h-10" />
+          <LanguageSwitcher />
         </div>
 
         <div className="flex items-center justify-center gap-2 mb-2">
           <Users className="h-5 w-5 text-primary" />
-          <h1 className="text-2xl font-bold text-center">Manager Portal</h1>
+          <h1 className="text-2xl font-bold text-center">{t("managerPortal")}</h1>
         </div>
         <p className="text-muted-foreground text-center mb-6">
-          Sign in to manage your agents and sales
+          {t("signInManageAgents")}
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="email">{t("email")}</Label>
             <Input id="email" type="email" placeholder="manager@example.com" required value={email} onChange={(e) => setEmail(e.target.value)} />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
+            <Label htmlFor="password">{t("password")}</Label>
             <Input id="password" type="password" placeholder="••••••••" required value={password} onChange={(e) => setPassword(e.target.value)} />
           </div>
           <Button type="submit" className="w-full h-11 gradient-primary border-0 text-primary-foreground hover:opacity-90" disabled={loading}>
-            {loading ? "Signing in..." : "Sign In"}
+            {loading ? t("signingIn") : t("signIn")}
             {!loading && <ArrowRight className="ml-2 h-4 w-4" />}
           </Button>
         </form>
 
         <p className="text-sm text-muted-foreground mt-6 text-center">
-          Are you an agent?{" "}
+          {t("areYouAgent")}{" "}
           <Link to="/login" className="text-primary font-medium hover:underline">
-            Agent Login
+            {t("agentLogin")}
           </Link>
         </p>
       </motion.div>

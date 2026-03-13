@@ -2,38 +2,41 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Users, QrCode, DollarSign, ArrowRight, Shield, BarChart3, Wallet } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { useTranslation } from "@/i18n/LanguageContext";
 import logoRed from "@/assets/logo-red.png";
 
-const features = [
-  { icon: QrCode, title: "Auto QR Codes", desc: "Unique referral QR code generated for every agent instantly" },
-  { icon: BarChart3, title: "Real-time Tracking", desc: "Track scans, installs, purchases, and commissions live" },
-  { icon: DollarSign, title: "Auto Commissions", desc: "Commissions calculated and recorded automatically per sale" },
-  { icon: Wallet, title: "Easy Payouts", desc: "Withdraw via Wise, Revolut, or bank transfer" },
-  { icon: Shield, title: "Fraud Protection", desc: "IP monitoring, device fingerprinting, and duplicate detection" },
-  { icon: Users, title: "10K+ Agents", desc: "Built to scale globally across countries and agent types" },
-];
-
 export default function Index() {
+  const { t } = useTranslation();
+
+  const features = [
+    { icon: QrCode, title: t("featAutoQR"), desc: t("featAutoQRDesc") },
+    { icon: BarChart3, title: t("featTracking"), desc: t("featTrackingDesc") },
+    { icon: DollarSign, title: t("featCommissions"), desc: t("featCommissionsDesc") },
+    { icon: Wallet, title: t("featPayouts"), desc: t("featPayoutsDesc") },
+    { icon: Shield, title: t("featFraud"), desc: t("featFraudDesc") },
+    { icon: Users, title: t("featScale"), desc: t("featScaleDesc") },
+  ];
+
   return (
     <div className="min-h-screen bg-background">
-      {/* Nav */}
       <nav className="border-b bg-card/80 backdrop-blur-sm sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-5 h-14 flex items-center justify-between">
           <img src={logoRed} alt="Next eSIM" className="h-14" />
           <div className="flex items-center gap-3">
+            <LanguageSwitcher />
             <Link to="/login">
-              <Button variant="ghost" size="sm">Sign In</Button>
+              <Button variant="ghost" size="sm">{t("signIn")}</Button>
             </Link>
             <Link to="/register">
               <Button size="sm" className="gradient-primary border-0 text-primary-foreground hover:opacity-90">
-                Become an Agent
+                {t("becomeAgent")}
               </Button>
             </Link>
           </div>
         </div>
       </nav>
 
-      {/* Hero */}
       <section className="max-w-6xl mx-auto px-5 pt-20 pb-16">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -42,38 +45,37 @@ export default function Index() {
           className="text-center max-w-2xl mx-auto"
         >
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent text-accent-foreground text-xs font-medium mb-6">
-            Agent Platform
+            {t("agentPlatform")}
           </div>
           <h1 className="text-4xl sm:text-5xl font-bold tracking-tight mb-4">
-            Sell eSIMs globally.
+            {t("heroTitle1")}
             <br />
-            <span className="text-primary">Earn on every scan.</span>
+            <span className="text-primary">{t("heroTitle2")}</span>
           </h1>
           <p className="text-lg text-muted-foreground mb-8 max-w-lg mx-auto">
-            Join thousands of airport agents, taxi drivers, hotel staff, and tour guides earning commission on every eSIM sale through their unique QR code.
+            {t("heroSubtitle")}
           </p>
           <div className="flex items-center gap-3 justify-center">
             <Link to="/register">
               <Button size="lg" className="gradient-primary border-0 text-primary-foreground hover:opacity-90 h-12 px-8">
-                Get Started Free
+                {t("getStartedFree")}
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>
             <Link to="/admin/login">
               <Button size="lg" variant="outline" className="h-12 px-8">
-                Admin Login
+                {t("adminLogin")}
               </Button>
             </Link>
           </div>
         </motion.div>
       </section>
 
-      {/* Features */}
       <section className="max-w-6xl mx-auto px-5 pb-20">
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {features.map((f, i) => (
             <motion.div
-              key={f.title}
+              key={i}
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 + i * 0.08 }}
@@ -89,10 +91,9 @@ export default function Index() {
         </div>
       </section>
 
-      {/* Footer */}
       <footer className="border-t py-8">
         <div className="max-w-6xl mx-auto px-5 text-center text-sm text-muted-foreground">
-          © {new Date().getFullYear()} Next eSIM Agent Platform. All rights reserved.
+          © {new Date().getFullYear()} {t("footerText")}
         </div>
       </footer>
     </div>

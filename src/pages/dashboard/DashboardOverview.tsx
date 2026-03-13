@@ -1,15 +1,7 @@
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { StatCard } from "@/components/ui/stat-card";
 import { Eye, Download, ShoppingCart, DollarSign, Wallet, Clock } from "lucide-react";
-
-const stats = [
-  { title: "Total Scans", value: "1,284", icon: Eye, trend: { value: 12, positive: true }, subtitle: "vs last month" },
-  { title: "Total Installs", value: "342", icon: Download, trend: { value: 8, positive: true }, subtitle: "vs last month" },
-  { title: "Total Purchases", value: "156", icon: ShoppingCart, trend: { value: 23, positive: true }, subtitle: "vs last month" },
-  { title: "Total Earnings", value: "€624.00", icon: DollarSign, trend: { value: 23, positive: true }, subtitle: "all time" },
-  { title: "Available Balance", value: "€124.00", icon: Wallet, subtitle: "ready to withdraw" },
-  { title: "Pending Payout", value: "€0.00", icon: Clock, subtitle: "processing" },
-];
+import { useTranslation } from "@/i18n/LanguageContext";
 
 const recentSales = [
   { id: "ORD-001", date: "Today, 14:32", product: "Turkey Unlimited", price: "€19.90", commission: "€4.00", status: "completed" },
@@ -20,12 +12,23 @@ const recentSales = [
 ];
 
 export default function DashboardOverview() {
+  const { t } = useTranslation();
+
+  const stats = [
+    { title: t("totalScans"), value: "1,284", icon: Eye, trend: { value: 12, positive: true }, subtitle: t("vsLastMonth") },
+    { title: t("totalInstalls"), value: "342", icon: Download, trend: { value: 8, positive: true }, subtitle: t("vsLastMonth") },
+    { title: t("totalPurchases"), value: "156", icon: ShoppingCart, trend: { value: 23, positive: true }, subtitle: t("vsLastMonth") },
+    { title: t("totalEarnings"), value: "€624.00", icon: DollarSign, trend: { value: 23, positive: true }, subtitle: t("allTime") },
+    { title: t("availableBalance"), value: "€124.00", icon: Wallet, subtitle: t("readyToWithdraw") },
+    { title: t("pendingPayout"), value: "€0.00", icon: Clock, subtitle: t("processing") },
+  ];
+
   return (
     <DashboardLayout type="agent">
       <div className="space-y-4 sm:space-y-6">
         <div>
-          <h2 className="text-xl sm:text-2xl font-bold tracking-tight">Dashboard</h2>
-          <p className="text-sm text-muted-foreground">Welcome back! Here's your performance overview.</p>
+          <h2 className="text-xl sm:text-2xl font-bold tracking-tight">{t("dashboard")}</h2>
+          <p className="text-sm text-muted-foreground">{t("dashboardWelcome")}</p>
         </div>
 
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
@@ -34,23 +37,21 @@ export default function DashboardOverview() {
           ))}
         </div>
 
-        {/* Recent Sales */}
         <div className="rounded-lg border bg-card shadow-card">
           <div className="px-4 py-3 sm:p-5 border-b">
-            <h3 className="font-semibold text-sm sm:text-base">Recent Sales</h3>
+            <h3 className="font-semibold text-sm sm:text-base">{t("recentSales")}</h3>
           </div>
 
-          {/* Desktop table */}
           <div className="hidden sm:block overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b bg-muted/50">
-                  <th className="text-left font-medium text-muted-foreground px-5 py-3">Order</th>
-                  <th className="text-left font-medium text-muted-foreground px-5 py-3">Date</th>
-                  <th className="text-left font-medium text-muted-foreground px-5 py-3">Product</th>
-                  <th className="text-left font-medium text-muted-foreground px-5 py-3">Price</th>
-                  <th className="text-left font-medium text-muted-foreground px-5 py-3">Commission</th>
-                  <th className="text-left font-medium text-muted-foreground px-5 py-3">Status</th>
+                  <th className="text-left font-medium text-muted-foreground px-5 py-3">{t("order")}</th>
+                  <th className="text-left font-medium text-muted-foreground px-5 py-3">{t("date")}</th>
+                  <th className="text-left font-medium text-muted-foreground px-5 py-3">{t("product")}</th>
+                  <th className="text-left font-medium text-muted-foreground px-5 py-3">{t("price")}</th>
+                  <th className="text-left font-medium text-muted-foreground px-5 py-3">{t("commission")}</th>
+                  <th className="text-left font-medium text-muted-foreground px-5 py-3">{t("status")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -64,7 +65,7 @@ export default function DashboardOverview() {
                     <td className="px-5 py-3">
                       <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
                         sale.status === "completed" ? "bg-success/10 text-success" : "bg-warning/10 text-warning"
-                      }`}>{sale.status}</span>
+                      }`}>{t(sale.status as any)}</span>
                     </td>
                   </tr>
                 ))}
@@ -72,7 +73,6 @@ export default function DashboardOverview() {
             </table>
           </div>
 
-          {/* Mobile cards */}
           <div className="sm:hidden divide-y">
             {recentSales.map((sale) => (
               <div key={sale.id} className="px-4 py-3 space-y-1.5">
@@ -80,7 +80,7 @@ export default function DashboardOverview() {
                   <span className="font-medium text-sm">{sale.id}</span>
                   <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
                     sale.status === "completed" ? "bg-success/10 text-success" : "bg-warning/10 text-warning"
-                  }`}>{sale.status}</span>
+                  }`}>{t(sale.status as any)}</span>
                 </div>
                 <div className="text-xs text-muted-foreground">{sale.date}</div>
                 <div className="flex items-center justify-between text-sm">

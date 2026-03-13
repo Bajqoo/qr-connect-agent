@@ -3,14 +3,17 @@ import { QRCodeSVG } from "qrcode.react";
 import { Button } from "@/components/ui/button";
 import { Download, Copy, ExternalLink } from "lucide-react";
 import { toast } from "sonner";
+import { useTranslation } from "@/i18n/LanguageContext";
 
 const REFERRAL_CODE = "AGENT123";
 const REFERRAL_URL = `https://nextesim.app/r/${REFERRAL_CODE}`;
 
 export default function DashboardQRCode() {
+  const { t } = useTranslation();
+
   const copyLink = () => {
     navigator.clipboard.writeText(REFERRAL_URL);
-    toast.success("Referral link copied to clipboard");
+    toast.success(t("referralLinkCopied"));
   };
 
   const downloadQR = () => {
@@ -33,7 +36,7 @@ export default function DashboardQRCode() {
       link.href = canvas.toDataURL("image/png");
       link.click();
       URL.revokeObjectURL(url);
-      toast.success("QR code downloaded");
+      toast.success(t("qrCodeDownloaded"));
     };
     img.src = url;
   };
@@ -42,12 +45,11 @@ export default function DashboardQRCode() {
     <DashboardLayout type="agent">
       <div className="space-y-4 sm:space-y-6">
         <div>
-          <h2 className="text-xl sm:text-2xl font-bold tracking-tight">Your QR Code</h2>
-          <p className="text-sm text-muted-foreground">Share this QR code with customers to earn commissions.</p>
+          <h2 className="text-xl sm:text-2xl font-bold tracking-tight">{t("yourQRCode")}</h2>
+          <p className="text-sm text-muted-foreground">{t("shareQRCode")}</p>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-4 sm:gap-6">
-          {/* QR Code Card */}
           <div className="rounded-lg border bg-card shadow-card p-5 sm:p-8 flex flex-col items-center">
             <div id="agent-qr" className="bg-card p-3 sm:p-4 rounded-xl border mb-4 sm:mb-6">
               <QRCodeSVG
@@ -59,7 +61,7 @@ export default function DashboardQRCode() {
                 className="sm:w-[200px] sm:h-[200px]"
               />
             </div>
-            <p className="text-sm font-medium mb-1">Your Referral Code</p>
+            <p className="text-sm font-medium mb-1">{t("yourReferralCode")}</p>
             <p className="text-lg font-bold text-primary mb-4">{REFERRAL_CODE}</p>
             <div className="flex gap-2 sm:gap-3 w-full max-w-xs">
               <Button onClick={downloadQR} size="sm" className="flex-1 gradient-primary border-0 text-primary-foreground hover:opacity-90">
@@ -68,14 +70,13 @@ export default function DashboardQRCode() {
               </Button>
               <Button variant="outline" size="sm" className="flex-1">
                 <Download className="h-4 w-4 mr-1.5" />
-                Flyer PDF
+                {t("flyerPDF")}
               </Button>
             </div>
           </div>
 
-          {/* Referral Link Card */}
           <div className="rounded-lg border bg-card shadow-card p-5 sm:p-8">
-            <h3 className="font-semibold mb-3 sm:mb-4 text-sm sm:text-base">Referral Link</h3>
+            <h3 className="font-semibold mb-3 sm:mb-4 text-sm sm:text-base">{t("referralLink")}</h3>
             <div className="flex items-center gap-2 p-2.5 sm:p-3 rounded-lg bg-muted mb-3 sm:mb-4">
               <code className="text-xs sm:text-sm flex-1 truncate">{REFERRAL_URL}</code>
               <Button variant="ghost" size="icon" className="h-8 w-8 flex-shrink-0" onClick={copyLink}>
@@ -84,23 +85,18 @@ export default function DashboardQRCode() {
             </div>
             <Button variant="outline" size="sm" className="w-full" onClick={() => window.open(REFERRAL_URL, "_blank")}>
               <ExternalLink className="h-4 w-4 mr-2" />
-              Preview Landing Page
+              {t("previewLandingPage")}
             </Button>
 
             <div className="mt-6 sm:mt-8">
-              <h4 className="font-medium mb-3 text-sm">How it works</h4>
+              <h4 className="font-medium mb-3 text-sm">{t("howItWorks")}</h4>
               <div className="space-y-2.5 sm:space-y-3">
-                {[
-                  { step: "1", text: "Share your QR code or referral link with customers" },
-                  { step: "2", text: "Customer scans and lands on your personalized page" },
-                  { step: "3", text: "When they purchase, you earn commission automatically" },
-                  { step: "4", text: "Track earnings and request payouts from your dashboard" },
-                ].map((item) => (
-                  <div key={item.step} className="flex items-start gap-2.5 sm:gap-3">
+                {[t("qrStep1"), t("qrStep2"), t("qrStep3"), t("qrStep4")].map((text, i) => (
+                  <div key={i} className="flex items-start gap-2.5 sm:gap-3">
                     <div className="h-5 w-5 sm:h-6 sm:w-6 rounded-full gradient-primary flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <span className="text-[10px] sm:text-xs font-bold text-primary-foreground">{item.step}</span>
+                      <span className="text-[10px] sm:text-xs font-bold text-primary-foreground">{i + 1}</span>
                     </div>
-                    <span className="text-xs sm:text-sm text-muted-foreground">{item.text}</span>
+                    <span className="text-xs sm:text-sm text-muted-foreground">{text}</span>
                   </div>
                 ))}
               </div>
