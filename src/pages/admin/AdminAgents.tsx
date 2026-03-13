@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Search, Ban, MoreHorizontal } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
+import { useTranslation } from "@/i18n/LanguageContext";
 
 const agents = [
   { id: "AGT-001", name: "Ali Yilmaz", email: "ali@example.com", type: "airport", country: "Turkey", sales: 234, balance: "€136.00", status: "active", code: "ALI234" },
@@ -13,23 +14,25 @@ const agents = [
   { id: "AGT-005", name: "James Smith", email: "james@example.com", type: "affiliate", country: "UK", sales: 132, balance: "€72.00", status: "blocked", code: "JAMES32" },
 ];
 
-const typeLabels: Record<string, string> = {
-  airport: "Airport",
-  hotel: "Hotel",
-  tour_guide: "Tour Guide",
-  taxi: "Taxi",
-  affiliate: "Affiliate",
-};
-
 export default function AdminAgents() {
+  const { t } = useTranslation();
+
+  const typeLabels: Record<string, string> = {
+    airport: t("airportAgent"),
+    hotel: t("hotelStaff"),
+    tour_guide: t("tourGuide"),
+    taxi: t("taxiDriver"),
+    affiliate: t("affiliate"),
+  };
+
   return (
     <DashboardLayout type="admin">
       <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-bold tracking-tight">Agents</h2>
+          <h2 className="text-2xl font-bold tracking-tight">{t("agents")}</h2>
           <div className="relative w-64">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input placeholder="Search agents..." className="pl-9" />
+            <Input placeholder={t("searchAgents")} className="pl-9" />
           </div>
         </div>
 
@@ -38,13 +41,13 @@ export default function AdminAgents() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b bg-muted/50">
-                  <th className="text-left font-medium text-muted-foreground px-5 py-3">Agent</th>
-                  <th className="text-left font-medium text-muted-foreground px-5 py-3">Type</th>
-                  <th className="text-left font-medium text-muted-foreground px-5 py-3">Country</th>
-                  <th className="text-left font-medium text-muted-foreground px-5 py-3">Code</th>
-                  <th className="text-left font-medium text-muted-foreground px-5 py-3">Sales</th>
-                  <th className="text-left font-medium text-muted-foreground px-5 py-3">Balance</th>
-                  <th className="text-left font-medium text-muted-foreground px-5 py-3">Status</th>
+                  <th className="text-left font-medium text-muted-foreground px-5 py-3">{t("agent")}</th>
+                  <th className="text-left font-medium text-muted-foreground px-5 py-3">{t("type")}</th>
+                  <th className="text-left font-medium text-muted-foreground px-5 py-3">{t("country")}</th>
+                  <th className="text-left font-medium text-muted-foreground px-5 py-3">{t("code")}</th>
+                  <th className="text-left font-medium text-muted-foreground px-5 py-3">{t("sales")}</th>
+                  <th className="text-left font-medium text-muted-foreground px-5 py-3">{t("balance")}</th>
+                  <th className="text-left font-medium text-muted-foreground px-5 py-3">{t("status")}</th>
                   <th className="text-left font-medium text-muted-foreground px-5 py-3"></th>
                 </tr>
               </thead>
@@ -69,20 +72,18 @@ export default function AdminAgents() {
                     <td className="px-5 py-3">
                       <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
                         a.status === "active" ? "bg-success/10 text-success" : "bg-destructive/10 text-destructive"
-                      }`}>{a.status}</span>
+                      }`}>{t(a.status as any)}</span>
                     </td>
                     <td className="px-5 py-3">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="icon" className="h-8 w-8">
-                            <MoreHorizontal className="h-4 w-4" />
-                          </Button>
+                          <Button variant="ghost" size="icon" className="h-8 w-8"><MoreHorizontal className="h-4 w-4" /></Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                          <DropdownMenuItem onClick={() => toast.info("View agent details")}>View Details</DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => toast.info("Edit commission rate")}>Edit Commission</DropdownMenuItem>
-                          <DropdownMenuItem className="text-destructive" onClick={() => toast.warning("Agent blocked")}>
-                            <Ban className="h-4 w-4 mr-2" />Block Agent
+                          <DropdownMenuItem onClick={() => toast.info(t("viewDetails"))}>{t("viewDetails")}</DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => toast.info(t("editCommission"))}>{t("editCommission")}</DropdownMenuItem>
+                          <DropdownMenuItem className="text-destructive" onClick={() => toast.warning(t("blockAgent"))}>
+                            <Ban className="h-4 w-4 mr-2" />{t("blockAgent")}
                           </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>

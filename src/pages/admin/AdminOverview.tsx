@@ -1,15 +1,7 @@
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { StatCard } from "@/components/ui/stat-card";
 import { Users, ShoppingCart, DollarSign, TrendingUp, AlertTriangle, Globe } from "lucide-react";
-
-const stats = [
-  { title: "Total Agents", value: "2,847", icon: Users, trend: { value: 18, positive: true }, subtitle: "vs last month" },
-  { title: "Total Sales", value: "12,493", icon: ShoppingCart, trend: { value: 32, positive: true }, subtitle: "vs last month" },
-  { title: "Revenue", value: "€248,610", icon: DollarSign, trend: { value: 28, positive: true }, subtitle: "vs last month" },
-  { title: "Commissions Paid", value: "€47,200", icon: TrendingUp, subtitle: "all time" },
-  { title: "Fraud Flags", value: "12", icon: AlertTriangle, subtitle: "needs review" },
-  { title: "Countries", value: "24", icon: Globe, subtitle: "active markets" },
-];
+import { useTranslation } from "@/i18n/LanguageContext";
 
 const topAgents = [
   { name: "Ali Yilmaz", type: "Airport", sales: 234, earnings: "€936.00" },
@@ -20,10 +12,21 @@ const topAgents = [
 ];
 
 export default function AdminOverview() {
+  const { t } = useTranslation();
+
+  const stats = [
+    { title: t("totalAgents"), value: "2,847", icon: Users, trend: { value: 18, positive: true }, subtitle: t("vsLastMonth") },
+    { title: t("totalSales"), value: "12,493", icon: ShoppingCart, trend: { value: 32, positive: true }, subtitle: t("vsLastMonth") },
+    { title: t("revenue"), value: "€248,610", icon: DollarSign, trend: { value: 28, positive: true }, subtitle: t("vsLastMonth") },
+    { title: t("commissionsPaid"), value: "€47,200", icon: TrendingUp, subtitle: t("allTime") },
+    { title: t("fraudFlags"), value: "12", icon: AlertTriangle, subtitle: t("needsReview") },
+    { title: t("countries"), value: "24", icon: Globe, subtitle: t("activeMarkets") },
+  ];
+
   return (
     <DashboardLayout type="admin">
       <div className="space-y-6">
-        <h2 className="text-2xl font-bold tracking-tight">Admin Overview</h2>
+        <h2 className="text-2xl font-bold tracking-tight">{t("adminOverview")}</h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {stats.map((s) => (
@@ -33,16 +36,16 @@ export default function AdminOverview() {
 
         <div className="rounded-lg border bg-card shadow-card">
           <div className="p-5 border-b">
-            <h3 className="font-semibold">Top Agents</h3>
+            <h3 className="font-semibold">{t("topAgents")}</h3>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b bg-muted/50">
-                  <th className="text-left font-medium text-muted-foreground px-5 py-3">Agent</th>
-                  <th className="text-left font-medium text-muted-foreground px-5 py-3">Type</th>
-                  <th className="text-left font-medium text-muted-foreground px-5 py-3">Sales</th>
-                  <th className="text-left font-medium text-muted-foreground px-5 py-3">Earnings</th>
+                  <th className="text-left font-medium text-muted-foreground px-5 py-3">{t("agent")}</th>
+                  <th className="text-left font-medium text-muted-foreground px-5 py-3">{t("type")}</th>
+                  <th className="text-left font-medium text-muted-foreground px-5 py-3">{t("sales")}</th>
+                  <th className="text-left font-medium text-muted-foreground px-5 py-3">{t("earnings")}</th>
                 </tr>
               </thead>
               <tbody>

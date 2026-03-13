@@ -2,6 +2,7 @@ import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { Button } from "@/components/ui/button";
 import { Check, X } from "lucide-react";
 import { toast } from "sonner";
+import { useTranslation } from "@/i18n/LanguageContext";
 
 const payouts = [
   { id: "PAY-089", agent: "Ali Yilmaz", amount: "€136.00", method: "Wise", requested: "Mar 10, 2026", status: "pending" },
@@ -12,23 +13,25 @@ const payouts = [
 ];
 
 export default function AdminPayouts() {
+  const { t } = useTranslation();
+
   return (
     <DashboardLayout type="admin">
       <div className="space-y-6">
-        <h2 className="text-2xl font-bold tracking-tight">Payouts</h2>
+        <h2 className="text-2xl font-bold tracking-tight">{t("payouts")}</h2>
 
         <div className="rounded-lg border bg-card shadow-card">
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b bg-muted/50">
-                  <th className="text-left font-medium text-muted-foreground px-5 py-3">ID</th>
-                  <th className="text-left font-medium text-muted-foreground px-5 py-3">Agent</th>
-                  <th className="text-left font-medium text-muted-foreground px-5 py-3">Amount</th>
-                  <th className="text-left font-medium text-muted-foreground px-5 py-3">Method</th>
-                  <th className="text-left font-medium text-muted-foreground px-5 py-3">Requested</th>
-                  <th className="text-left font-medium text-muted-foreground px-5 py-3">Status</th>
-                  <th className="text-left font-medium text-muted-foreground px-5 py-3">Actions</th>
+                  <th className="text-left font-medium text-muted-foreground px-5 py-3">{t("id")}</th>
+                  <th className="text-left font-medium text-muted-foreground px-5 py-3">{t("agent")}</th>
+                  <th className="text-left font-medium text-muted-foreground px-5 py-3">{t("amount")}</th>
+                  <th className="text-left font-medium text-muted-foreground px-5 py-3">{t("method")}</th>
+                  <th className="text-left font-medium text-muted-foreground px-5 py-3">{t("requested")}</th>
+                  <th className="text-left font-medium text-muted-foreground px-5 py-3">{t("status")}</th>
+                  <th className="text-left font-medium text-muted-foreground px-5 py-3">{t("actions")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -45,17 +48,17 @@ export default function AdminPayouts() {
                         p.status === "approved" ? "bg-info/10 text-info" :
                         p.status === "pending" ? "bg-warning/10 text-warning" :
                         "bg-destructive/10 text-destructive"
-                      }`}>{p.status}</span>
+                      }`}>{t(p.status as any)}</span>
                     </td>
                     <td className="px-5 py-3">
                       {p.status === "pending" && (
                         <div className="flex gap-1">
                           <Button size="icon" variant="ghost" className="h-7 w-7 text-success hover:bg-success/10"
-                            onClick={() => toast.success(`Payout ${p.id} approved`)}>
+                            onClick={() => toast.success(`${p.id} ${t("approved")}`)}>
                             <Check className="h-4 w-4" />
                           </Button>
                           <Button size="icon" variant="ghost" className="h-7 w-7 text-destructive hover:bg-destructive/10"
-                            onClick={() => toast.error(`Payout ${p.id} rejected`)}>
+                            onClick={() => toast.error(`${p.id} ${t("rejected")}`)}>
                             <X className="h-4 w-4" />
                           </Button>
                         </div>

@@ -1,6 +1,7 @@
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { StatCard } from "@/components/ui/stat-card";
 import { Users, ShoppingCart, DollarSign, TrendingUp } from "lucide-react";
+import { useTranslation } from "@/i18n/LanguageContext";
 
 const recentAgentSales = [
   { id: "ORD-301", agent: "Ali Yilmaz", product: "Turkey Unlimited", date: "Today", commission: "€4.00", managerCut: "€1.00" },
@@ -10,33 +11,34 @@ const recentAgentSales = [
 ];
 
 export default function ManagerOverview() {
+  const { t } = useTranslation();
+
   return (
     <DashboardLayout type="manager">
       <div className="space-y-6">
-        <h2 className="text-xl sm:text-2xl font-bold tracking-tight">Manager Overview</h2>
+        <h2 className="text-xl sm:text-2xl font-bold tracking-tight">{t("managerOverview")}</h2>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-          <StatCard title="My Agents" value="12" icon={Users} subtitle="+2 this month" />
-          <StatCard title="Total Sales" value="487" icon={ShoppingCart} subtitle="+34 this week" />
-          <StatCard title="My Earnings" value="€1,245" icon={DollarSign} subtitle="+€180 this week" />
-          <StatCard title="Avg per Agent" value="€103.75" icon={TrendingUp} subtitle="+8%" />
+          <StatCard title={t("myAgents")} value="12" icon={Users} subtitle="+2 {t('thisMonth').toLowerCase()}" />
+          <StatCard title={t("totalSales")} value="487" icon={ShoppingCart} subtitle={`+34 ${t("thisWeek").toLowerCase()}`} />
+          <StatCard title={t("myEarnings")} value="€1,245" icon={DollarSign} subtitle={`+€180 ${t("thisWeek").toLowerCase()}`} />
+          <StatCard title={t("avgPerAgent")} value="€103.75" icon={TrendingUp} subtitle="+8%" />
         </div>
 
-        {/* Desktop table */}
         <div className="rounded-lg border bg-card shadow-card hidden sm:block">
           <div className="p-4 border-b">
-            <h3 className="font-semibold">Recent Agent Sales</h3>
+            <h3 className="font-semibold">{t("recentAgentSales")}</h3>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b bg-muted/50">
-                  <th className="text-left font-medium text-muted-foreground px-4 py-3">Order</th>
-                  <th className="text-left font-medium text-muted-foreground px-4 py-3">Agent</th>
-                  <th className="text-left font-medium text-muted-foreground px-4 py-3">Product</th>
-                  <th className="text-left font-medium text-muted-foreground px-4 py-3">Date</th>
-                  <th className="text-left font-medium text-muted-foreground px-4 py-3">Agent Commission</th>
-                  <th className="text-left font-medium text-muted-foreground px-4 py-3">My Cut</th>
+                  <th className="text-left font-medium text-muted-foreground px-4 py-3">{t("order")}</th>
+                  <th className="text-left font-medium text-muted-foreground px-4 py-3">{t("agent")}</th>
+                  <th className="text-left font-medium text-muted-foreground px-4 py-3">{t("product")}</th>
+                  <th className="text-left font-medium text-muted-foreground px-4 py-3">{t("date")}</th>
+                  <th className="text-left font-medium text-muted-foreground px-4 py-3">{t("agentCommission")}</th>
+                  <th className="text-left font-medium text-muted-foreground px-4 py-3">{t("myCut")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -55,10 +57,9 @@ export default function ManagerOverview() {
           </div>
         </div>
 
-        {/* Mobile card list */}
         <div className="sm:hidden rounded-lg border bg-card shadow-card">
           <div className="p-4 border-b">
-            <h3 className="font-semibold">Recent Agent Sales</h3>
+            <h3 className="font-semibold">{t("recentAgentSales")}</h3>
           </div>
           <div className="divide-y">
             {recentAgentSales.map((sale) => (

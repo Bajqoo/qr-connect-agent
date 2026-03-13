@@ -1,6 +1,7 @@
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { StatCard } from "@/components/ui/stat-card";
 import { ShoppingCart, TrendingUp, DollarSign } from "lucide-react";
+import { useTranslation } from "@/i18n/LanguageContext";
 
 const sales = [
   { id: "ORD-301", agent: "Ali Yilmaz", customer: "john@mail.com", product: "Turkey Unlimited", date: "2024-01-15", agentComm: "€4.00", myCut: "€1.00", status: "completed" },
@@ -11,33 +12,34 @@ const sales = [
 ];
 
 export default function ManagerSales() {
+  const { t } = useTranslation();
+
   return (
     <DashboardLayout type="manager">
       <div className="space-y-6">
-        <h2 className="text-xl sm:text-2xl font-bold tracking-tight">Sales Overview</h2>
+        <h2 className="text-xl sm:text-2xl font-bold tracking-tight">{t("salesOverview")}</h2>
 
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-          <StatCard title="Total Sales" value="487" icon={ShoppingCart} subtitle="+34 this week" />
-          <StatCard title="Revenue Generated" value="€9,690" icon={TrendingUp} subtitle="+€676 this week" />
-          <StatCard title="My Total Cut" value="€1,245" icon={DollarSign} subtitle="+€180 this week" />
+          <StatCard title={t("totalSales")} value="487" icon={ShoppingCart} subtitle={`+34 ${t("thisWeek").toLowerCase()}`} />
+          <StatCard title={t("revenueGenerated")} value="€9,690" icon={TrendingUp} subtitle={`+€676 ${t("thisWeek").toLowerCase()}`} />
+          <StatCard title={t("myTotalCut")} value="€1,245" icon={DollarSign} subtitle={`+€180 ${t("thisWeek").toLowerCase()}`} />
         </div>
 
-        {/* Desktop table */}
         <div className="rounded-lg border bg-card shadow-card hidden sm:block">
           <div className="p-4 border-b">
-            <h3 className="font-semibold">All Agent Sales</h3>
+            <h3 className="font-semibold">{t("allAgentSales")}</h3>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b bg-muted/50">
-                  <th className="text-left font-medium text-muted-foreground px-4 py-3">Order</th>
-                  <th className="text-left font-medium text-muted-foreground px-4 py-3">Agent</th>
-                  <th className="text-left font-medium text-muted-foreground px-4 py-3">Customer</th>
-                  <th className="text-left font-medium text-muted-foreground px-4 py-3">Date</th>
-                  <th className="text-left font-medium text-muted-foreground px-4 py-3">Agent Comm.</th>
-                  <th className="text-left font-medium text-muted-foreground px-4 py-3">My Cut</th>
-                  <th className="text-left font-medium text-muted-foreground px-4 py-3">Status</th>
+                  <th className="text-left font-medium text-muted-foreground px-4 py-3">{t("order")}</th>
+                  <th className="text-left font-medium text-muted-foreground px-4 py-3">{t("agent")}</th>
+                  <th className="text-left font-medium text-muted-foreground px-4 py-3">{t("customer")}</th>
+                  <th className="text-left font-medium text-muted-foreground px-4 py-3">{t("date")}</th>
+                  <th className="text-left font-medium text-muted-foreground px-4 py-3">{t("agentComm")}</th>
+                  <th className="text-left font-medium text-muted-foreground px-4 py-3">{t("myCut")}</th>
+                  <th className="text-left font-medium text-muted-foreground px-4 py-3">{t("status")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -52,7 +54,7 @@ export default function ManagerSales() {
                     <td className="px-4 py-3">
                       <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
                         s.status === "completed" ? "bg-success/10 text-success" : "bg-warning/10 text-warning"
-                      }`}>{s.status}</span>
+                      }`}>{t(s.status as any)}</span>
                     </td>
                   </tr>
                 ))}
@@ -61,10 +63,9 @@ export default function ManagerSales() {
           </div>
         </div>
 
-        {/* Mobile card list */}
         <div className="sm:hidden rounded-lg border bg-card shadow-card">
           <div className="p-4 border-b">
-            <h3 className="font-semibold">All Agent Sales</h3>
+            <h3 className="font-semibold">{t("allAgentSales")}</h3>
           </div>
           <div className="divide-y">
             {sales.map((s) => (
@@ -77,7 +78,7 @@ export default function ManagerSales() {
                   <span>{s.id} · {s.customer}</span>
                   <span className={`inline-flex items-center px-2 py-0.5 rounded-full font-medium ${
                     s.status === "completed" ? "bg-success/10 text-success" : "bg-warning/10 text-warning"
-                  }`}>{s.status}</span>
+                  }`}>{t(s.status as any)}</span>
                 </div>
               </div>
             ))}
