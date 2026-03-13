@@ -3,6 +3,7 @@ import { StatCard } from "@/components/ui/stat-card";
 import { AlertTriangle, Shield, Fingerprint, Monitor } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { useTranslation } from "@/i18n/LanguageContext";
 
 const flags = [
   { id: "FRD-012", agent: "James Smith", type: "Multiple purchases same IP", ip: "185.42.xxx.xxx", count: 5, date: "Mar 10, 2026", severity: "high" },
@@ -11,33 +12,35 @@ const flags = [
 ];
 
 export default function AdminFraud() {
+  const { t } = useTranslation();
+
   return (
     <DashboardLayout type="admin">
       <div className="space-y-6">
-        <h2 className="text-2xl font-bold tracking-tight">Fraud Detection</h2>
+        <h2 className="text-2xl font-bold tracking-tight">{t("fraudDetection")}</h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
-          <StatCard title="Open Flags" value="12" icon={AlertTriangle} subtitle="needs review" />
-          <StatCard title="Blocked Agents" value="3" icon={Shield} subtitle="this month" />
-          <StatCard title="Duplicate Devices" value="7" icon={Fingerprint} subtitle="detected" />
-          <StatCard title="IP Anomalies" value="5" icon={Monitor} subtitle="flagged" />
+          <StatCard title={t("openFlags")} value="12" icon={AlertTriangle} subtitle={t("needsReview")} />
+          <StatCard title={t("blockedAgents")} value="3" icon={Shield} subtitle={t("thisMonth")} />
+          <StatCard title={t("duplicateDevices")} value="7" icon={Fingerprint} subtitle={t("detected")} />
+          <StatCard title={t("ipAnomalies")} value="5" icon={Monitor} subtitle={t("flagged")} />
         </div>
 
         <div className="rounded-lg border bg-card shadow-card">
           <div className="p-5 border-b">
-            <h3 className="font-semibold">Recent Fraud Flags</h3>
+            <h3 className="font-semibold">{t("recentFraudFlags")}</h3>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b bg-muted/50">
-                  <th className="text-left font-medium text-muted-foreground px-5 py-3">ID</th>
-                  <th className="text-left font-medium text-muted-foreground px-5 py-3">Agent</th>
-                  <th className="text-left font-medium text-muted-foreground px-5 py-3">Type</th>
-                  <th className="text-left font-medium text-muted-foreground px-5 py-3">IP</th>
-                  <th className="text-left font-medium text-muted-foreground px-5 py-3">Count</th>
-                  <th className="text-left font-medium text-muted-foreground px-5 py-3">Severity</th>
-                  <th className="text-left font-medium text-muted-foreground px-5 py-3">Actions</th>
+                  <th className="text-left font-medium text-muted-foreground px-5 py-3">{t("id")}</th>
+                  <th className="text-left font-medium text-muted-foreground px-5 py-3">{t("agent")}</th>
+                  <th className="text-left font-medium text-muted-foreground px-5 py-3">{t("type")}</th>
+                  <th className="text-left font-medium text-muted-foreground px-5 py-3">{t("ip")}</th>
+                  <th className="text-left font-medium text-muted-foreground px-5 py-3">{t("count")}</th>
+                  <th className="text-left font-medium text-muted-foreground px-5 py-3">{t("severity")}</th>
+                  <th className="text-left font-medium text-muted-foreground px-5 py-3">{t("actions")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -57,11 +60,11 @@ export default function AdminFraud() {
                     </td>
                     <td className="px-5 py-3">
                       <div className="flex gap-2">
-                        <Button size="sm" variant="outline" onClick={() => toast.info("Investigating...")}>
-                          Investigate
+                        <Button size="sm" variant="outline" onClick={() => toast.info(t("investigate") + "...")}>
+                          {t("investigate")}
                         </Button>
-                        <Button size="sm" variant="outline" className="text-destructive" onClick={() => toast.warning("Agent blocked")}>
-                          Block
+                        <Button size="sm" variant="outline" className="text-destructive" onClick={() => toast.warning(t("blockAgent"))}>
+                          {t("block")}
                         </Button>
                       </div>
                     </td>

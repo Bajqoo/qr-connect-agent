@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
 import { useState } from "react";
+import { useTranslation } from "@/i18n/LanguageContext";
 
 const myAgents = [
   { id: "AGT-001", name: "Ali Yilmaz", email: "ali@example.com", type: "airport", sales: 234, commission: "€936", myEarnings: "€234", status: "active" },
@@ -16,20 +17,21 @@ const myAgents = [
   { id: "AGT-004", name: "Sofia Müller", email: "sofia@example.com", type: "taxi", sales: 145, commission: "€580", myEarnings: "€145", status: "active" },
 ];
 
-const typeLabels: Record<string, string> = {
-  airport: "Airport",
-  hotel: "Hotel",
-  tour_guide: "Tour Guide",
-  taxi: "Taxi",
-  affiliate: "Affiliate",
-};
-
 export default function ManagerAgents() {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
+
+  const typeLabels: Record<string, string> = {
+    airport: t("airportAgent"),
+    hotel: t("hotelStaff"),
+    tour_guide: t("tourGuide"),
+    taxi: t("taxiDriver"),
+    affiliate: t("affiliate"),
+  };
 
   const handleCreate = (e: React.FormEvent) => {
     e.preventDefault();
-    toast.success("Agent created successfully!");
+    toast.success(t("agentCreated"));
     setOpen(false);
   };
 
@@ -37,59 +39,59 @@ export default function ManagerAgents() {
     <DashboardLayout type="manager">
       <div className="space-y-6">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-          <h2 className="text-xl sm:text-2xl font-bold tracking-tight">My Agents</h2>
+          <h2 className="text-xl sm:text-2xl font-bold tracking-tight">{t("myAgents")}</h2>
           <div className="flex items-center gap-2 w-full sm:w-auto">
             <div className="relative flex-1 sm:w-56">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input placeholder="Search agents..." className="pl-9" />
+              <Input placeholder={t("searchAgents")} className="pl-9" />
             </div>
             <Dialog open={open} onOpenChange={setOpen}>
               <DialogTrigger asChild>
                 <Button className="gradient-primary border-0 text-primary-foreground hover:opacity-90 shrink-0">
-                  <Plus className="h-4 w-4 mr-1" /> Add Agent
+                  <Plus className="h-4 w-4 mr-1" /> {t("addAgent")}
                 </Button>
               </DialogTrigger>
               <DialogContent className="max-w-md">
                 <DialogHeader>
-                  <DialogTitle>Create New Agent</DialogTitle>
+                  <DialogTitle>{t("createNewAgent")}</DialogTitle>
                 </DialogHeader>
                 <form onSubmit={handleCreate} className="space-y-4 mt-2">
                   <div className="space-y-2">
-                    <Label>Full Name</Label>
-                    <Input placeholder="Agent name" required />
+                    <Label>{t("fullName")}</Label>
+                    <Input placeholder={t("agent")} required />
                   </div>
                   <div className="space-y-2">
-                    <Label>Email</Label>
+                    <Label>{t("email")}</Label>
                     <Input type="email" placeholder="agent@example.com" required />
                   </div>
                   <div className="space-y-2">
-                    <Label>Phone</Label>
+                    <Label>{t("phone")}</Label>
                     <Input type="tel" placeholder="+90 555 123 4567" />
                   </div>
                   <div className="space-y-2">
-                    <Label>Agent Type</Label>
+                    <Label>{t("agentType")}</Label>
                     <Select>
-                      <SelectTrigger><SelectValue placeholder="Select type" /></SelectTrigger>
+                      <SelectTrigger><SelectValue placeholder={t("selectType")} /></SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="airport">Airport</SelectItem>
-                        <SelectItem value="hotel">Hotel</SelectItem>
-                        <SelectItem value="tour_guide">Tour Guide</SelectItem>
-                        <SelectItem value="taxi">Taxi</SelectItem>
-                        <SelectItem value="affiliate">Affiliate</SelectItem>
+                        <SelectItem value="airport">{t("airportAgent")}</SelectItem>
+                        <SelectItem value="hotel">{t("hotelStaff")}</SelectItem>
+                        <SelectItem value="tour_guide">{t("tourGuide")}</SelectItem>
+                        <SelectItem value="taxi">{t("taxiDriver")}</SelectItem>
+                        <SelectItem value="affiliate">{t("affiliate")}</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                   <div className="space-y-2">
-                    <Label>Commission per Sale (€)</Label>
+                    <Label>{t("commissionPerSale")}</Label>
                     <Input type="number" placeholder="4.00" min={0} step={0.5} required />
                   </div>
                   <div className="space-y-2">
-                    <Label>My Cut per Sale (€)</Label>
+                    <Label>{t("myCutPerSale")}</Label>
                     <Input type="number" placeholder="1.00" min={0} step={0.25} required />
-                    <p className="text-xs text-muted-foreground">Amount you earn from each sale by this agent</p>
+                    <p className="text-xs text-muted-foreground">{t("myCutDesc")}</p>
                   </div>
                   <Button type="submit" className="w-full gradient-primary border-0 text-primary-foreground hover:opacity-90">
-                    Create Agent
+                    {t("createAccount")}
                   </Button>
                 </form>
               </DialogContent>
@@ -97,18 +99,17 @@ export default function ManagerAgents() {
           </div>
         </div>
 
-        {/* Desktop table */}
         <div className="rounded-lg border bg-card shadow-card hidden sm:block">
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b bg-muted/50">
-                  <th className="text-left font-medium text-muted-foreground px-5 py-3">Agent</th>
-                  <th className="text-left font-medium text-muted-foreground px-5 py-3">Type</th>
-                  <th className="text-left font-medium text-muted-foreground px-5 py-3">Sales</th>
-                  <th className="text-left font-medium text-muted-foreground px-5 py-3">Their Commission</th>
-                  <th className="text-left font-medium text-muted-foreground px-5 py-3">My Earnings</th>
-                  <th className="text-left font-medium text-muted-foreground px-5 py-3">Status</th>
+                  <th className="text-left font-medium text-muted-foreground px-5 py-3">{t("agent")}</th>
+                  <th className="text-left font-medium text-muted-foreground px-5 py-3">{t("type")}</th>
+                  <th className="text-left font-medium text-muted-foreground px-5 py-3">{t("sales")}</th>
+                  <th className="text-left font-medium text-muted-foreground px-5 py-3">{t("theirCommission")}</th>
+                  <th className="text-left font-medium text-muted-foreground px-5 py-3">{t("myEarnings")}</th>
+                  <th className="text-left font-medium text-muted-foreground px-5 py-3">{t("status")}</th>
                   <th className="text-left font-medium text-muted-foreground px-5 py-3"></th>
                 </tr>
               </thead>
@@ -131,21 +132,19 @@ export default function ManagerAgents() {
                     <td className="px-5 py-3 font-semibold text-primary">{a.myEarnings}</td>
                     <td className="px-5 py-3">
                       <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-success/10 text-success">
-                        {a.status}
+                        {t(a.status as any)}
                       </span>
                     </td>
                     <td className="px-5 py-3">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="icon" className="h-8 w-8">
-                            <MoreHorizontal className="h-4 w-4" />
-                          </Button>
+                          <Button variant="ghost" size="icon" className="h-8 w-8"><MoreHorizontal className="h-4 w-4" /></Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                          <DropdownMenuItem onClick={() => toast.info("View agent details")}>View Details</DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => toast.info("Edit commission")}>Edit Commission</DropdownMenuItem>
-                          <DropdownMenuItem className="text-destructive" onClick={() => toast.warning("Agent blocked")}>
-                            <Ban className="h-4 w-4 mr-2" />Block Agent
+                          <DropdownMenuItem onClick={() => toast.info(t("viewDetails"))}>{t("viewDetails")}</DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => toast.info(t("editCommission"))}>{t("editCommission")}</DropdownMenuItem>
+                          <DropdownMenuItem className="text-destructive" onClick={() => toast.warning(t("blockAgent"))}>
+                            <Ban className="h-4 w-4 mr-2" />{t("blockAgent")}
                           </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
@@ -157,7 +156,6 @@ export default function ManagerAgents() {
           </div>
         </div>
 
-        {/* Mobile card list */}
         <div className="sm:hidden space-y-3">
           {myAgents.map((a) => (
             <div key={a.id} className="rounded-lg border bg-card shadow-card p-4 space-y-2">
@@ -168,15 +166,13 @@ export default function ManagerAgents() {
                 </div>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon" className="h-8 w-8">
-                      <MoreHorizontal className="h-4 w-4" />
-                    </Button>
+                    <Button variant="ghost" size="icon" className="h-8 w-8"><MoreHorizontal className="h-4 w-4" /></Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
-                    <DropdownMenuItem onClick={() => toast.info("View agent details")}>View Details</DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => toast.info("Edit commission")}>Edit Commission</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => toast.info(t("viewDetails"))}>{t("viewDetails")}</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => toast.info(t("editCommission"))}>{t("editCommission")}</DropdownMenuItem>
                     <DropdownMenuItem className="text-destructive">
-                      <Ban className="h-4 w-4 mr-2" />Block Agent
+                      <Ban className="h-4 w-4 mr-2" />{t("blockAgent")}
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -186,20 +182,20 @@ export default function ManagerAgents() {
                   {typeLabels[a.type]}
                 </span>
                 <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-success/10 text-success">
-                  {a.status}
+                  {t(a.status as any)}
                 </span>
               </div>
               <div className="grid grid-cols-3 gap-2 pt-1">
                 <div>
-                  <p className="text-xs text-muted-foreground">Sales</p>
+                  <p className="text-xs text-muted-foreground">{t("sales")}</p>
                   <p className="font-medium text-sm">{a.sales}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-muted-foreground">Their Cut</p>
+                  <p className="text-xs text-muted-foreground">{t("theirCommission")}</p>
                   <p className="font-medium text-sm">{a.commission}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-muted-foreground">My Earnings</p>
+                  <p className="text-xs text-muted-foreground">{t("myEarnings")}</p>
                   <p className="font-semibold text-sm text-primary">{a.myEarnings}</p>
                 </div>
               </div>

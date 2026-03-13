@@ -4,6 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/hooks/useAuth";
+import { LanguageProvider } from "@/i18n/LanguageContext";
 
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
@@ -33,39 +34,41 @@ const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <AuthProvider>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/register" element={<AgentRegister />} />
-            <Route path="/login" element={<AgentLogin />} />
-            <Route path="/admin/login" element={<AdminLogin />} />
-            <Route path="/manager/login" element={<ManagerLogin />} />
-            <Route path="/r/:refCode" element={<CustomerLanding />} />
-            <Route path="/dashboard" element={<DashboardOverview />} />
-            <Route path="/dashboard/qr-code" element={<DashboardQRCode />} />
-            <Route path="/dashboard/sales" element={<DashboardSales />} />
-            <Route path="/dashboard/earnings" element={<DashboardEarnings />} />
-            <Route path="/dashboard/settings" element={<DashboardSettings />} />
-            <Route path="/admin" element={<AdminOverview />} />
-            <Route path="/admin/managers" element={<AdminManagers />} />
-            <Route path="/admin/agents" element={<AdminAgents />} />
-            <Route path="/admin/sales" element={<AdminSales />} />
-            <Route path="/admin/commissions" element={<AdminCommissions />} />
-            <Route path="/admin/payouts" element={<AdminPayouts />} />
-            <Route path="/admin/fraud" element={<AdminFraud />} />
-            <Route path="/manager" element={<ManagerOverview />} />
-            <Route path="/manager/agents" element={<ManagerAgents />} />
-            <Route path="/manager/sales" element={<ManagerSales />} />
-            <Route path="/manager/earnings" element={<ManagerEarnings />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </AuthProvider>
-      </BrowserRouter>
-    </TooltipProvider>
+    <LanguageProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <AuthProvider>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/register" element={<AgentRegister />} />
+              <Route path="/login" element={<AgentLogin />} />
+              <Route path="/admin/login" element={<AdminLogin />} />
+              <Route path="/manager/login" element={<ManagerLogin />} />
+              <Route path="/r/:refCode" element={<CustomerLanding />} />
+              <Route path="/dashboard" element={<DashboardOverview />} />
+              <Route path="/dashboard/qr-code" element={<DashboardQRCode />} />
+              <Route path="/dashboard/sales" element={<DashboardSales />} />
+              <Route path="/dashboard/earnings" element={<DashboardEarnings />} />
+              <Route path="/dashboard/settings" element={<DashboardSettings />} />
+              <Route path="/admin" element={<AdminOverview />} />
+              <Route path="/admin/managers" element={<AdminManagers />} />
+              <Route path="/admin/agents" element={<AdminAgents />} />
+              <Route path="/admin/sales" element={<AdminSales />} />
+              <Route path="/admin/commissions" element={<AdminCommissions />} />
+              <Route path="/admin/payouts" element={<AdminPayouts />} />
+              <Route path="/admin/fraud" element={<AdminFraud />} />
+              <Route path="/manager" element={<ManagerOverview />} />
+              <Route path="/manager/agents" element={<ManagerAgents />} />
+              <Route path="/manager/sales" element={<ManagerSales />} />
+              <Route path="/manager/earnings" element={<ManagerEarnings />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </AuthProvider>
+        </BrowserRouter>
+      </TooltipProvider>
+    </LanguageProvider>
   </QueryClientProvider>
 );
 

@@ -7,34 +7,36 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ArrowRight } from "lucide-react";
 import { toast } from "sonner";
+import { useTranslation } from "@/i18n/LanguageContext";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import logoRed from "@/assets/logo-red.png";
 import logoWhite from "@/assets/logo-white.png";
 
-const agentTypes = [
-  { value: "airport", label: "Airport Agent" },
-  { value: "taxi", label: "Taxi Driver" },
-  { value: "hotel", label: "Hotel Staff" },
-  { value: "tour_guide", label: "Tour Guide" },
-  { value: "affiliate", label: "Affiliate" },
-];
-
 export default function AgentRegister() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
+
+  const agentTypes = [
+    { value: "airport", label: t("airportAgent") },
+    { value: "taxi", label: t("taxiDriver") },
+    { value: "hotel", label: t("hotelStaff") },
+    { value: "tour_guide", label: t("tourGuide") },
+    { value: "affiliate", label: t("affiliate") },
+  ];
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-      toast.success("Registration successful! Welcome to Next eSIM.");
+      toast.success(t("registrationSuccess"));
       navigate("/dashboard");
     }, 1500);
   };
 
   return (
     <div className="min-h-screen bg-background flex">
-      {/* Left panel */}
       <div className="hidden lg:flex lg:w-1/2 gradient-dark items-center justify-center p-12">
         <motion.div
           initial={{ opacity: 0, x: -20 }}
@@ -46,18 +48,13 @@ export default function AgentRegister() {
             <img src={logoWhite} alt="Next eSIM" className="h-10" />
           </div>
           <h2 className="text-3xl font-bold text-sidebar-foreground mb-4">
-            Earn commission on every eSIM sale
+            {t("registerLeftTitle")}
           </h2>
           <p className="text-sidebar-foreground/60 text-lg mb-8">
-            Join thousands of agents worldwide. Get your unique QR code and start earning today.
+            {t("registerLeftSubtitle")}
           </p>
           <div className="space-y-4">
-            {[
-              "Instant QR code generation",
-              "Real-time commission tracking",
-              "Payouts via Wise, Revolut, or bank transfer",
-              "Support for 10,000+ agents globally",
-            ].map((item) => (
+            {[t("registerBullet1"), t("registerBullet2"), t("registerBullet3"), t("registerBullet4")].map((item) => (
               <div key={item} className="flex items-center gap-3 text-sidebar-foreground/80">
                 <div className="h-1.5 w-1.5 rounded-full bg-sidebar-primary" />
                 <span className="text-sm">{item}</span>
@@ -67,62 +64,64 @@ export default function AgentRegister() {
         </motion.div>
       </div>
 
-      {/* Right panel - form */}
       <div className="flex-1 flex items-center justify-center p-6">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           className="w-full max-w-md"
         >
-          <div className="lg:hidden mb-8">
-            <img src={logoRed} alt="Next eSIM" className="h-8" />
+          <div className="flex justify-between items-center lg:justify-end mb-8">
+            <div className="lg:hidden">
+              <img src={logoRed} alt="Next eSIM" className="h-8" />
+            </div>
+            <LanguageSwitcher />
           </div>
 
-          <h1 className="text-2xl font-bold mb-1">Create your agent account</h1>
+          <h1 className="text-2xl font-bold mb-1">{t("createAgentAccount")}</h1>
           <p className="text-muted-foreground mb-6">
-            Already have an account?{" "}
+            {t("alreadyHaveAccount")}{" "}
             <Link to="/login" className="text-primary font-medium hover:underline">
-              Sign in
+              {t("signIn")}
             </Link>
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="name">Full Name</Label>
+                <Label htmlFor="name">{t("fullName")}</Label>
                 <Input id="name" placeholder="John Doe" required />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="phone">Phone</Label>
+                <Label htmlFor="phone">{t("phone")}</Label>
                 <Input id="phone" type="tel" placeholder="+1 555 000" required />
               </div>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">{t("email")}</Label>
               <Input id="email" type="email" placeholder="john@example.com" required />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password">{t("password")}</Label>
               <Input id="password" type="password" placeholder="••••••••" required />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="country">Country</Label>
+                <Label htmlFor="country">{t("country")}</Label>
                 <Input id="country" placeholder="Turkey" required />
               </div>
               <div className="space-y-2">
-                <Label>Agent Type</Label>
+                <Label>{t("agentType")}</Label>
                 <Select required>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select type" />
+                    <SelectValue placeholder={t("selectType")} />
                   </SelectTrigger>
                   <SelectContent>
-                    {agentTypes.map((t) => (
-                      <SelectItem key={t.value} value={t.value}>
-                        {t.label}
+                    {agentTypes.map((at) => (
+                      <SelectItem key={at.value} value={at.value}>
+                        {at.label}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -131,13 +130,13 @@ export default function AgentRegister() {
             </div>
 
             <Button type="submit" className="w-full h-11 gradient-primary border-0 text-primary-foreground hover:opacity-90" disabled={loading}>
-              {loading ? "Creating account..." : "Create Account"}
+              {loading ? t("creatingAccount") : t("createAccount")}
               {!loading && <ArrowRight className="ml-2 h-4 w-4" />}
             </Button>
           </form>
 
           <p className="text-xs text-muted-foreground mt-6 text-center">
-            By signing up you agree to our Terms of Service and Privacy Policy.
+            {t("agreeTerms")}
           </p>
         </motion.div>
       </div>

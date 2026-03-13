@@ -6,20 +6,23 @@ import { QRCodeSVG } from "qrcode.react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-
-const features = [
-  { icon: Zap, title: "Instant Activation", desc: "Ready in 2 minutes" },
-  { icon: Wifi, title: "Unlimited Data", desc: "No speed limits" },
-  { icon: Clock, title: "7-Day Coverage", desc: "Full week access" },
-  { icon: Shield, title: "Secure Connection", desc: "Encrypted & private" },
-];
+import { useTranslation } from "@/i18n/LanguageContext";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 
 type Step = "landing" | "checkout" | "processing" | "success";
 
 export default function CustomerLanding() {
   const { refCode } = useParams();
+  const { t } = useTranslation();
   const [step, setStep] = useState<Step>("landing");
   const [form, setForm] = useState({ name: "", email: "", card: "", expiry: "", cvc: "" });
+
+  const features = [
+    { icon: Zap, title: t("instantActivation"), desc: t("readyIn2Min") },
+    { icon: Wifi, title: t("unlimitedDataFeature"), desc: t("noSpeedLimits") },
+    { icon: Clock, title: t("sevenDayCoverage"), desc: t("fullWeekAccess") },
+    { icon: Shield, title: t("secureConnection"), desc: t("encryptedPrivate") },
+  ];
 
   const handleCheckout = () => setStep("checkout");
 
@@ -42,7 +45,6 @@ export default function CustomerLanding() {
 
   return (
     <div className="min-h-screen bg-background relative">
-      {/* Dotted grid background */}
       <div 
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -53,7 +55,10 @@ export default function CustomerLanding() {
       />
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 gradient-primary opacity-[0.03] pointer-events-none" />
-        <div className="max-w-lg mx-auto px-5 pt-12 pb-8">
+        <div className="max-w-lg mx-auto px-5 pt-8 pb-8">
+          <div className="flex justify-end mb-4">
+            <LanguageSwitcher variant="outline" />
+          </div>
           <AnimatePresence mode="wait">
             {step === "landing" && (
               <motion.div
@@ -66,32 +71,31 @@ export default function CustomerLanding() {
               >
                 <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent text-accent-foreground text-xs font-medium mb-6">
                   <Globe className="h-3.5 w-3.5" />
-                  Turkey eSIM
+                  {t("turkeyEsim")}
                 </div>
                 <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-3">
-                  Unlimited Internet
+                  {t("unlimitedInternet")}
                   <br />
-                  <span className="text-primary">in Turkey</span>
+                  <span className="text-primary">{t("inTurkey")}</span>
                 </h1>
                 <p className="text-muted-foreground text-base mb-8">
-                  Activate your eSIM in 2 minutes. No physical SIM needed.
+                  {t("activateEsim")}
                 </p>
 
-                {/* Price card */}
                 <div className="bg-card rounded-xl border shadow-elevated p-6 mb-6">
                   <div className="flex items-center justify-between mb-4">
                     <div className="text-left">
-                      <h3 className="font-semibold text-lg">Turkey Unlimited</h3>
-                      <p className="text-sm text-muted-foreground">7-day plan</p>
+                      <h3 className="font-semibold text-lg">{t("turkeyUnlimited")}</h3>
+                      <p className="text-sm text-muted-foreground">{t("sevenDayPlan")}</p>
                     </div>
                     <div className="text-right">
                       <div className="text-3xl font-bold text-primary">€19.90</div>
-                      <p className="text-xs text-muted-foreground">one-time</p>
+                      <p className="text-xs text-muted-foreground">{t("oneTime")}</p>
                     </div>
                   </div>
 
                   <div className="space-y-2.5 mb-6">
-                    {["Unlimited high-speed data", "Works on all eSIM phones", "24/7 customer support", "Instant QR code delivery"].map((item) => (
+                    {[t("unlimitedData"), t("worksAllPhones"), t("support247"), t("instantQR")].map((item) => (
                       <div key={item} className="flex items-center gap-2.5 text-sm">
                         <CheckCircle2 className="h-4 w-4 text-success flex-shrink-0" />
                         <span>{item}</span>
@@ -104,15 +108,14 @@ export default function CustomerLanding() {
                     className="w-full h-12 text-base font-semibold gradient-primary border-0 text-primary-foreground hover:opacity-90 transition-opacity"
                   >
                     <CreditCard className="h-5 w-5 mr-2" />
-                    Buy Now — €19.90
+                    {t("buyNow")} — €19.90
                   </Button>
                 </div>
 
-                {/* Features grid */}
                 <div className="grid grid-cols-2 gap-3">
                   {features.map((f, i) => (
                     <motion.div
-                      key={f.title}
+                      key={i}
                       initial={{ opacity: 0, y: 12 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.2 + i * 0.1 }}
@@ -146,23 +149,23 @@ export default function CustomerLanding() {
                   className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-6"
                 >
                   <ArrowLeft className="h-4 w-4" />
-                  Back
+                  {t("back")}
                 </button>
 
                 <div className="bg-card rounded-xl border shadow-elevated p-6 mb-4">
                   <div className="flex items-center justify-between mb-6 pb-4 border-b">
                     <div>
-                      <h3 className="font-semibold">Turkey Unlimited</h3>
-                      <p className="text-sm text-muted-foreground">7-day plan</p>
+                      <h3 className="font-semibold">{t("turkeyUnlimited")}</h3>
+                      <p className="text-sm text-muted-foreground">{t("sevenDayPlan")}</p>
                     </div>
                     <div className="text-xl font-bold text-primary">€19.90</div>
                   </div>
 
-                  <h2 className="text-lg font-bold mb-4">Payment Details</h2>
+                  <h2 className="text-lg font-bold mb-4">{t("paymentDetails")}</h2>
 
                   <form onSubmit={handlePay} className="space-y-4">
                     <div className="space-y-2">
-                      <label className="text-sm font-medium">Full Name</label>
+                      <label className="text-sm font-medium">{t("fullName")}</label>
                       <Input
                         placeholder="John Doe"
                         value={form.name}
@@ -172,7 +175,7 @@ export default function CustomerLanding() {
                     </div>
 
                     <div className="space-y-2">
-                      <label className="text-sm font-medium">Email</label>
+                      <label className="text-sm font-medium">{t("email")}</label>
                       <Input
                         type="email"
                         placeholder="john@example.com"
@@ -183,7 +186,7 @@ export default function CustomerLanding() {
                     </div>
 
                     <div className="space-y-2">
-                      <label className="text-sm font-medium">Card Number</label>
+                      <label className="text-sm font-medium">{t("cardNumber")}</label>
                       <div className="relative">
                         <Input
                           placeholder="4242 4242 4242 4242"
@@ -198,7 +201,7 @@ export default function CustomerLanding() {
 
                     <div className="grid grid-cols-2 gap-3">
                       <div className="space-y-2">
-                        <label className="text-sm font-medium">Expiry</label>
+                        <label className="text-sm font-medium">{t("expiry")}</label>
                         <Input
                           placeholder="MM/YY"
                           value={form.expiry}
@@ -207,7 +210,7 @@ export default function CustomerLanding() {
                         />
                       </div>
                       <div className="space-y-2">
-                        <label className="text-sm font-medium">CVC</label>
+                        <label className="text-sm font-medium">{t("cvc")}</label>
                         <Input
                           placeholder="123"
                           value={form.cvc}
@@ -222,13 +225,13 @@ export default function CustomerLanding() {
                       className="w-full h-12 text-base font-semibold gradient-primary border-0 text-primary-foreground hover:opacity-90 transition-opacity mt-2"
                     >
                       <Lock className="h-4 w-4 mr-2" />
-                      Pay €19.90
+                      {t("pay")} €19.90
                     </Button>
                   </form>
 
                   <div className="flex items-center justify-center gap-2 mt-4 text-xs text-muted-foreground">
                     <Lock className="h-3 w-3" />
-                    Secure payment · SSL encrypted
+                    {t("securePayment")}
                   </div>
                 </div>
               </motion.div>
@@ -244,8 +247,8 @@ export default function CustomerLanding() {
                 className="flex flex-col items-center justify-center py-24 text-center"
               >
                 <Loader2 className="h-12 w-12 text-primary animate-spin mb-6" />
-                <h2 className="text-xl font-bold mb-2">Processing Payment</h2>
-                <p className="text-muted-foreground text-sm">Please wait while we confirm your payment...</p>
+                <h2 className="text-xl font-bold mb-2">{t("processingPayment")}</h2>
+                <p className="text-muted-foreground text-sm">{t("pleaseWait")}</p>
               </motion.div>
             )}
 
@@ -260,14 +263,13 @@ export default function CustomerLanding() {
                 <div className="inline-flex items-center justify-center h-20 w-20 rounded-full bg-success/10 mb-6">
                   <CheckCircle2 className="h-10 w-10 text-success" />
                 </div>
-                <h2 className="text-2xl font-bold mb-2">Payment Successful!</h2>
+                <h2 className="text-2xl font-bold mb-2">{t("paymentSuccessful")}</h2>
                 <p className="text-muted-foreground mb-8 max-w-sm mx-auto">
-                  Your eSIM is ready. Scan the QR code below with your phone camera to install it.
+                  {t("esimReady")}
                 </p>
 
-                {/* eSIM QR Code */}
                 <div className="bg-card rounded-xl border shadow-elevated p-6 max-w-sm mx-auto mb-6">
-                  <h3 className="font-semibold mb-4">Your eSIM QR Code</h3>
+                  <h3 className="font-semibold mb-4">{t("yourEsimQR")}</h3>
                   <div className="bg-background p-4 rounded-xl border inline-block mb-4">
                     <QRCodeSVG
                       value={`LPA:1$esim.nextesim.app$MOCK-${Date.now().toString(36).toUpperCase()}`}
@@ -283,54 +285,48 @@ export default function CustomerLanding() {
                       variant="outline"
                       onClick={() => {
                         navigator.clipboard.writeText(`LPA:1$esim.nextesim.app$MOCK-DEMO`);
-                        toast.success("Activation code copied!");
+                        toast.success(t("activationCodeCopied"));
                       }}
                     >
                       <Copy className="h-4 w-4 mr-1.5" />
-                      Copy Code
+                      {t("copyCode")}
                     </Button>
                     <Button
                       size="sm"
                       className="gradient-primary border-0 text-primary-foreground hover:opacity-90"
-                      onClick={() => toast.success("QR code downloaded!")}
+                      onClick={() => toast.success(t("qrDownloaded"))}
                     >
                       <Download className="h-4 w-4 mr-1.5" />
-                      Save QR
+                      {t("saveQR")}
                     </Button>
                   </div>
 
                   <div className="border-t pt-4 mt-2 space-y-2 text-sm text-left">
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground">Plan</span>
-                      <span className="font-medium">Turkey Unlimited</span>
+                      <span className="text-muted-foreground">{t("plan")}</span>
+                      <span className="font-medium">{t("turkeyUnlimited")}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground">Duration</span>
-                      <span className="font-medium">7 days</span>
+                      <span className="text-muted-foreground">{t("duration")}</span>
+                      <span className="font-medium">{t("sevenDays")}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground">Amount Paid</span>
+                      <span className="text-muted-foreground">{t("amountPaid")}</span>
                       <span className="font-bold text-primary">€19.90</span>
                     </div>
                     {refCode && (
                       <div className="flex justify-between">
-                        <span className="text-muted-foreground">Agent Ref</span>
+                        <span className="text-muted-foreground">{t("agentRef")}</span>
                         <span className="font-medium">{refCode}</span>
                       </div>
                     )}
                   </div>
                 </div>
 
-                {/* Installation Steps */}
                 <div className="bg-card rounded-xl border p-5 max-w-sm mx-auto text-left">
-                  <h4 className="font-semibold text-sm mb-3">How to Install</h4>
+                  <h4 className="font-semibold text-sm mb-3">{t("howToInstall")}</h4>
                   <div className="space-y-2.5">
-                    {[
-                      "Open Settings → Mobile Data → Add eSIM",
-                      "Scan the QR code above with your camera",
-                      "Confirm the eSIM installation",
-                      "Turn on the eSIM when you arrive in Turkey",
-                    ].map((text, i) => (
+                    {[t("installStep1"), t("installStep2"), t("installStep3"), t("installStep4")].map((text, i) => (
                       <div key={i} className="flex items-start gap-2.5">
                         <div className="h-5 w-5 rounded-full gradient-primary flex items-center justify-center flex-shrink-0 mt-0.5">
                           <span className="text-[10px] font-bold text-primary-foreground">{i + 1}</span>
@@ -342,14 +338,14 @@ export default function CustomerLanding() {
                 </div>
 
                 <p className="text-xs text-muted-foreground mt-6">
-                  Confirmation sent to <span className="font-medium text-foreground">{form.email}</span>
+                  {t("confirmationSentTo")} <span className="font-medium text-foreground">{form.email}</span>
                 </p>
               </motion.div>
             )}
           </AnimatePresence>
 
           <p className="text-center text-xs text-muted-foreground mt-8">
-            © {new Date().getFullYear()} Next eSIM. All rights reserved.
+            © {new Date().getFullYear()} Next eSIM. {t("allRightsReserved")}
           </p>
         </div>
       </div>
