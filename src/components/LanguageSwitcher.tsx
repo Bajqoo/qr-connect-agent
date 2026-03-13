@@ -4,7 +4,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Button } from "@/components/ui/button";
 import { Globe } from "lucide-react";
 
-const locales: Locale[] = ["en", "tr", "ru", "sq"];
+const locales: Locale[] = ["en", "tr", "ru", "sq", "de"];
 
 export function LanguageSwitcher({ variant = "ghost" }: { variant?: "ghost" | "outline" }) {
   const { locale, setLocale } = useTranslation();

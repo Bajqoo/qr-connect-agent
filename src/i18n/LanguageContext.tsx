@@ -14,7 +14,7 @@ function detectBrowserLocale(): Locale {
   if (stored && translations[stored]) return stored;
 
   const browserLang = navigator.language.split("-")[0];
-  const map: Record<string, Locale> = { en: "en", tr: "tr", ru: "ru", sq: "sq" };
+  const map: Record<string, Locale> = { en: "en", tr: "tr", ru: "ru", sq: "sq", de: "de" };
   return map[browserLang] || "en";
 }
 
