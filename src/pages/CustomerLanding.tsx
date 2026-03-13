@@ -46,9 +46,9 @@ export default function CustomerLanding() {
       <div 
         className="absolute inset-0 pointer-events-none"
         style={{
-          backgroundImage: 'radial-gradient(circle, hsl(220, 20%, 10%) 1px, transparent 1px)',
-          backgroundSize: '24px 24px',
-          opacity: 0.08
+          backgroundImage: 'radial-gradient(circle, hsl(220, 20%, 10%) 1.2px, transparent 1.2px)',
+          backgroundSize: '22px 22px',
+          opacity: 0.2
         }}
       />
       <div className="relative overflow-hidden">
