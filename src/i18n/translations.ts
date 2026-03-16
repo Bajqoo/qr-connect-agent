@@ -51,6 +51,10 @@ const en = {
   adminLogin: "Admin Login",
   becomeAgent: "Become an Agent",
   footerText: "Next eSIM Agent Platform. All rights reserved.",
+  partnersTitle: "Our Partnership Coverage",
+  partnersSubtitle: "Active presence at major airports",
+  partnerPristina: "Prishtina International Airport",
+  partnerTirana: "Tirana International Airport",
   
   // Index features
   featAutoQR: "Auto QR Codes",
