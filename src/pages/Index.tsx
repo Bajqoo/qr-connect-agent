@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Users, QrCode, DollarSign, ArrowRight, Shield, BarChart3, Wallet } from "lucide-react";
+import { Users, QrCode, DollarSign, ArrowRight, Shield, BarChart3, Wallet, Plane } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { useTranslation } from "@/i18n/LanguageContext";
