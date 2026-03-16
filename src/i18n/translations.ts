@@ -703,6 +703,10 @@ const ru: typeof en = {
   adminLogin: "Вход администратора",
   becomeAgent: "Стать агентом",
   footerText: "Платформа агентов Next eSIM. Все права защищены.",
+  partnersTitle: "Наше партнёрское покрытие",
+  partnersSubtitle: "Активное присутствие в крупных аэропортах",
+  partnerPristina: "Международный аэропорт Приштины",
+  partnerTirana: "Международный аэропорт Тираны",
   
   featAutoQR: "Авто QR-коды",
   featAutoQRDesc: "Уникальный реферальный QR-код генерируется для каждого агента мгновенно",
