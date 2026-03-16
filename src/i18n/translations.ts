@@ -1017,6 +1017,10 @@ const sq: typeof en = {
   adminLogin: "Hyrje Administratori",
   becomeAgent: "Bëhu Agjent",
   footerText: "Platforma e Agjentëve Next eSIM. Të gjitha të drejtat e rezervuara.",
+  partnersTitle: "Mbulimi ynë i Partneritetit",
+  partnersSubtitle: "Prezencë aktive në aeroportet kryesore",
+  partnerPristina: "Aeroporti Ndërkombëtar i Prishtinës",
+  partnerTirana: "Aeroporti Ndërkombëtar i Tiranës",
   
   featAutoQR: "QR Kode Automatike",
   featAutoQRDesc: "Kod QR unik referimi gjenerohet menjëherë për çdo agjent",
