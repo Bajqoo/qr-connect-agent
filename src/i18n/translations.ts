@@ -1331,6 +1331,10 @@ const de: typeof en = {
   adminLogin: "Admin Anmeldung",
   becomeAgent: "Agent werden",
   footerText: "Next eSIM Agenten Plattform. Alle Rechte vorbehalten.",
+  partnersTitle: "Unsere Partnerabdeckung",
+  partnersSubtitle: "Aktive Präsenz an großen Flughäfen",
+  partnerPristina: "Internationaler Flughafen Prishtina",
+  partnerTirana: "Internationaler Flughafen Tirana",
   
   featAutoQR: "Auto QR-Codes",
   featAutoQRDesc: "Einzigartiger Empfehlungs-QR-Code wird sofort für jeden Agenten generiert",

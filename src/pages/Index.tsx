@@ -91,6 +91,43 @@ export default function Index() {
         </div>
       </section>
 
+      <section className="max-w-6xl mx-auto px-5 pb-20">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+          className="text-center mb-8"
+        >
+          <h2 className="text-2xl font-bold mb-2">{t("partnersTitle" as any)}</h2>
+          <p className="text-muted-foreground">{t("partnersSubtitle" as any)}</p>
+        </motion.div>
+        <div className="grid sm:grid-cols-2 gap-4 max-w-2xl mx-auto">
+          {[
+            { name: t("partnerPristina" as any), code: "PRN", country: "🇽🇰" },
+            { name: t("partnerTirana" as any), code: "TIA", country: "🇦🇱" },
+          ].map((airport, i) => (
+            <motion.div
+              key={airport.code}
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.7 + i * 0.1 }}
+              className="rounded-lg border bg-card p-6 shadow-card flex items-center gap-4"
+            >
+              <div className="h-12 w-12 rounded-full bg-accent flex items-center justify-center shrink-0">
+                <Plane className="h-6 w-6 text-accent-foreground" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="text-lg">{airport.country}</span>
+                  <span className="text-xs font-mono bg-muted px-2 py-0.5 rounded">{airport.code}</span>
+                </div>
+                <p className="font-semibold text-sm mt-1">{airport.name}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
       <footer className="border-t py-8">
         <div className="max-w-6xl mx-auto px-5 text-center text-sm text-muted-foreground">
           © {new Date().getFullYear()} {t("footerText")}
