@@ -389,6 +389,10 @@ const tr: typeof en = {
   adminLogin: "Yönetici Girişi",
   becomeAgent: "Acente Ol",
   footerText: "Next eSIM Acente Platformu. Tüm hakları saklıdır.",
+  partnersTitle: "Ortaklık Kapsamımız",
+  partnersSubtitle: "Büyük havalimanlarında aktif varlık",
+  partnerPristina: "Priştine Uluslararası Havalimanı",
+  partnerTirana: "Tiran Uluslararası Havalimanı",
   
   featAutoQR: "Otomatik QR Kodlar",
   featAutoQRDesc: "Her acente için anında benzersiz yönlendirme QR kodu oluşturulur",
