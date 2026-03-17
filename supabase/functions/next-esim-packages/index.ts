@@ -2,91 +2,102 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
 };
+
+const providerEmail = Deno.env.get("NEXT_ESIM_EMAIL") ?? Deno.env.get("GLOESIM_EMAIL");
+const providerPassword = Deno.env.get("NEXT_ESIM_PASSWORD") ?? Deno.env.get("GLOESIM_PASSWORD");
+const providerBaseUrl = (Deno.env.get("NEXT_ESIM_BASE_URL") ?? "https://esimcard.com/api/").replace(/\/+$/, "");
+
+let cachedToken: string | null = null;
+let tokenExpiresAt = 0;
+
+async function getAccessToken() {
+  if (cachedToken && Date.now() < tokenExpiresAt) return cachedToken;
+
+  if (!providerEmail || !providerPassword) {
+    throw new Error("Next eSIM credentials are not configured.");
+  }
+
+  const response = await fetch(`${providerBaseUrl}/developer/reseller/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify({
+      email: providerEmail,
+      password: providerPassword,
+    }),
+  });
+
+  const payload = await response.json().catch(() => null);
+  const token = payload?.access_token ?? payload?.token ?? payload?.data?.access_token ?? null;
+
+  if (!response.ok || !payload?.status || !token) {
+    console.error("Provider login failed", payload);
+    throw new Error("Unable to authenticate with the Next eSIM API.");
+  }
+
+  cachedToken = token;
+  tokenExpiresAt = Date.now() + 45 * 60 * 1000;
+  return token;
+}
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {
-    return new Response(null, { headers: corsHeaders });
+    return new Response("ok", { headers: corsHeaders });
+  }
+
+  if (req.method !== "POST") {
+    return new Response(JSON.stringify({ error: "Method not allowed" }), {
+      status: 405,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
   }
 
   try {
-    const baseUrl =
-      Deno.env.get("NEXT_ESIM_BASE_URL") || "https://esimcard.com/api/";
-    const email =
-      Deno.env.get("NEXT_ESIM_EMAIL") || Deno.env.get("GLOESIM_EMAIL");
-    const password =
-      Deno.env.get("NEXT_ESIM_PASSWORD") || Deno.env.get("GLOESIM_PASSWORD");
+    const body = await req.json().catch(() => ({}));
+    const countryId = String(body?.countryId ?? "134");
+    const token = await getAccessToken();
 
-    if (!email || !password) {
-      return new Response(
-        JSON.stringify({ error: "eSIM API credentials not configured" }),
-        { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
-    }
-
-    // Parse optional query params
-    const url = new URL(req.url);
-    const country = url.searchParams.get("country") || "turkey";
-
-    // Step 1: Authenticate with the eSIM provider
-    const loginRes = await fetch(`${baseUrl}login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
-
-    if (!loginRes.ok) {
-      const errText = await loginRes.text();
-      console.error("Login failed:", loginRes.status, errText);
-      return new Response(
-        JSON.stringify({ error: "eSIM provider authentication failed" }),
-        { status: 502, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
-    }
-
-    const loginData = await loginRes.json();
-    const token = loginData.token || loginData.access_token || loginData.data?.token;
-
-    if (!token) {
-      console.error("No token in login response:", JSON.stringify(loginData));
-      return new Response(
-        JSON.stringify({ error: "Could not obtain API token" }),
-        { status: 502, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
-    }
-
-    // Step 2: Fetch packages for the requested country
-    const packagesRes = await fetch(
-      `${baseUrl}packages?country=${encodeURIComponent(country)}`,
+    const response = await fetch(
+      `${providerBaseUrl}/developer/reseller/packages/country/${encodeURIComponent(countryId)}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
+          Accept: "application/json",
         },
-      }
+      },
     );
 
-    if (!packagesRes.ok) {
-      const errText = await packagesRes.text();
-      console.error("Packages fetch failed:", packagesRes.status, errText);
-      return new Response(
-        JSON.stringify({ error: "Failed to fetch eSIM packages" }),
-        { status: 502, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
+    const payload = await response.json().catch(() => null);
+
+    if (!response.ok || !payload?.status) {
+      console.error("Provider package fetch failed", payload);
+      return new Response(JSON.stringify({ error: "Unable to load country packages." }), {
+        status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
 
-    const packagesData = await packagesRes.json();
-
-    return new Response(JSON.stringify(packagesData), {
+    return new Response(
+      JSON.stringify({
+        countryId,
+        packages: payload?.data ?? [],
+        data: payload?.data ?? [],
+        meta: payload?.meta ?? null,
+      }),
+      {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      },
+    );
+  } catch (error) {
+    console.error("next-esim-packages failed", error);
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 500,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
-  } catch (err) {
-    console.error("Edge function error:", err);
-    return new Response(
-      JSON.stringify({ error: err.message || "Internal server error" }),
-      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-    );
   }
 });
