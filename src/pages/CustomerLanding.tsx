@@ -1,21 +1,79 @@
 import { useParams } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Wifi, Clock, Shield, Zap, CheckCircle2, Globe, CreditCard, Lock, ArrowLeft, Loader2, Download, Copy } from "lucide-react";
+import { Wifi, Clock, Shield, Zap, CheckCircle2, Globe, CreditCard, Lock, ArrowLeft, Loader2, Download, Copy, AlertCircle } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useTranslation } from "@/i18n/LanguageContext";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { supabase } from "@/integrations/supabase/client";
 
 type Step = "landing" | "checkout" | "processing" | "success";
+
+interface EsimPackage {
+  id: string;
+  name: string;
+  data: string;
+  duration: string;
+  price: number;
+  currency: string;
+  country: string;
+}
 
 export default function CustomerLanding() {
   const { refCode } = useParams();
   const { t } = useTranslation();
   const [step, setStep] = useState<Step>("landing");
   const [form, setForm] = useState({ name: "", email: "", card: "", expiry: "", cvc: "" });
+  const [packages, setPackages] = useState<EsimPackage[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [selectedPkg, setSelectedPkg] = useState<EsimPackage | null>(null);
+
+  useEffect(() => {
+    fetchPackages();
+  }, []);
+
+  const fetchPackages = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const { data, error: fnError } = await supabase.functions.invoke("next-esim-packages", {
+        body: null,
+      });
+
+      if (fnError) {
+        console.error("Edge function error:", fnError);
+        setError("Failed to load eSIM packages. Please try again.");
+        return;
+      }
+
+      // Normalize the response - the API may return packages in different shapes
+      const rawPackages = Array.isArray(data) ? data : data?.packages || data?.data || [];
+      
+      const normalized: EsimPackage[] = rawPackages.map((pkg: any, i: number) => ({
+        id: pkg.id || pkg.package_id || `pkg-${i}`,
+        name: pkg.name || pkg.title || `Turkey eSIM ${i + 1}`,
+        data: pkg.data || pkg.data_amount || pkg.description || "Unlimited",
+        duration: pkg.duration || pkg.validity || pkg.days ? `${pkg.days || 7} days` : "7 days",
+        price: pkg.price || pkg.retail_price || pkg.amount || 0,
+        currency: pkg.currency || "EUR",
+        country: pkg.country || "Turkey",
+      }));
+
+      setPackages(normalized);
+      if (normalized.length > 0) {
+        setSelectedPkg(normalized[0]);
+      }
+    } catch (err: any) {
+      console.error("Fetch packages error:", err);
+      setError(err.message || "Failed to load packages");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const features = [
     { icon: Zap, title: t("instantActivation"), desc: t("readyIn2Min") },
@@ -42,6 +100,10 @@ export default function CustomerLanding() {
     if (digits.length >= 3) return digits.slice(0, 2) + "/" + digits.slice(2);
     return digits;
   };
+
+  const displayPrice = selectedPkg ? `€${selectedPkg.price.toFixed(2)}` : "€19.90";
+  const displayName = selectedPkg?.name || t("turkeyUnlimited");
+  const displayDuration = selectedPkg?.duration || t("sevenDayPlan");
 
   return (
     <div className="min-h-screen bg-background relative">
@@ -82,35 +144,109 @@ export default function CustomerLanding() {
                   {t("activateEsim")}
                 </p>
 
-                <div className="bg-card rounded-xl border shadow-elevated p-6 mb-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="text-left">
-                      <h3 className="font-semibold text-lg">{t("turkeyUnlimited")}</h3>
-                      <p className="text-sm text-muted-foreground">{t("sevenDayPlan")}</p>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-3xl font-bold text-primary">€19.90</div>
-                      <p className="text-xs text-muted-foreground">{t("oneTime")}</p>
-                    </div>
+                {loading && (
+                  <div className="flex flex-col items-center py-12">
+                    <Loader2 className="h-8 w-8 text-primary animate-spin mb-3" />
+                    <p className="text-sm text-muted-foreground">Loading eSIM packages…</p>
                   </div>
+                )}
 
-                  <div className="space-y-2.5 mb-6">
-                    {[t("unlimitedData"), t("worksAllPhones"), t("support247"), t("instantQR")].map((item) => (
-                      <div key={item} className="flex items-center gap-2.5 text-sm">
-                        <CheckCircle2 className="h-4 w-4 text-success flex-shrink-0" />
-                        <span>{item}</span>
+                {error && (
+                  <div className="bg-destructive/10 border border-destructive/20 rounded-xl p-6 mb-6 text-center">
+                    <AlertCircle className="h-8 w-8 text-destructive mx-auto mb-3" />
+                    <p className="text-sm text-destructive font-medium mb-3">{error}</p>
+                    <Button size="sm" variant="outline" onClick={fetchPackages}>
+                      Try again
+                    </Button>
+                  </div>
+                )}
+
+                {!loading && !error && packages.length > 0 && (
+                  <div className="space-y-3 mb-6">
+                    {packages.map((pkg) => (
+                      <div
+                        key={pkg.id}
+                        onClick={() => setSelectedPkg(pkg)}
+                        className={`bg-card rounded-xl border p-5 cursor-pointer transition-all ${
+                          selectedPkg?.id === pkg.id
+                            ? "border-primary ring-2 ring-primary/20 shadow-elevated"
+                            : "hover:border-primary/40"
+                        }`}
+                      >
+                        <div className="flex items-center justify-between mb-3">
+                          <div className="text-left">
+                            <h3 className="font-semibold text-base">{pkg.name}</h3>
+                            <p className="text-sm text-muted-foreground">
+                              {pkg.data} · {pkg.duration}
+                            </p>
+                          </div>
+                          <div className="text-right">
+                            <div className="text-2xl font-bold text-primary">
+                              €{pkg.price.toFixed(2)}
+                            </div>
+                            <p className="text-xs text-muted-foreground">{t("oneTime")}</p>
+                          </div>
+                        </div>
+
+                        {selectedPkg?.id === pkg.id && (
+                          <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: "auto" }}
+                            className="overflow-hidden"
+                          >
+                            <div className="space-y-2 mb-4 pt-3 border-t">
+                              {[t("unlimitedData"), t("worksAllPhones"), t("support247"), t("instantQR")].map((item) => (
+                                <div key={item} className="flex items-center gap-2.5 text-sm">
+                                  <CheckCircle2 className="h-4 w-4 text-success flex-shrink-0" />
+                                  <span>{item}</span>
+                                </div>
+                              ))}
+                            </div>
+                            <Button
+                              onClick={handleCheckout}
+                              className="w-full h-12 text-base font-semibold gradient-primary border-0 text-primary-foreground hover:opacity-90 transition-opacity"
+                            >
+                              <CreditCard className="h-5 w-5 mr-2" />
+                              {t("buyNow")} — €{pkg.price.toFixed(2)}
+                            </Button>
+                          </motion.div>
+                        )}
                       </div>
                     ))}
                   </div>
+                )}
 
-                  <Button
-                    onClick={handleCheckout}
-                    className="w-full h-12 text-base font-semibold gradient-primary border-0 text-primary-foreground hover:opacity-90 transition-opacity"
-                  >
-                    <CreditCard className="h-5 w-5 mr-2" />
-                    {t("buyNow")} — €19.90
-                  </Button>
-                </div>
+                {!loading && !error && packages.length === 0 && (
+                  <div className="bg-card rounded-xl border shadow-elevated p-6 mb-6">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="text-left">
+                        <h3 className="font-semibold text-lg">{t("turkeyUnlimited")}</h3>
+                        <p className="text-sm text-muted-foreground">{t("sevenDayPlan")}</p>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-3xl font-bold text-primary">€19.90</div>
+                        <p className="text-xs text-muted-foreground">{t("oneTime")}</p>
+                      </div>
+                    </div>
+
+                    <div className="space-y-2.5 mb-6">
+                      {[t("unlimitedData"), t("worksAllPhones"), t("support247"), t("instantQR")].map((item) => (
+                        <div key={item} className="flex items-center gap-2.5 text-sm">
+                          <CheckCircle2 className="h-4 w-4 text-success flex-shrink-0" />
+                          <span>{item}</span>
+                        </div>
+                      ))}
+                    </div>
+
+                    <Button
+                      onClick={handleCheckout}
+                      className="w-full h-12 text-base font-semibold gradient-primary border-0 text-primary-foreground hover:opacity-90 transition-opacity"
+                    >
+                      <CreditCard className="h-5 w-5 mr-2" />
+                      {t("buyNow")} — €19.90
+                    </Button>
+                  </div>
+                )}
 
                 <div className="grid grid-cols-2 gap-3">
                   {features.map((f, i) => (
@@ -155,10 +291,10 @@ export default function CustomerLanding() {
                 <div className="bg-card rounded-xl border shadow-elevated p-6 mb-4">
                   <div className="flex items-center justify-between mb-6 pb-4 border-b">
                     <div>
-                      <h3 className="font-semibold">{t("turkeyUnlimited")}</h3>
-                      <p className="text-sm text-muted-foreground">{t("sevenDayPlan")}</p>
+                      <h3 className="font-semibold">{displayName}</h3>
+                      <p className="text-sm text-muted-foreground">{displayDuration}</p>
                     </div>
-                    <div className="text-xl font-bold text-primary">€19.90</div>
+                    <div className="text-xl font-bold text-primary">{displayPrice}</div>
                   </div>
 
                   <h2 className="text-lg font-bold mb-4">{t("paymentDetails")}</h2>
@@ -225,7 +361,7 @@ export default function CustomerLanding() {
                       className="w-full h-12 text-base font-semibold gradient-primary border-0 text-primary-foreground hover:opacity-90 transition-opacity mt-2"
                     >
                       <Lock className="h-4 w-4 mr-2" />
-                      {t("pay")} €19.90
+                      {t("pay")} {displayPrice}
                     </Button>
                   </form>
 
@@ -304,15 +440,15 @@ export default function CustomerLanding() {
                   <div className="border-t pt-4 mt-2 space-y-2 text-sm text-left">
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">{t("plan")}</span>
-                      <span className="font-medium">{t("turkeyUnlimited")}</span>
+                      <span className="font-medium">{displayName}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">{t("duration")}</span>
-                      <span className="font-medium">{t("sevenDays")}</span>
+                      <span className="font-medium">{displayDuration}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">{t("amountPaid")}</span>
-                      <span className="font-bold text-primary">€19.90</span>
+                      <span className="font-bold text-primary">{displayPrice}</span>
                     </div>
                     {refCode && (
                       <div className="flex justify-between">
