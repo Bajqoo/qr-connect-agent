@@ -57,7 +57,7 @@ export default function DashboardQRCode() {
     img.src = url;
   };
 
-  if (!profileId) {
+  if (!referralCode) {
     return (
       <DashboardLayout type="agent">
         <div className="flex items-center justify-center h-64">
