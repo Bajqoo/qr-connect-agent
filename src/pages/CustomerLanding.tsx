@@ -66,10 +66,22 @@ export default function CustomerLanding() {
     if (!rawRef) return;
     const ref = rawRef.toUpperCase().trim();
     const deviceId = getDeviceId();
-    console.log("Tracking scan for referral:", ref);
-    supabase.functions.invoke("track-scan", {
-      body: { referral_code: ref, device_id: deviceId },
-    }).catch((err) => console.error("track-scan error:", err));
+    console.log("Tracking scan for referral:", ref, "device:", deviceId);
+
+    const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID || "mgsqoraxewypphkdaowy";
+    const url = `https://${projectId}.supabase.co/functions/v1/track-scan`;
+
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "apikey": import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1nc3FvcmF4ZXd5cHBoa2Rhb3d5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMyNTQxMTEsImV4cCI6MjA4ODgzMDExMX0.r4FHW3SwfyUUmmpGU0zV4IGlE2Wm0fRkuncJrD351zs",
+      },
+      body: JSON.stringify({ referral_code: ref, device_id: deviceId }),
+    })
+      .then(res => res.json())
+      .then(data => console.log("track-scan response:", data))
+      .catch(err => console.error("track-scan fetch error:", err));
   }, [refCode]);
 
   const fetchPackages = async () => {
