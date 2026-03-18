@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { useTranslation } from "@/i18n/LanguageContext";
 
 const REFERRAL_CODE = "AGENT123";
-const REFERRAL_URL = `https://nextesim.app/r/${REFERRAL_CODE}`;
+const REFERRAL_URL = `https://www.nextesim.app/countries/134/?ref=${REFERRAL_CODE}`;
 
 export default function DashboardQRCode() {
   const { t } = useTranslation();
