@@ -114,10 +114,37 @@ export default function CustomerLanding() {
 
   const handleCheckout = () => setStep("checkout");
 
-  const handlePay = (e: React.FormEvent) => {
+  const handlePay = async (e: React.FormEvent) => {
     e.preventDefault();
     setStep("processing");
-    setTimeout(() => setStep("success"), 2500);
+
+    // Get referral code from state, localStorage, or cookie
+    const storedRef =
+      refCode ||
+      localStorage.getItem("referral_code") ||
+      document.cookie.match(/referral_code=([^;]+)/)?.[1] ||
+      null;
+
+    const deviceId = getDeviceId();
+
+    try {
+      await supabase.functions.invoke("create-order", {
+        body: {
+          customer_email: form.email,
+          customer_name: form.name,
+          product_id: selectedPkg?.id || "default",
+          product_name: selectedPkg?.name || "Turkey eSIM",
+          price: selectedPkg?.price || 19.90,
+          currency: selectedPkg?.currency || "EUR",
+          referral_code: storedRef,
+          device_id: deviceId,
+        },
+      });
+    } catch (err) {
+      console.error("Order creation failed:", err);
+    }
+
+    setTimeout(() => setStep("success"), 1500);
   };
 
   const formatCard = (v: string) => {
