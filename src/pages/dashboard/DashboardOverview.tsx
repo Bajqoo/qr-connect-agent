@@ -3,23 +3,15 @@ import { StatCard } from "@/components/ui/stat-card";
 import { Eye, Download, ShoppingCart, DollarSign, Wallet, Clock } from "lucide-react";
 import { useTranslation } from "@/i18n/LanguageContext";
 
-const recentSales = [
-  { id: "ORD-001", date: "Today, 14:32", product: "Turkey Unlimited", price: "€19.90", commission: "€4.00", status: "completed" },
-  { id: "ORD-002", date: "Today, 11:15", product: "Turkey Unlimited", price: "€19.90", commission: "€4.00", status: "completed" },
-  { id: "ORD-003", date: "Yesterday, 22:01", product: "Turkey Unlimited", price: "€19.90", commission: "€4.00", status: "completed" },
-  { id: "ORD-004", date: "Yesterday, 18:43", product: "Turkey Unlimited", price: "€19.90", commission: "€4.00", status: "pending" },
-  { id: "ORD-005", date: "Mar 8, 09:20", product: "Turkey Unlimited", price: "€19.90", commission: "€4.00", status: "completed" },
-];
-
 export default function DashboardOverview() {
   const { t } = useTranslation();
 
   const stats = [
-    { title: t("totalScans"), value: "1,284", icon: Eye, trend: { value: 12, positive: true }, subtitle: t("vsLastMonth") },
-    { title: t("totalInstalls"), value: "342", icon: Download, trend: { value: 8, positive: true }, subtitle: t("vsLastMonth") },
-    { title: t("totalPurchases"), value: "156", icon: ShoppingCart, trend: { value: 23, positive: true }, subtitle: t("vsLastMonth") },
-    { title: t("totalEarnings"), value: "€624.00", icon: DollarSign, trend: { value: 23, positive: true }, subtitle: t("allTime") },
-    { title: t("availableBalance"), value: "€124.00", icon: Wallet, subtitle: t("readyToWithdraw") },
+    { title: t("totalScans"), value: "0", icon: Eye, subtitle: t("vsLastMonth") },
+    { title: t("totalInstalls"), value: "0", icon: Download, subtitle: t("vsLastMonth") },
+    { title: t("totalPurchases"), value: "0", icon: ShoppingCart, subtitle: t("vsLastMonth") },
+    { title: t("totalEarnings"), value: "€0.00", icon: DollarSign, subtitle: t("allTime") },
+    { title: t("availableBalance"), value: "€0.00", icon: Wallet, subtitle: t("readyToWithdraw") },
     { title: t("pendingPayout"), value: "€0.00", icon: Clock, subtitle: t("processing") },
   ];
 
@@ -55,40 +47,17 @@ export default function DashboardOverview() {
                 </tr>
               </thead>
               <tbody>
-                {recentSales.map((sale) => (
-                  <tr key={sale.id} className="border-b last:border-0 hover:bg-muted/30 transition-colors">
-                    <td className="px-5 py-3 font-medium">{sale.id}</td>
-                    <td className="px-5 py-3 text-muted-foreground">{sale.date}</td>
-                    <td className="px-5 py-3">{sale.product}</td>
-                    <td className="px-5 py-3">{sale.price}</td>
-                    <td className="px-5 py-3 font-medium text-success">{sale.commission}</td>
-                    <td className="px-5 py-3">
-                      <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
-                        sale.status === "completed" ? "bg-success/10 text-success" : "bg-warning/10 text-warning"
-                      }`}>{t(sale.status as any)}</span>
-                    </td>
-                  </tr>
-                ))}
+                <tr>
+                  <td colSpan={6} className="px-5 py-8 text-center text-muted-foreground text-sm">
+                    {t("noSalesYet")}
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>
 
-          <div className="sm:hidden divide-y">
-            {recentSales.map((sale) => (
-              <div key={sale.id} className="px-4 py-3 space-y-1.5">
-                <div className="flex items-center justify-between">
-                  <span className="font-medium text-sm">{sale.id}</span>
-                  <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
-                    sale.status === "completed" ? "bg-success/10 text-success" : "bg-warning/10 text-warning"
-                  }`}>{t(sale.status as any)}</span>
-                </div>
-                <div className="text-xs text-muted-foreground">{sale.date}</div>
-                <div className="flex items-center justify-between text-sm">
-                  <span>{sale.price}</span>
-                  <span className="font-medium text-success">{sale.commission}</span>
-                </div>
-              </div>
-            ))}
+          <div className="sm:hidden px-4 py-8 text-center text-muted-foreground text-sm">
+            {t("noSalesYet")}
           </div>
         </div>
       </div>
