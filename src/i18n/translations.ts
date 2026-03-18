@@ -1323,8 +1323,17 @@ const sq: typeof en = {
   installStep4: "Ndiz eSIM-in kur arrin në Turqi",
   confirmationSentTo: "Konfirmimi u dërgua te",
   
-  pageNotFound: "Ups! Seite nicht gefunden",
-  returnHome: "Zurück zur Startseite",
+  pageNotFound: "Ups! Faqja nuk u gjet",
+  returnHome: "Kthehu në Faqen Kryesore",
+  bankDetails: "Detajet Bankare (për pagesa)",
+  bankName: "Emri i Bankës",
+  bankNamePlaceholder: "p.sh. Raiffeisen Bank",
+  accountHolderName: "Emri i Mbajtësit të Llogarisë",
+  iban: "IBAN",
+  swiftBic: "SWIFT / BIC",
+  bankDetailsDesc: "Detajet bankare nevojiten për pagesat automatike të komisioneve përmes Stripe.",
+  noSalesYet: "Nuk ka shitje ende. Ndani kodin QR për të filluar të fitoni!",
+  noPayoutsYet: "Nuk ka pagesa ende.",
 };
 
 const de: typeof en = {
