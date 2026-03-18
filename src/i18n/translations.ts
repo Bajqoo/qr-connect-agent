@@ -679,6 +679,15 @@ const tr: typeof en = {
   
   pageNotFound: "Üzgünüz! Sayfa bulunamadı",
   returnHome: "Ana Sayfaya Dön",
+  bankDetails: "Banka Bilgileri (ödemeler için)",
+  bankName: "Banka Adı",
+  bankNamePlaceholder: "örn. Ziraat Bankası",
+  accountHolderName: "Hesap Sahibi Adı",
+  iban: "IBAN",
+  swiftBic: "SWIFT / BIC",
+  bankDetailsDesc: "Stripe ile otomatik komisyon ödemeleri için banka bilgileri gereklidir.",
+  noSalesYet: "Henüz satış yok. Kazanmaya başlamak için QR kodunuzu paylaşın!",
+  noPayoutsYet: "Henüz ödeme yok.",
 };
 
 const ru: typeof en = {
