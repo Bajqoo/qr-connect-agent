@@ -52,7 +52,7 @@ serve(async (req) => {
       null;
 
     let agentId: string | null = null;
-    let finalReferralCode = referral_code || null;
+    let finalReferralCode = referral_code ? referral_code.toUpperCase().trim() : null;
     const COMMISSION_AMOUNT = 4.0;
 
     // 1. Try to find agent by referral_code
@@ -62,6 +62,8 @@ serve(async (req) => {
         .select("id")
         .eq("referral_code", finalReferralCode)
         .single();
+
+      console.log("[create-order] Agent lookup by referral_code:", finalReferralCode, "→ found:", profile?.id || "NONE");
 
       if (profile) {
         agentId = profile.id;
