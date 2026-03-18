@@ -93,6 +93,8 @@ serve(async (req) => {
       }
     }
 
+    console.log("[create-order] Final agent_id:", agentId, "referral_code:", finalReferralCode);
+
     // 3. Create order
     const { data: order, error: orderError } = await supabase
       .from("orders")
