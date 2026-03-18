@@ -22,6 +22,16 @@ interface EsimPackage {
   country: string;
 }
 
+// Generate or retrieve a persistent device fingerprint
+function getDeviceId(): string {
+  let deviceId = localStorage.getItem("device_id");
+  if (!deviceId) {
+    deviceId = crypto.randomUUID();
+    localStorage.setItem("device_id", deviceId);
+  }
+  return deviceId;
+}
+
 export default function CustomerLanding() {
   const { refCode } = useParams();
   const { t } = useTranslation();
@@ -32,15 +42,27 @@ export default function CustomerLanding() {
   const [error, setError] = useState<string | null>(null);
   const [selectedPkg, setSelectedPkg] = useState<EsimPackage | null>(null);
 
+  // Persist referral code in localStorage + cookie
+  useEffect(() => {
+    if (!refCode) return;
+
+    // Store in localStorage
+    localStorage.setItem("referral_code", refCode);
+
+    // Store in cookie as fallback (30 days)
+    document.cookie = `referral_code=${refCode}; path=/; max-age=${30 * 24 * 60 * 60}; SameSite=Lax`;
+  }, [refCode]);
+
   useEffect(() => {
     fetchPackages();
   }, []);
 
-  // Track referral scan
+  // Track referral scan with device fingerprint
   useEffect(() => {
     if (!refCode) return;
+    const deviceId = getDeviceId();
     supabase.functions.invoke("track-scan", {
-      body: { referral_code: refCode },
+      body: { referral_code: refCode, device_id: deviceId },
     }).catch(() => {});
   }, [refCode]);
 
