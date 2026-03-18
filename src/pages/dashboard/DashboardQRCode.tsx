@@ -11,17 +11,17 @@ import { supabase } from "@/integrations/supabase/client";
 export default function DashboardQRCode() {
   const { t } = useTranslation();
   const { user } = useAuth();
-  const [profileId, setProfileId] = useState<string | null>(null);
+  const [referralCode, setReferralCode] = useState<string | null>(null);
 
   useEffect(() => {
     if (!user) return;
     supabase
       .from("profiles")
-      .select("id")
+      .select("id, referral_code")
       .eq("user_id", user.id)
       .single()
       .then(({ data }) => {
-        if (data) setProfileId(data.id);
+        if (data) setReferralCode(data.referral_code ?? data.id);
       });
   }, [user]);
 
