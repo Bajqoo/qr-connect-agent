@@ -119,12 +119,14 @@ export default function CustomerLanding() {
     e.preventDefault();
     setStep("processing");
 
-    // Get referral code from state, localStorage, or cookie
-    const storedRef =
+    // Get referral code from state, localStorage, or cookie — normalize to uppercase
+    const rawRef =
       refCode ||
       localStorage.getItem("referral_code") ||
       document.cookie.match(/referral_code=([^;]+)/)?.[1] ||
       null;
+    const storedRef = rawRef ? rawRef.toUpperCase().trim() : null;
+    console.log("[Purchase] referral_code being sent:", storedRef);
 
     const deviceId = getDeviceId();
 

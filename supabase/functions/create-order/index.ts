@@ -39,6 +39,8 @@ serve(async (req) => {
       );
     }
 
+    console.log("[create-order] Received referral_code:", referral_code, "device_id:", device_id);
+
     const supabase = createClient(
       Deno.env.get("SUPABASE_URL")!,
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
