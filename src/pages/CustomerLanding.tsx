@@ -42,15 +42,16 @@ export default function CustomerLanding() {
   const [error, setError] = useState<string | null>(null);
   const [selectedPkg, setSelectedPkg] = useState<EsimPackage | null>(null);
 
-  // Persist referral code in localStorage + cookie
+  // Persist referral code from route param or query string
   useEffect(() => {
-    if (!refCode) return;
+    const params = new URLSearchParams(window.location.search);
+    const ref = refCode || params.get("ref");
 
-    // Store in localStorage
-    localStorage.setItem("referral_code", refCode);
+    if (!ref) return;
 
-    // Store in cookie as fallback (30 days)
-    document.cookie = `referral_code=${refCode}; path=/; max-age=${30 * 24 * 60 * 60}; SameSite=Lax`;
+    localStorage.setItem("referral_code", ref);
+    document.cookie = `referral_code=${ref}; path=/; max-age=${30 * 24 * 60 * 60}; SameSite=Lax`;
+    console.log("Referral saved:", ref);
   }, [refCode]);
 
   useEffect(() => {
