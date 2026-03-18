@@ -52,42 +52,54 @@ export type Database = {
       }
       profiles: {
         Row: {
+          account_holder_name: string | null
           agent_type: Database["public"]["Enums"]["agent_type"] | null
+          bank_name: string | null
           commission_rate: number | null
           created_at: string | null
           email: string
           full_name: string
+          iban: string | null
           id: string
           manager_cut: number | null
           phone: string | null
           preferred_locale: string | null
           status: Database["public"]["Enums"]["account_status"] | null
+          swift_bic: string | null
           user_id: string
         }
         Insert: {
+          account_holder_name?: string | null
           agent_type?: Database["public"]["Enums"]["agent_type"] | null
+          bank_name?: string | null
           commission_rate?: number | null
           created_at?: string | null
           email: string
           full_name: string
+          iban?: string | null
           id?: string
           manager_cut?: number | null
           phone?: string | null
           preferred_locale?: string | null
           status?: Database["public"]["Enums"]["account_status"] | null
+          swift_bic?: string | null
           user_id: string
         }
         Update: {
+          account_holder_name?: string | null
           agent_type?: Database["public"]["Enums"]["agent_type"] | null
+          bank_name?: string | null
           commission_rate?: number | null
           created_at?: string | null
           email?: string
           full_name?: string
+          iban?: string | null
           id?: string
           manager_cut?: number | null
           phone?: string | null
           preferred_locale?: string | null
           status?: Database["public"]["Enums"]["account_status"] | null
+          swift_bic?: string | null
           user_id?: string
         }
         Relationships: []

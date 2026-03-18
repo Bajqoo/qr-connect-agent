@@ -354,6 +354,17 @@ const en = {
   // 404
   pageNotFound: "Oops! Page not found",
   returnHome: "Return to Home",
+  
+  // Bank Details
+  bankDetails: "Bank Details (for payouts)",
+  bankName: "Bank Name",
+  bankNamePlaceholder: "e.g. Ziraat Bank",
+  accountHolderName: "Account Holder Name",
+  iban: "IBAN",
+  swiftBic: "SWIFT / BIC",
+  bankDetailsDesc: "Bank details are required for automatic commission payouts via Stripe.",
+  noSalesYet: "No sales yet. Share your QR code to start earning!",
+  noPayoutsYet: "No payouts yet.",
 };
 
 const tr: typeof en = {
@@ -668,6 +679,15 @@ const tr: typeof en = {
   
   pageNotFound: "Üzgünüz! Sayfa bulunamadı",
   returnHome: "Ana Sayfaya Dön",
+  bankDetails: "Banka Bilgileri (ödemeler için)",
+  bankName: "Banka Adı",
+  bankNamePlaceholder: "örn. Ziraat Bankası",
+  accountHolderName: "Hesap Sahibi Adı",
+  iban: "IBAN",
+  swiftBic: "SWIFT / BIC",
+  bankDetailsDesc: "Stripe ile otomatik komisyon ödemeleri için banka bilgileri gereklidir.",
+  noSalesYet: "Henüz satış yok. Kazanmaya başlamak için QR kodunuzu paylaşın!",
+  noPayoutsYet: "Henüz ödeme yok.",
 };
 
 const ru: typeof en = {
@@ -982,6 +1002,15 @@ const ru: typeof en = {
   
   pageNotFound: "Упс! Страница не найдена",
   returnHome: "Вернуться на главную",
+  bankDetails: "Банковские реквизиты (для выплат)",
+  bankName: "Название банка",
+  bankNamePlaceholder: "напр. Сбербанк",
+  accountHolderName: "Имя владельца счёта",
+  iban: "IBAN",
+  swiftBic: "SWIFT / BIC",
+  bankDetailsDesc: "Банковские реквизиты необходимы для автоматических выплат комиссий через Stripe.",
+  noSalesYet: "Пока нет продаж. Поделитесь QR-кодом, чтобы начать зарабатывать!",
+  noPayoutsYet: "Пока нет выплат.",
 };
 
 const sq: typeof en = {
@@ -1294,8 +1323,17 @@ const sq: typeof en = {
   installStep4: "Ndiz eSIM-in kur arrin në Turqi",
   confirmationSentTo: "Konfirmimi u dërgua te",
   
-  pageNotFound: "Ups! Seite nicht gefunden",
-  returnHome: "Zurück zur Startseite",
+  pageNotFound: "Ups! Faqja nuk u gjet",
+  returnHome: "Kthehu në Faqen Kryesore",
+  bankDetails: "Detajet Bankare (për pagesa)",
+  bankName: "Emri i Bankës",
+  bankNamePlaceholder: "p.sh. Raiffeisen Bank",
+  accountHolderName: "Emri i Mbajtësit të Llogarisë",
+  iban: "IBAN",
+  swiftBic: "SWIFT / BIC",
+  bankDetailsDesc: "Detajet bankare nevojiten për pagesat automatike të komisioneve përmes Stripe.",
+  noSalesYet: "Nuk ka shitje ende. Ndani kodin QR për të filluar të fitoni!",
+  noPayoutsYet: "Nuk ka pagesa ende.",
 };
 
 const de: typeof en = {
@@ -1610,6 +1648,15 @@ const de: typeof en = {
   
   pageNotFound: "Ups! Seite nicht gefunden",
   returnHome: "Zurück zur Startseite",
+  bankDetails: "Bankdaten (für Auszahlungen)",
+  bankName: "Bankname",
+  bankNamePlaceholder: "z.B. Deutsche Bank",
+  accountHolderName: "Kontoinhaber",
+  iban: "IBAN",
+  swiftBic: "SWIFT / BIC",
+  bankDetailsDesc: "Bankdaten werden für automatische Provisionsauszahlungen über Stripe benötigt.",
+  noSalesYet: "Noch keine Verkäufe. Teilen Sie Ihren QR-Code, um zu verdienen!",
+  noPayoutsYet: "Noch keine Auszahlungen.",
 };
 
 export type TranslationKeys = keyof typeof en;

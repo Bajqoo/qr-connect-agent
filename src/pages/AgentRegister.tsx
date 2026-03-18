@@ -9,6 +9,7 @@ import { ArrowRight } from "lucide-react";
 import { toast } from "sonner";
 import { useTranslation } from "@/i18n/LanguageContext";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { supabase } from "@/integrations/supabase/client";
 import logoRed from "@/assets/logo-red.png";
 import logoWhite from "@/assets/logo-white.png";
 
@@ -16,6 +17,7 @@ export default function AgentRegister() {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
+  const [agentType, setAgentType] = useState("");
 
   const agentTypes = [
     { value: "airport", label: t("airportAgent") },
@@ -25,14 +27,77 @@ export default function AgentRegister() {
     { value: "affiliate", label: t("affiliate") },
   ];
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
-    setTimeout(() => {
+
+    const formData = new FormData(e.currentTarget);
+    const fullName = formData.get("name") as string;
+    const phone = formData.get("phone") as string;
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+    const country = formData.get("country") as string;
+    const bankName = formData.get("bankName") as string;
+    const iban = formData.get("iban") as string;
+    const accountHolderName = formData.get("accountHolderName") as string;
+    const swiftBic = formData.get("swiftBic") as string;
+
+    if (!agentType) {
+      toast.error(t("selectType"));
       setLoading(false);
-      toast.success(t("registrationSuccess"));
-      navigate("/dashboard");
-    }, 1500);
+      return;
+    }
+
+    // 1. Sign up user
+    const { data: authData, error: authError } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: { full_name: fullName },
+      },
+    });
+
+    if (authError) {
+      toast.error(authError.message);
+      setLoading(false);
+      return;
+    }
+
+    if (!authData.user) {
+      toast.error("Registration failed");
+      setLoading(false);
+      return;
+    }
+
+    // 2. Update profile with additional fields
+    const { error: profileError } = await supabase
+      .from("profiles")
+      .update({
+        phone,
+        agent_type: agentType as any,
+        bank_name: bankName || null,
+        iban: iban || null,
+        account_holder_name: accountHolderName || null,
+        swift_bic: swiftBic || null,
+      })
+      .eq("user_id", authData.user.id);
+
+    if (profileError) {
+      console.error("Profile update error:", profileError);
+    }
+
+    // 3. Assign agent role
+    const { error: roleError } = await supabase
+      .from("user_roles")
+      .insert({ user_id: authData.user.id, role: "agent" });
+
+    if (roleError) {
+      console.error("Role assignment error:", roleError);
+    }
+
+    setLoading(false);
+    toast.success(t("registrationSuccess"));
+    navigate("/dashboard");
   };
 
   return (
@@ -89,32 +154,32 @@ export default function AgentRegister() {
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="name">{t("fullName")}</Label>
-                <Input id="name" placeholder="John Doe" required />
+                <Input id="name" name="name" placeholder="John Doe" required />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="phone">{t("phone")}</Label>
-                <Input id="phone" type="tel" placeholder="+1 555 000" required />
+                <Input id="phone" name="phone" type="tel" placeholder="+1 555 000" required />
               </div>
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="email">{t("email")}</Label>
-              <Input id="email" type="email" placeholder="john@example.com" required />
+              <Input id="email" name="email" type="email" placeholder="john@example.com" required />
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="password">{t("password")}</Label>
-              <Input id="password" type="password" placeholder="••••••••" required />
+              <Input id="password" name="password" type="password" placeholder="••••••••" required />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="country">{t("country")}</Label>
-                <Input id="country" placeholder="Turkey" required />
+                <Input id="country" name="country" placeholder="Turkey" required />
               </div>
               <div className="space-y-2">
                 <Label>{t("agentType")}</Label>
-                <Select required>
+                <Select value={agentType} onValueChange={setAgentType} required>
                   <SelectTrigger>
                     <SelectValue placeholder={t("selectType")} />
                   </SelectTrigger>
@@ -126,6 +191,32 @@ export default function AgentRegister() {
                     ))}
                   </SelectContent>
                 </Select>
+              </div>
+            </div>
+
+            {/* Bank Details Section */}
+            <div className="pt-2 border-t">
+              <p className="text-sm font-medium mb-3">{t("bankDetails")}</p>
+              <div className="space-y-3">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="bankName">{t("bankName")}</Label>
+                    <Input id="bankName" name="bankName" placeholder={t("bankNamePlaceholder")} />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="accountHolderName">{t("accountHolderName")}</Label>
+                    <Input id="accountHolderName" name="accountHolderName" placeholder="John Doe" />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="iban">{t("iban")}</Label>
+                  <Input id="iban" name="iban" placeholder="TR00 0000 0000 0000 0000 0000 00" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="swiftBic">{t("swiftBic")}</Label>
+                  <Input id="swiftBic" name="swiftBic" placeholder="ABCDTRXX" />
+                </div>
+                <p className="text-xs text-muted-foreground">{t("bankDetailsDesc")}</p>
               </div>
             </div>
 

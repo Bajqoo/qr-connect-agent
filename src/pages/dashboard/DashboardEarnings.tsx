@@ -10,12 +10,6 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { useTranslation } from "@/i18n/LanguageContext";
 
-const payoutHistory = [
-  { id: "PAY-003", date: "Mar 1, 2026", amount: "€200.00", method: "Wise", status: "paid" },
-  { id: "PAY-002", date: "Feb 1, 2026", amount: "€150.00", method: "Revolut", status: "paid" },
-  { id: "PAY-001", date: "Jan 1, 2026", amount: "€100.00", method: "Bank Transfer", status: "paid" },
-];
-
 export default function DashboardEarnings() {
   const [open, setOpen] = useState(false);
   const { t } = useTranslation();
@@ -45,7 +39,7 @@ export default function DashboardEarnings() {
                 <p className="text-sm text-muted-foreground">{t("minimumPayout")}</p>
                 <div className="space-y-2">
                   <Label>{t("amount")} (€)</Label>
-                  <Input type="number" placeholder="50.00" min={50} max={124} defaultValue={124} />
+                  <Input type="number" placeholder="50.00" min={50} />
                 </div>
                 <div className="space-y-2">
                   <Label>{t("payoutMethod")}</Label>
@@ -71,8 +65,8 @@ export default function DashboardEarnings() {
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
-          <StatCard title={t("totalEarnings")} value="€624.00" icon={DollarSign} subtitle={t("allTime")} />
-          <StatCard title={t("available")} value="€124.00" icon={Wallet} subtitle={t("readyToWithdraw")} />
+          <StatCard title={t("totalEarnings")} value="€0.00" icon={DollarSign} subtitle={t("allTime")} />
+          <StatCard title={t("available")} value="€0.00" icon={Wallet} subtitle={t("readyToWithdraw")} />
           <StatCard title={t("pending")} value="€0.00" icon={Clock} subtitle={t("processing")} className="col-span-2 sm:col-span-1" />
         </div>
 
@@ -93,36 +87,17 @@ export default function DashboardEarnings() {
                 </tr>
               </thead>
               <tbody>
-                {payoutHistory.map((p) => (
-                  <tr key={p.id} className="border-b last:border-0 hover:bg-muted/30 transition-colors">
-                    <td className="px-5 py-3 font-medium">{p.id}</td>
-                    <td className="px-5 py-3 text-muted-foreground">{p.date}</td>
-                    <td className="px-5 py-3 font-medium">{p.amount}</td>
-                    <td className="px-5 py-3">{p.method}</td>
-                    <td className="px-5 py-3">
-                      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-success/10 text-success">
-                        {t(p.status as any)}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
+                <tr>
+                  <td colSpan={5} className="px-5 py-8 text-center text-muted-foreground text-sm">
+                    {t("noPayoutsYet")}
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>
 
-          <div className="sm:hidden divide-y">
-            {payoutHistory.map((p) => (
-              <div key={p.id} className="px-4 py-3 space-y-1.5">
-                <div className="flex items-center justify-between">
-                  <span className="font-medium text-sm">{p.id}</span>
-                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-success/10 text-success">
-                    {t(p.status as any)}
-                  </span>
-                </div>
-                <div className="text-xs text-muted-foreground">{p.date} · {p.method}</div>
-                <div className="text-sm font-medium">{p.amount}</div>
-              </div>
-            ))}
+          <div className="sm:hidden px-4 py-8 text-center text-muted-foreground text-sm">
+            {t("noPayoutsYet")}
           </div>
         </div>
       </div>
