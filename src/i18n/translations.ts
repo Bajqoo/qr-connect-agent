@@ -1002,6 +1002,15 @@ const ru: typeof en = {
   
   pageNotFound: "Упс! Страница не найдена",
   returnHome: "Вернуться на главную",
+  bankDetails: "Банковские реквизиты (для выплат)",
+  bankName: "Название банка",
+  bankNamePlaceholder: "напр. Сбербанк",
+  accountHolderName: "Имя владельца счёта",
+  iban: "IBAN",
+  swiftBic: "SWIFT / BIC",
+  bankDetailsDesc: "Банковские реквизиты необходимы для автоматических выплат комиссий через Stripe.",
+  noSalesYet: "Пока нет продаж. Поделитесь QR-кодом, чтобы начать зарабатывать!",
+  noPayoutsYet: "Пока нет выплат.",
 };
 
 const sq: typeof en = {
