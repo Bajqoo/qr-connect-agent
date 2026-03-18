@@ -3,7 +3,7 @@ import { StatCard } from "@/components/ui/stat-card";
 import { Eye, Download, ShoppingCart, DollarSign, Wallet, Clock } from "lucide-react";
 import { useTranslation } from "@/i18n/LanguageContext";
 import { useAuth } from "@/hooks/useAuth";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
 export default function DashboardOverview() {
@@ -16,17 +16,14 @@ export default function DashboardOverview() {
   const [paidEarnings, setPaidEarnings] = useState(0);
   const [recentOrders, setRecentOrders] = useState<any[]>([]);
 
-  useEffect(() => {
+  const fetchScans = useCallback(() => {
     if (!profile) return;
-
-    // Fetch scans by referral_code
     supabase
       .from("referral_clicks")
       .select("id", { count: "exact", head: true })
       .eq("agent_id", profile.id)
       .then(({ count }) => setTotalScans(count ?? 0));
 
-    // Also check referral_scans table
     if (profile.referral_code) {
       supabase
         .from("referral_scans")
@@ -36,8 +33,10 @@ export default function DashboardOverview() {
           setTotalScans(prev => Math.max(prev, count ?? 0));
         });
     }
+  }, [profile]);
 
-    // Fetch orders
+  const fetchOrders = useCallback(() => {
+    if (!profile) return;
     supabase
       .from("orders")
       .select("*")
@@ -49,8 +48,10 @@ export default function DashboardOverview() {
           setRecentOrders(data.slice(0, 5));
         }
       });
+  }, [profile]);
 
-    // Fetch commissions
+  const fetchCommissions = useCallback(() => {
+    if (!profile) return;
     supabase
       .from("commissions")
       .select("amount, status")
@@ -66,6 +67,46 @@ export default function DashboardOverview() {
         }
       });
   }, [profile]);
+
+  // Initial fetch
+  useEffect(() => {
+    fetchScans();
+    fetchOrders();
+    fetchCommissions();
+  }, [fetchScans, fetchOrders, fetchCommissions]);
+
+  // Realtime subscriptions
+  useEffect(() => {
+    if (!profile) return;
+
+    const channel = supabase
+      .channel("dashboard-realtime")
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "referral_clicks" },
+        () => fetchScans()
+      )
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "referral_scans" },
+        () => fetchScans()
+      )
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "orders" },
+        () => fetchOrders()
+      )
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "commissions" },
+        () => fetchCommissions()
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [profile, fetchScans, fetchOrders, fetchCommissions]);
 
   const stats = [
     { title: t("totalScans"), value: totalScans.toString(), icon: Eye, subtitle: t("vsLastMonth") },
