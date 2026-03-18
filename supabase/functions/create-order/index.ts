@@ -39,6 +39,8 @@ serve(async (req) => {
       );
     }
 
+    console.log("[create-order] Received referral_code:", referral_code, "device_id:", device_id);
+
     const supabase = createClient(
       Deno.env.get("SUPABASE_URL")!,
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
@@ -50,7 +52,7 @@ serve(async (req) => {
       null;
 
     let agentId: string | null = null;
-    let finalReferralCode = referral_code || null;
+    let finalReferralCode = referral_code ? referral_code.toUpperCase().trim() : null;
     const COMMISSION_AMOUNT = 4.0;
 
     // 1. Try to find agent by referral_code
@@ -60,6 +62,8 @@ serve(async (req) => {
         .select("id")
         .eq("referral_code", finalReferralCode)
         .single();
+
+      console.log("[create-order] Agent lookup by referral_code:", finalReferralCode, "→ found:", profile?.id || "NONE");
 
       if (profile) {
         agentId = profile.id;
@@ -88,6 +92,8 @@ serve(async (req) => {
         finalReferralCode = finalReferralCode || recentClick.referral_code;
       }
     }
+
+    console.log("[create-order] Final agent_id:", agentId, "referral_code:", finalReferralCode);
 
     // 3. Create order
     const { data: order, error: orderError } = await supabase
