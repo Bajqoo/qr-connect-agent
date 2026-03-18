@@ -354,6 +354,17 @@ const en = {
   // 404
   pageNotFound: "Oops! Page not found",
   returnHome: "Return to Home",
+  
+  // Bank Details
+  bankDetails: "Bank Details (for payouts)",
+  bankName: "Bank Name",
+  bankNamePlaceholder: "e.g. Ziraat Bank",
+  accountHolderName: "Account Holder Name",
+  iban: "IBAN",
+  swiftBic: "SWIFT / BIC",
+  bankDetailsDesc: "Bank details are required for automatic commission payouts via Stripe.",
+  noSalesYet: "No sales yet. Share your QR code to start earning!",
+  noPayoutsYet: "No payouts yet.",
 };
 
 const tr: typeof en = {
