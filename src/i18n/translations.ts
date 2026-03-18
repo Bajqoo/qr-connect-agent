@@ -1648,6 +1648,15 @@ const de: typeof en = {
   
   pageNotFound: "Ups! Seite nicht gefunden",
   returnHome: "Zurück zur Startseite",
+  bankDetails: "Bankdaten (für Auszahlungen)",
+  bankName: "Bankname",
+  bankNamePlaceholder: "z.B. Deutsche Bank",
+  accountHolderName: "Kontoinhaber",
+  iban: "IBAN",
+  swiftBic: "SWIFT / BIC",
+  bankDetailsDesc: "Bankdaten werden für automatische Provisionsauszahlungen über Stripe benötigt.",
+  noSalesYet: "Noch keine Verkäufe. Teilen Sie Ihren QR-Code, um zu verdienen!",
+  noPayoutsYet: "Noch keine Auszahlungen.",
 };
 
 export type TranslationKeys = keyof typeof en;
