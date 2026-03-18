@@ -21,15 +21,26 @@ serve(async (req) => {
 
   try {
     const body = await req.json().catch(() => ({}));
-    const referralCode = body?.referral_code;
+    const rawReferralCode = body?.referral_code;
     const deviceId = body?.device_id;
+    const timestamp = body?.timestamp;
 
-    if (!referralCode || typeof referralCode !== "string") {
+    const referralCode =
+      typeof rawReferralCode === "string" ? rawReferralCode.toUpperCase().trim() : null;
+
+    if (!referralCode) {
       return new Response(
         JSON.stringify({ error: "referral_code is required" }),
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } },
       );
     }
+
+    const parsedTimestamp = Number(timestamp);
+    const eventTimestamp = Number.isFinite(parsedTimestamp)
+      ? new Date(parsedTimestamp).toISOString()
+      : null;
+
+    console.log("SCAN RECEIVED:", referralCode, "timestamp:", eventTimestamp ?? "db_now");
 
     // Use service role to bypass RLS for public tracking
     const supabase = createClient(
@@ -45,6 +56,7 @@ serve(async (req) => {
       .single();
 
     if (!profile) {
+      console.log("SCAN SKIPPED: invalid referral code", referralCode);
       return new Response(
         JSON.stringify({ error: "Invalid referral code" }),
         { status: 404, headers: { ...corsHeaders, "Content-Type": "application/json" } },
@@ -58,27 +70,41 @@ serve(async (req) => {
     const userAgent = req.headers.get("user-agent") ?? null;
     const country = body?.country ?? null;
 
-    // Insert into referral_clicks (detailed tracking)
-    const { error: clickError } = await supabase.from("referral_clicks").insert({
+    const clickPayload: Record<string, unknown> = {
       referral_code: referralCode,
       agent_id: profile.id,
       device_id: deviceId || null,
       ip_address: ipAddress,
       user_agent: userAgent,
       country,
-    });
+    };
+
+    if (eventTimestamp) {
+      clickPayload.created_at = eventTimestamp;
+    }
+
+    // Insert into referral_clicks (detailed tracking)
+    const { error: clickError } = await supabase.from("referral_clicks").insert(clickPayload);
 
     if (clickError) {
       console.error("Insert click failed", clickError);
+    } else {
+      console.log("SCAN SAVED:", referralCode);
     }
 
-    // Also insert into referral_scans for backward compatibility
-    const { error: scanError } = await supabase.from("referral_scans").insert({
+    const scanPayload: Record<string, unknown> = {
       referral_code: referralCode,
       country,
       ip_address: ipAddress,
       user_agent: userAgent,
-    });
+    };
+
+    if (eventTimestamp) {
+      scanPayload.scanned_at = eventTimestamp;
+    }
+
+    // Also insert into referral_scans for backward compatibility
+    const { error: scanError } = await supabase.from("referral_scans").insert(scanPayload);
 
     if (scanError) {
       console.error("Insert scan failed", scanError);
