@@ -22,6 +22,16 @@ interface EsimPackage {
   country: string;
 }
 
+// Generate or retrieve a persistent device fingerprint
+function getDeviceId(): string {
+  let deviceId = localStorage.getItem("device_id");
+  if (!deviceId) {
+    deviceId = crypto.randomUUID();
+    localStorage.setItem("device_id", deviceId);
+  }
+  return deviceId;
+}
+
 export default function CustomerLanding() {
   const { refCode } = useParams();
   const { t } = useTranslation();
@@ -32,15 +42,27 @@ export default function CustomerLanding() {
   const [error, setError] = useState<string | null>(null);
   const [selectedPkg, setSelectedPkg] = useState<EsimPackage | null>(null);
 
+  // Persist referral code in localStorage + cookie
+  useEffect(() => {
+    if (!refCode) return;
+
+    // Store in localStorage
+    localStorage.setItem("referral_code", refCode);
+
+    // Store in cookie as fallback (30 days)
+    document.cookie = `referral_code=${refCode}; path=/; max-age=${30 * 24 * 60 * 60}; SameSite=Lax`;
+  }, [refCode]);
+
   useEffect(() => {
     fetchPackages();
   }, []);
 
-  // Track referral scan
+  // Track referral scan with device fingerprint
   useEffect(() => {
     if (!refCode) return;
+    const deviceId = getDeviceId();
     supabase.functions.invoke("track-scan", {
-      body: { referral_code: refCode },
+      body: { referral_code: refCode, device_id: deviceId },
     }).catch(() => {});
   }, [refCode]);
 
@@ -92,10 +114,37 @@ export default function CustomerLanding() {
 
   const handleCheckout = () => setStep("checkout");
 
-  const handlePay = (e: React.FormEvent) => {
+  const handlePay = async (e: React.FormEvent) => {
     e.preventDefault();
     setStep("processing");
-    setTimeout(() => setStep("success"), 2500);
+
+    // Get referral code from state, localStorage, or cookie
+    const storedRef =
+      refCode ||
+      localStorage.getItem("referral_code") ||
+      document.cookie.match(/referral_code=([^;]+)/)?.[1] ||
+      null;
+
+    const deviceId = getDeviceId();
+
+    try {
+      await supabase.functions.invoke("create-order", {
+        body: {
+          customer_email: form.email,
+          customer_name: form.name,
+          product_id: selectedPkg?.id || "default",
+          product_name: selectedPkg?.name || "Turkey eSIM",
+          price: selectedPkg?.price || 19.90,
+          currency: selectedPkg?.currency || "EUR",
+          referral_code: storedRef,
+          device_id: deviceId,
+        },
+      });
+    } catch (err) {
+      console.error("Order creation failed:", err);
+    }
+
+    setTimeout(() => setStep("success"), 1500);
   };
 
   const formatCard = (v: string) => {

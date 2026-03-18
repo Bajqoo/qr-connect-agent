@@ -14,6 +14,54 @@ export type Database = {
   }
   public: {
     Tables: {
+      commissions: {
+        Row: {
+          agent_id: string
+          amount: number
+          created_at: string
+          currency: string
+          id: string
+          order_id: string
+          paid_at: string | null
+          status: string
+        }
+        Insert: {
+          agent_id: string
+          amount?: number
+          created_at?: string
+          currency?: string
+          id?: string
+          order_id: string
+          paid_at?: string | null
+          status?: string
+        }
+        Update: {
+          agent_id?: string
+          amount?: number
+          created_at?: string
+          currency?: string
+          id?: string
+          order_id?: string
+          paid_at?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "commissions_agent_id_fkey"
+            columns: ["agent_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "commissions_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       manager_agents: {
         Row: {
           agent_id: string
@@ -44,6 +92,65 @@ export type Database = {
           {
             foreignKeyName: "manager_agents_manager_id_fkey"
             columns: ["manager_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      orders: {
+        Row: {
+          agent_id: string | null
+          commission: number
+          created_at: string
+          currency: string
+          customer_email: string
+          customer_name: string | null
+          device_id: string | null
+          id: string
+          ip_address: string | null
+          price: number
+          product_id: string | null
+          product_name: string | null
+          referral_code: string | null
+          status: string
+        }
+        Insert: {
+          agent_id?: string | null
+          commission?: number
+          created_at?: string
+          currency?: string
+          customer_email: string
+          customer_name?: string | null
+          device_id?: string | null
+          id?: string
+          ip_address?: string | null
+          price?: number
+          product_id?: string | null
+          product_name?: string | null
+          referral_code?: string | null
+          status?: string
+        }
+        Update: {
+          agent_id?: string | null
+          commission?: number
+          created_at?: string
+          currency?: string
+          customer_email?: string
+          customer_name?: string | null
+          device_id?: string | null
+          id?: string
+          ip_address?: string | null
+          price?: number
+          product_id?: string | null
+          product_name?: string | null
+          referral_code?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "orders_agent_id_fkey"
+            columns: ["agent_id"]
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
@@ -106,6 +213,47 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      referral_clicks: {
+        Row: {
+          agent_id: string | null
+          country: string | null
+          created_at: string
+          device_id: string | null
+          id: string
+          ip_address: string | null
+          referral_code: string
+          user_agent: string | null
+        }
+        Insert: {
+          agent_id?: string | null
+          country?: string | null
+          created_at?: string
+          device_id?: string | null
+          id?: string
+          ip_address?: string | null
+          referral_code: string
+          user_agent?: string | null
+        }
+        Update: {
+          agent_id?: string | null
+          country?: string | null
+          created_at?: string
+          device_id?: string | null
+          id?: string
+          ip_address?: string | null
+          referral_code?: string
+          user_agent?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "referral_clicks_agent_id_fkey"
+            columns: ["agent_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       referral_scans: {
         Row: {

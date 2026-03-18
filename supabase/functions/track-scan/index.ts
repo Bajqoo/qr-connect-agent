@@ -22,6 +22,7 @@ serve(async (req) => {
   try {
     const body = await req.json().catch(() => ({}));
     const referralCode = body?.referral_code;
+    const deviceId = body?.device_id;
 
     if (!referralCode || typeof referralCode !== "string") {
       return new Response(
@@ -30,15 +31,16 @@ serve(async (req) => {
       );
     }
 
+    // Use service role to bypass RLS for public tracking
     const supabase = createClient(
       Deno.env.get("SUPABASE_URL")!,
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
     );
 
-    // Verify referral code exists
+    // Find agent by referral code
     const { data: profile } = await supabase
       .from("profiles")
-      .select("id")
+      .select("id, referral_code")
       .eq("referral_code", referralCode)
       .single();
 
@@ -53,27 +55,37 @@ serve(async (req) => {
       req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
       req.headers.get("cf-connecting-ip") ??
       null;
-
     const userAgent = req.headers.get("user-agent") ?? null;
     const country = body?.country ?? null;
 
-    const { error } = await supabase.from("referral_scans").insert({
+    // Insert into referral_clicks (detailed tracking)
+    const { error: clickError } = await supabase.from("referral_clicks").insert({
+      referral_code: referralCode,
+      agent_id: profile.id,
+      device_id: deviceId || null,
+      ip_address: ipAddress,
+      user_agent: userAgent,
+      country,
+    });
+
+    if (clickError) {
+      console.error("Insert click failed", clickError);
+    }
+
+    // Also insert into referral_scans for backward compatibility
+    const { error: scanError } = await supabase.from("referral_scans").insert({
       referral_code: referralCode,
       country,
       ip_address: ipAddress,
       user_agent: userAgent,
     });
 
-    if (error) {
-      console.error("Insert scan failed", error);
-      return new Response(
-        JSON.stringify({ error: "Failed to record scan" }),
-        { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } },
-      );
+    if (scanError) {
+      console.error("Insert scan failed", scanError);
     }
 
     return new Response(
-      JSON.stringify({ success: true }),
+      JSON.stringify({ success: true, agent_id: profile.id }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } },
     );
   } catch (err) {
