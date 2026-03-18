@@ -4,15 +4,32 @@ import { Button } from "@/components/ui/button";
 import { Download, Copy, ExternalLink } from "lucide-react";
 import { toast } from "sonner";
 import { useTranslation } from "@/i18n/LanguageContext";
-
-const REFERRAL_CODE = "AGENT123";
-const REFERRAL_URL = `https://www.nextesim.app/countries/134/?ref=${REFERRAL_CODE}`;
+import { useAuth } from "@/hooks/useAuth";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 export default function DashboardQRCode() {
   const { t } = useTranslation();
+  const { user } = useAuth();
+  const [profileId, setProfileId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!user) return;
+    supabase
+      .from("profiles")
+      .select("id")
+      .eq("user_id", user.id)
+      .single()
+      .then(({ data }) => {
+        if (data) setProfileId(data.id);
+      });
+  }, [user]);
+
+  const referralCode = profileId ?? "loading";
+  const referralUrl = `https://www.nextesim.app/countries/134/?ref=${referralCode}`;
 
   const copyLink = () => {
-    navigator.clipboard.writeText(REFERRAL_URL);
+    navigator.clipboard.writeText(referralUrl);
     toast.success(t("referralLinkCopied"));
   };
 
@@ -32,7 +49,7 @@ export default function DashboardQRCode() {
       ctx.fillRect(0, 0, 512, 512);
       ctx.drawImage(img, 0, 0, 512, 512);
       const link = document.createElement("a");
-      link.download = `next-esim-qr-${REFERRAL_CODE}.png`;
+      link.download = `next-esim-qr-${referralCode}.png`;
       link.href = canvas.toDataURL("image/png");
       link.click();
       URL.revokeObjectURL(url);
@@ -40,6 +57,16 @@ export default function DashboardQRCode() {
     };
     img.src = url;
   };
+
+  if (!profileId) {
+    return (
+      <DashboardLayout type="agent">
+        <div className="flex items-center justify-center h-64">
+          <p className="text-muted-foreground">{t("loading")}...</p>
+        </div>
+      </DashboardLayout>
+    );
+  }
 
   return (
     <DashboardLayout type="agent">
@@ -53,7 +80,7 @@ export default function DashboardQRCode() {
           <div className="rounded-lg border bg-card shadow-card p-5 sm:p-8 flex flex-col items-center">
             <div id="agent-qr" className="bg-card p-3 sm:p-4 rounded-xl border mb-4 sm:mb-6">
               <QRCodeSVG
-                value={REFERRAL_URL}
+                value={referralUrl}
                 size={160}
                 level="H"
                 bgColor="transparent"
@@ -62,28 +89,22 @@ export default function DashboardQRCode() {
               />
             </div>
             <p className="text-sm font-medium mb-1">{t("yourReferralCode")}</p>
-            <p className="text-lg font-bold text-primary mb-4">{REFERRAL_CODE}</p>
-            <div className="flex gap-2 sm:gap-3 w-full max-w-xs">
-              <Button onClick={downloadQR} size="sm" className="flex-1 gradient-primary border-0 text-primary-foreground hover:opacity-90">
-                <Download className="h-4 w-4 mr-1.5" />
-                PNG
-              </Button>
-              <Button variant="outline" size="sm" className="flex-1">
-                <Download className="h-4 w-4 mr-1.5" />
-                {t("flyerPDF")}
-              </Button>
-            </div>
+            <p className="text-lg font-bold text-primary mb-4 font-mono">{referralCode}</p>
+            <Button onClick={downloadQR} size="sm" className="w-full max-w-xs gradient-primary border-0 text-primary-foreground hover:opacity-90">
+              <Download className="h-4 w-4 mr-1.5" />
+              PNG
+            </Button>
           </div>
 
           <div className="rounded-lg border bg-card shadow-card p-5 sm:p-8">
             <h3 className="font-semibold mb-3 sm:mb-4 text-sm sm:text-base">{t("referralLink")}</h3>
             <div className="flex items-center gap-2 p-2.5 sm:p-3 rounded-lg bg-muted mb-3 sm:mb-4">
-              <code className="text-xs sm:text-sm flex-1 truncate">{REFERRAL_URL}</code>
+              <code className="text-xs sm:text-sm flex-1 truncate">{referralUrl}</code>
               <Button variant="ghost" size="icon" className="h-8 w-8 flex-shrink-0" onClick={copyLink}>
                 <Copy className="h-4 w-4" />
               </Button>
             </div>
-            <Button variant="outline" size="sm" className="w-full" onClick={() => window.open(REFERRAL_URL, "_blank")}>
+            <Button variant="outline" size="sm" className="w-full" onClick={() => window.open(referralUrl, "_blank")}>
               <ExternalLink className="h-4 w-4 mr-2" />
               {t("previewLandingPage")}
             </Button>
