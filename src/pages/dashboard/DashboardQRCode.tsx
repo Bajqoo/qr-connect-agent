@@ -25,7 +25,6 @@ export default function DashboardQRCode() {
       });
   }, [user]);
 
-  const referralCode = profileId ?? "loading";
   const referralUrl = `https://www.nextesim.app/countries/134/?ref=${referralCode}`;
 
   const copyLink = () => {
