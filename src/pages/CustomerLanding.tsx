@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Wifi, Clock, Shield, Zap, CheckCircle2, Globe, CreditCard, Lock, ArrowLeft, Loader2, Download, Copy, AlertCircle } from "lucide-react";
@@ -34,6 +34,7 @@ function getDeviceId(): string {
 
 export default function CustomerLanding() {
   const { refCode } = useParams();
+  const location = useLocation();
   const { t } = useTranslation();
   const [step, setStep] = useState<Step>("landing");
   const [form, setForm] = useState({ name: "", email: "", card: "", expiry: "", cvc: "" });
@@ -44,7 +45,7 @@ export default function CustomerLanding() {
 
   // Persist referral code from route param or query string
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
+    const params = new URLSearchParams(location.search);
     const rawRef = refCode || params.get("ref");
 
     if (!rawRef) return;
@@ -53,36 +54,39 @@ export default function CustomerLanding() {
     localStorage.setItem("referral_code", ref);
     document.cookie = `referral_code=${ref}; path=/; max-age=${30 * 24 * 60 * 60}; SameSite=Lax`;
     console.log("Referral saved (normalized):", ref);
-  }, [refCode]);
+  }, [refCode, location.search]);
 
   useEffect(() => {
     fetchPackages();
   }, []);
 
-  // Track referral scan with device fingerprint
+  // Track referral scan on page load and query/route changes
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
+    const params = new URLSearchParams(location.search);
     const rawRef = refCode || params.get("ref");
     if (!rawRef) return;
-    const ref = rawRef.toUpperCase().trim();
+
+    const referralCode = rawRef.toUpperCase().trim();
     const deviceId = getDeviceId();
-    console.log("Tracking scan for referral:", ref, "device:", deviceId);
+    const timestamp = Date.now();
+    console.log("SCAN TRIGGERED:", referralCode);
 
     const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID || "mgsqoraxewypphkdaowy";
     const url = `https://${projectId}.supabase.co/functions/v1/track-scan`;
 
     fetch(url, {
       method: "POST",
+      cache: "no-store",
       headers: {
         "Content-Type": "application/json",
         "apikey": import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1nc3FvcmF4ZXd5cHBoa2Rhb3d5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMyNTQxMTEsImV4cCI6MjA4ODgzMDExMX0.r4FHW3SwfyUUmmpGU0zV4IGlE2Wm0fRkuncJrD351zs",
       },
-      body: JSON.stringify({ referral_code: ref, device_id: deviceId }),
+      body: JSON.stringify({ referral_code: referralCode, device_id: deviceId, timestamp }),
     })
       .then(res => res.json())
       .then(data => console.log("track-scan response:", data))
       .catch(err => console.error("track-scan fetch error:", err));
-  }, [refCode]);
+  }, [refCode, location.search]);
 
   const fetchPackages = async () => {
     setLoading(true);
