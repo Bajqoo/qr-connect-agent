@@ -61,11 +61,15 @@ export default function CustomerLanding() {
 
   // Track referral scan with device fingerprint
   useEffect(() => {
-    if (!refCode) return;
+    const params = new URLSearchParams(window.location.search);
+    const rawRef = refCode || params.get("ref");
+    if (!rawRef) return;
+    const ref = rawRef.toUpperCase().trim();
     const deviceId = getDeviceId();
+    console.log("Tracking scan for referral:", ref);
     supabase.functions.invoke("track-scan", {
-      body: { referral_code: refCode, device_id: deviceId },
-    }).catch(() => {});
+      body: { referral_code: ref, device_id: deviceId },
+    }).catch((err) => console.error("track-scan error:", err));
   }, [refCode]);
 
   const fetchPackages = async () => {
