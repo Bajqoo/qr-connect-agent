@@ -45,13 +45,14 @@ export default function CustomerLanding() {
   // Persist referral code from route param or query string
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const ref = refCode || params.get("ref");
+    const rawRef = refCode || params.get("ref");
 
-    if (!ref) return;
+    if (!rawRef) return;
 
+    const ref = rawRef.toUpperCase().trim();
     localStorage.setItem("referral_code", ref);
     document.cookie = `referral_code=${ref}; path=/; max-age=${30 * 24 * 60 * 60}; SameSite=Lax`;
-    console.log("Referral saved:", ref);
+    console.log("Referral saved (normalized):", ref);
   }, [refCode]);
 
   useEffect(() => {
