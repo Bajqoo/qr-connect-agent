@@ -36,6 +36,14 @@ export default function CustomerLanding() {
     fetchPackages();
   }, []);
 
+  // Track referral scan
+  useEffect(() => {
+    if (!refCode) return;
+    supabase.functions.invoke("track-scan", {
+      body: { referral_code: refCode },
+    }).catch(() => {});
+  }, [refCode]);
+
   const fetchPackages = async () => {
     setLoading(true);
     setError(null);
