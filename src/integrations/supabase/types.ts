@@ -64,6 +64,7 @@ export type Database = {
           manager_cut: number | null
           phone: string | null
           preferred_locale: string | null
+          referral_code: string | null
           status: Database["public"]["Enums"]["account_status"] | null
           swift_bic: string | null
           user_id: string
@@ -81,6 +82,7 @@ export type Database = {
           manager_cut?: number | null
           phone?: string | null
           preferred_locale?: string | null
+          referral_code?: string | null
           status?: Database["public"]["Enums"]["account_status"] | null
           swift_bic?: string | null
           user_id: string
@@ -98,6 +100,7 @@ export type Database = {
           manager_cut?: number | null
           phone?: string | null
           preferred_locale?: string | null
+          referral_code?: string | null
           status?: Database["public"]["Enums"]["account_status"] | null
           swift_bic?: string | null
           user_id?: string

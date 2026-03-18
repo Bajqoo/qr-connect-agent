@@ -11,21 +11,20 @@ import { supabase } from "@/integrations/supabase/client";
 export default function DashboardQRCode() {
   const { t } = useTranslation();
   const { user } = useAuth();
-  const [profileId, setProfileId] = useState<string | null>(null);
+  const [referralCode, setReferralCode] = useState<string | null>(null);
 
   useEffect(() => {
     if (!user) return;
     supabase
       .from("profiles")
-      .select("id")
+      .select("id, referral_code")
       .eq("user_id", user.id)
       .single()
       .then(({ data }) => {
-        if (data) setProfileId(data.id);
+        if (data) setReferralCode(data.referral_code ?? data.id);
       });
   }, [user]);
 
-  const referralCode = profileId ?? "loading";
   const referralUrl = `https://www.nextesim.app/countries/134/?ref=${referralCode}`;
 
   const copyLink = () => {
@@ -58,7 +57,7 @@ export default function DashboardQRCode() {
     img.src = url;
   };
 
-  if (!profileId) {
+  if (!referralCode) {
     return (
       <DashboardLayout type="agent">
         <div className="flex items-center justify-center h-64">
