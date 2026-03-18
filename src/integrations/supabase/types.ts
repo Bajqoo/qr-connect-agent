@@ -107,6 +107,33 @@ export type Database = {
         }
         Relationships: []
       }
+      referral_scans: {
+        Row: {
+          country: string | null
+          id: string
+          ip_address: string | null
+          referral_code: string
+          scanned_at: string
+          user_agent: string | null
+        }
+        Insert: {
+          country?: string | null
+          id?: string
+          ip_address?: string | null
+          referral_code: string
+          scanned_at?: string
+          user_agent?: string | null
+        }
+        Update: {
+          country?: string | null
+          id?: string
+          ip_address?: string | null
+          referral_code?: string
+          scanned_at?: string
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           id: string
