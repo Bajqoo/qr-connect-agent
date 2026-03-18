@@ -14,14 +14,27 @@ export default function DashboardQRCode() {
   const [referralCode, setReferralCode] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!user) return;
+    if (!user) {
+      console.log("QR Code: No user logged in");
+      return;
+    }
+    console.log("QR Code: Fetching profile for user", user.id);
     supabase
       .from("profiles")
       .select("id, referral_code")
       .eq("user_id", user.id)
       .single()
-      .then(({ data }) => {
-        if (data) setReferralCode(data.referral_code ?? data.id);
+      .then(({ data, error }) => {
+        console.log("QR Code: Profile query result", { data, error });
+        if (error) {
+          console.error("QR Code: Profile query error", error);
+          // Fallback: use user.id as referral code
+          setReferralCode(user.id.substring(0, 8).toUpperCase());
+          return;
+        }
+        if (data) {
+          setReferralCode((data as any).referral_code ?? data.id);
+        }
       });
   }, [user]);
 
