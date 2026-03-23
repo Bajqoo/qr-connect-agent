@@ -3,12 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Users, QrCode, DollarSign, ArrowRight, Shield, BarChart3, Wallet, Plane } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { useTranslation } from "@/i18n/LanguageContext";
 import { useAuth } from "@/hooks/useAuth";
+import { PublicNav } from "@/components/PublicNav";
 import { PublicFooter } from "@/components/PublicFooter";
-import logoRed from "@/assets/logo-red.png";
-import heroBg from "@/assets/hero-bg.jpg";
 
 export default function Index() {
   const { t } = useTranslation();
@@ -20,6 +18,7 @@ export default function Index() {
       navigate("/dashboard", { replace: true });
     }
   }, [user, authLoading, navigate]);
+
   const features = [
     { icon: QrCode, title: t("featAutoQR"), desc: t("featAutoQRDesc") },
     { icon: BarChart3, title: t("featTracking"), desc: t("featTrackingDesc") },
@@ -31,25 +30,7 @@ export default function Index() {
 
   return (
     <div className="min-h-screen bg-background">
-      <nav className="border-b bg-card/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto px-5 h-14 flex items-center justify-between">
-          <img src={logoRed} alt="Next eSIM" className="h-14" />
-          <div className="flex items-center gap-3">
-            <LanguageSwitcher />
-            <Link to="/about">
-              <Button variant="ghost" size="sm">About</Button>
-            </Link>
-            <Link to="/login">
-              <Button variant="ghost" size="sm">{t("signIn")}</Button>
-            </Link>
-            <Link to="/register">
-              <Button size="sm" className="gradient-primary border-0 text-primary-foreground hover:opacity-90">
-                {t("becomeAgent")}
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </nav>
+      <PublicNav />
 
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-background/85" />
@@ -115,13 +96,13 @@ export default function Index() {
           transition={{ delay: 0.6 }}
           className="text-center mb-8"
         >
-          <h2 className="text-2xl font-bold mb-2">{t("partnersTitle" as any)}</h2>
-          <p className="text-muted-foreground">{t("partnersSubtitle" as any)}</p>
+          <h2 className="text-2xl font-bold mb-2">{t("partnersTitle")}</h2>
+          <p className="text-muted-foreground">{t("partnersSubtitle")}</p>
         </motion.div>
         <div className="grid sm:grid-cols-2 gap-4 max-w-2xl mx-auto">
           {[
-            { name: t("partnerPristina" as any), code: "PRN", country: "🇽🇰" },
-            { name: t("partnerTirana" as any), code: "TIA", country: "🇦🇱" },
+            { name: t("partnerPristina"), code: "PRN", country: "🇽🇰" },
+            { name: t("partnerTirana"), code: "TIA", country: "🇦🇱" },
           ].map((airport, i) => (
             <motion.div
               key={airport.code}
