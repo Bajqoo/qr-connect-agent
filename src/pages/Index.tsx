@@ -57,28 +57,30 @@ export default function Index() {
 
       {/* Step progress bar */}
       <section className="border-b bg-card">
-        <div className="max-w-3xl mx-auto px-5 py-6">
-          <div className="flex items-center justify-between">
+        <div className="max-w-2xl mx-auto px-6 py-8">
+          <div className="flex items-start">
             {steps.map((step, i) => (
               <motion.div
                 key={step.num}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 + i * 0.1 }}
-                className="flex flex-col items-center gap-2 flex-1"
+                className="flex flex-col items-center flex-1"
               >
                 <div className="flex items-center w-full">
-                  {i > 0 && <div className="flex-1 h-0.5 bg-border -ml-1 mr-2" />}
-                  <div className={`h-9 w-9 rounded-full flex items-center justify-center shrink-0 ${
-                    i === 0 
-                      ? "bg-primary text-primary-foreground" 
-                      : "bg-muted text-muted-foreground"
+                  {i > 0 && <div className="flex-1 h-[2px] bg-border" />}
+                  {i === 0 && <div className="flex-1" />}
+                  <div className={`h-10 w-10 rounded-full flex items-center justify-center shrink-0 border-2 ${
+                    i === 0
+                      ? "bg-primary text-primary-foreground border-primary"
+                      : "bg-card text-muted-foreground border-border"
                   }`}>
                     <step.icon className="h-4 w-4" />
                   </div>
-                  {i < steps.length - 1 && <div className="flex-1 h-0.5 bg-border -mr-1 ml-2" />}
+                  {i < steps.length - 1 && <div className="flex-1 h-[2px] bg-border" />}
+                  {i === steps.length - 1 && <div className="flex-1" />}
                 </div>
-                <span className={`text-xs font-medium text-center ${
+                <span className={`text-xs font-medium mt-2 text-center ${
                   i === 0 ? "text-foreground" : "text-muted-foreground"
                 }`}>
                   {step.label}
