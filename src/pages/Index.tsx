@@ -144,11 +144,7 @@ export default function Index() {
         </div>
       </section>
 
-      <footer className="border-t py-8">
-        <div className="max-w-6xl mx-auto px-5 text-center text-sm text-muted-foreground">
-          © {new Date().getFullYear()} {t("footerText")}
-        </div>
-      </footer>
+      <PublicFooter />
     </div>
   );
 }
