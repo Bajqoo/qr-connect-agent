@@ -7,6 +7,7 @@ import { useTranslation } from "@/i18n/LanguageContext";
 import { useAuth } from "@/hooks/useAuth";
 import { PublicNav } from "@/components/PublicNav";
 import { PublicFooter } from "@/components/PublicFooter";
+import heroBg from "@/assets/hero-bg.jpg";
 
 export default function Index() {
   const { t } = useTranslation();
