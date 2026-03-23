@@ -1006,6 +1006,10 @@ const ru: typeof en = {
   partnersSubtitle: "Активное присутствие в крупных аэропортах",
   partnerPristina: "Международный аэропорт Приштины",
   partnerTirana: "Международный аэропорт Тираны",
+  stepRegister: "Регистрация",
+  stepGetQR: "Получить QR",
+  stepShare: "Поделиться",
+  stepEarn: "Заработать",
   
   featAutoQR: "Авто QR-коды",
   featAutoQRDesc: "Уникальный реферальный QR-код генерируется для каждого агента мгновенно",
