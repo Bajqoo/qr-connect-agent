@@ -14,6 +14,9 @@ import AdminLogin from "./pages/AdminLogin";
 import ManagerLogin from "./pages/ManagerLogin";
 import CustomerLanding from "./pages/CustomerLanding";
 import About from "./pages/About";
+import Contact from "./pages/Contact";
+import Terms from "./pages/Terms";
+import Privacy from "./pages/Privacy";
 import DashboardOverview from "./pages/dashboard/DashboardOverview";
 import DashboardQRCode from "./pages/dashboard/DashboardQRCode";
 import DashboardSales from "./pages/dashboard/DashboardSales";
@@ -44,6 +47,9 @@ const App = () => (
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/about" element={<About />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/terms" element={<Terms />} />
+              <Route path="/privacy" element={<Privacy />} />
               <Route path="/register" element={<AgentRegister />} />
               <Route path="/login" element={<AgentLogin />} />
               <Route path="/admin/login" element={<AdminLogin />} />

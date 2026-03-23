@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { useTranslation } from "@/i18n/LanguageContext";
 import { useAuth } from "@/hooks/useAuth";
+import { PublicFooter } from "@/components/PublicFooter";
 import logoRed from "@/assets/logo-red.png";
 import heroBg from "@/assets/hero-bg.jpg";
 
@@ -144,11 +145,7 @@ export default function Index() {
         </div>
       </section>
 
-      <footer className="border-t py-8">
-        <div className="max-w-6xl mx-auto px-5 text-center text-sm text-muted-foreground">
-          © {new Date().getFullYear()} {t("footerText")}
-        </div>
-      </footer>
+      <PublicFooter />
     </div>
   );
 }
