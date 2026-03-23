@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Users, QrCode, DollarSign, ArrowRight, Shield, BarChart3, Wallet, Plane } from "lucide-react";
+import { Users, QrCode, DollarSign, ArrowRight, Shield, BarChart3, Wallet, Plane, UserPlus, ScanLine, Smartphone, CreditCard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "@/i18n/LanguageContext";
 import { useAuth } from "@/hooks/useAuth";
@@ -29,48 +29,102 @@ export default function Index() {
     { icon: Users, title: t("featScale"), desc: t("featScaleDesc") },
   ];
 
+  const steps = [
+    { num: 1, icon: UserPlus, label: t("stepRegister") },
+    { num: 2, icon: QrCode, label: t("stepGetQR") },
+    { num: 3, icon: ScanLine, label: t("stepShare") },
+    { num: 4, icon: CreditCard, label: t("stepEarn") },
+  ];
+
   return (
     <div className="min-h-screen bg-background">
       <PublicNav />
 
-      <section className="relative overflow-hidden">
-        <img src={heroBg} alt="" className="absolute inset-0 w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-background/85" />
-        <div className="relative max-w-6xl mx-auto px-5 pt-24 pb-20">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-center max-w-2xl mx-auto"
-          >
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent text-accent-foreground text-xs font-medium mb-6">
-              {t("agentPlatform")}
-            </div>
-            <h1 className="text-4xl sm:text-5xl font-bold tracking-tight mb-4">
-              {t("heroTitle1")}
-              <br />
-              <span className="text-primary">{t("heroTitle2")}</span>
-            </h1>
-            <p className="text-lg text-muted-foreground mb-8 max-w-lg mx-auto">
-              {t("heroSubtitle")}
-            </p>
-            <div className="flex items-center gap-3 justify-center">
-              <Link to="/register">
-                <Button size="lg" className="gradient-primary border-0 text-primary-foreground hover:opacity-90 h-12 px-8">
-                  {t("getStartedFree")}
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </Link>
-              <Link to="/login">
-                <Button size="lg" variant="outline" className="h-12 px-8 bg-background/80 backdrop-blur-sm">
-                  {t("signIn")}
-                </Button>
-              </Link>
-            </div>
-          </motion.div>
+      {/* Full-width hero image — Wolt style */}
+      <section className="relative">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8 }}
+        >
+          <img
+            src={heroBg}
+            alt=""
+            className="w-full h-[280px] sm:h-[380px] lg:h-[440px] object-cover"
+          />
+        </motion.div>
+      </section>
+
+      {/* Step progress bar */}
+      <section className="border-b bg-card">
+        <div className="max-w-3xl mx-auto px-5 py-6">
+          <div className="flex items-center justify-between">
+            {steps.map((step, i) => (
+              <motion.div
+                key={step.num}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 + i * 0.1 }}
+                className="flex flex-col items-center gap-2 flex-1"
+              >
+                <div className="flex items-center w-full">
+                  {i > 0 && <div className="flex-1 h-0.5 bg-border -ml-1 mr-2" />}
+                  <div className={`h-9 w-9 rounded-full flex items-center justify-center shrink-0 ${
+                    i === 0 
+                      ? "bg-primary text-primary-foreground" 
+                      : "bg-muted text-muted-foreground"
+                  }`}>
+                    <step.icon className="h-4 w-4" />
+                  </div>
+                  {i < steps.length - 1 && <div className="flex-1 h-0.5 bg-border -mr-1 ml-2" />}
+                </div>
+                <span className={`text-xs font-medium text-center ${
+                  i === 0 ? "text-foreground" : "text-muted-foreground"
+                }`}>
+                  {step.label}
+                </span>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 
+      {/* Hero text content */}
+      <section className="max-w-6xl mx-auto px-5 pt-16 pb-12">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="text-center max-w-2xl mx-auto"
+        >
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent text-accent-foreground text-xs font-medium mb-6">
+            {t("agentPlatform")}
+          </div>
+          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight mb-4">
+            {t("heroTitle1")}
+            <br />
+            <span className="text-primary">{t("heroTitle2")}</span>
+          </h1>
+          <p className="text-lg text-muted-foreground mb-8 max-w-lg mx-auto">
+            {t("heroSubtitle")}
+          </p>
+          <div className="flex items-center gap-3 justify-center">
+            <Link to="/register">
+              <Button size="lg" className="gradient-primary border-0 text-primary-foreground hover:opacity-90 h-12 px-8">
+                {t("getStartedFree")}
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </Link>
+            <Link to="/login">
+              <Button size="lg" variant="outline" className="h-12 px-8">
+                {t("signIn")}
+              </Button>
+            </Link>
+          </div>
+        </motion.div>
+      </section>
+
+      {/* Features */}
       <section className="max-w-6xl mx-auto px-5 pb-20">
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {features.map((f, i) => (
@@ -91,6 +145,7 @@ export default function Index() {
         </div>
       </section>
 
+      {/* Partners */}
       <section className="max-w-6xl mx-auto px-5 pb-20">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
