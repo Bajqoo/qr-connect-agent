@@ -34,6 +34,7 @@ export default function Index() {
       <PublicNav />
 
       <section className="relative overflow-hidden">
+        <img src={heroBg} alt="" className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-background/85" />
         <div className="relative max-w-6xl mx-auto px-5 pt-24 pb-20">
           <motion.div
