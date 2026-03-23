@@ -71,9 +71,9 @@ export default function Index() {
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>
-            <Link to="/admin/login">
+            <Link to="/login">
               <Button size="lg" variant="outline" className="h-12 px-8">
-                {t("adminLogin")}
+                {t("signIn")}
               </Button>
             </Link>
           </div>
