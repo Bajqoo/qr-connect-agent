@@ -13,6 +13,7 @@ import AgentLogin from "./pages/AgentLogin";
 import AdminLogin from "./pages/AdminLogin";
 import ManagerLogin from "./pages/ManagerLogin";
 import CustomerLanding from "./pages/CustomerLanding";
+import About from "./pages/About";
 import DashboardOverview from "./pages/dashboard/DashboardOverview";
 import DashboardQRCode from "./pages/dashboard/DashboardQRCode";
 import DashboardSales from "./pages/dashboard/DashboardSales";
@@ -42,6 +43,7 @@ const App = () => (
           <AuthProvider>
             <Routes>
               <Route path="/" element={<Index />} />
+              <Route path="/about" element={<About />} />
               <Route path="/register" element={<AgentRegister />} />
               <Route path="/login" element={<AgentLogin />} />
               <Route path="/admin/login" element={<AdminLogin />} />
