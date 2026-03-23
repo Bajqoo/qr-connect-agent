@@ -23,6 +23,7 @@ export type Database = {
           id: string
           order_id: string
           paid_at: string | null
+          release_date: string | null
           status: string
         }
         Insert: {
@@ -33,6 +34,7 @@ export type Database = {
           id?: string
           order_id: string
           paid_at?: string | null
+          release_date?: string | null
           status?: string
         }
         Update: {
@@ -43,6 +45,7 @@ export type Database = {
           id?: string
           order_id?: string
           paid_at?: string | null
+          release_date?: string | null
           status?: string
         }
         Relationships: [
@@ -157,10 +160,55 @@ export type Database = {
           },
         ]
       }
+      payout_requests: {
+        Row: {
+          agent_id: string
+          amount: number
+          created_at: string
+          id: string
+          method: string | null
+          method_details: Json | null
+          notes: string | null
+          processed_at: string | null
+          status: string
+        }
+        Insert: {
+          agent_id: string
+          amount: number
+          created_at?: string
+          id?: string
+          method?: string | null
+          method_details?: Json | null
+          notes?: string | null
+          processed_at?: string | null
+          status?: string
+        }
+        Update: {
+          agent_id?: string
+          amount?: number
+          created_at?: string
+          id?: string
+          method?: string | null
+          method_details?: Json | null
+          notes?: string | null
+          processed_at?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payout_requests_agent_id_fkey"
+            columns: ["agent_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           account_holder_name: string | null
           agent_type: Database["public"]["Enums"]["agent_type"] | null
+          balance_payable: number | null
           bank_name: string | null
           commission_rate: number | null
           created_at: string | null
@@ -174,11 +222,14 @@ export type Database = {
           referral_code: string | null
           status: Database["public"]["Enums"]["account_status"] | null
           swift_bic: string | null
+          tier: Database["public"]["Enums"]["agent_tier"] | null
+          total_earned: number | null
           user_id: string
         }
         Insert: {
           account_holder_name?: string | null
           agent_type?: Database["public"]["Enums"]["agent_type"] | null
+          balance_payable?: number | null
           bank_name?: string | null
           commission_rate?: number | null
           created_at?: string | null
@@ -192,11 +243,14 @@ export type Database = {
           referral_code?: string | null
           status?: Database["public"]["Enums"]["account_status"] | null
           swift_bic?: string | null
+          tier?: Database["public"]["Enums"]["agent_tier"] | null
+          total_earned?: number | null
           user_id: string
         }
         Update: {
           account_holder_name?: string | null
           agent_type?: Database["public"]["Enums"]["agent_type"] | null
+          balance_payable?: number | null
           bank_name?: string | null
           commission_rate?: number | null
           created_at?: string | null
@@ -210,6 +264,8 @@ export type Database = {
           referral_code?: string | null
           status?: Database["public"]["Enums"]["account_status"] | null
           swift_bic?: string | null
+          tier?: Database["public"]["Enums"]["agent_tier"] | null
+          total_earned?: number | null
           user_id?: string
         }
         Relationships: []
@@ -320,6 +376,7 @@ export type Database = {
     }
     Enums: {
       account_status: "active" | "blocked"
+      agent_tier: "bronze" | "silver" | "gold"
       agent_type: "airport" | "hotel" | "tour_guide" | "taxi" | "affiliate"
       app_role: "admin" | "manager" | "agent"
     }
@@ -450,6 +507,7 @@ export const Constants = {
   public: {
     Enums: {
       account_status: ["active", "blocked"],
+      agent_tier: ["bronze", "silver", "gold"],
       agent_type: ["airport", "hotel", "tour_guide", "taxi", "affiliate"],
       app_role: ["admin", "manager", "agent"],
     },
