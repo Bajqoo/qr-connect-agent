@@ -1834,6 +1834,10 @@ const de: typeof en = {
   partnersSubtitle: "Aktive Präsenz an großen Flughäfen",
   partnerPristina: "Internationaler Flughafen Prishtina",
   partnerTirana: "Internationaler Flughafen Tirana",
+  stepRegister: "Registrieren",
+  stepGetQR: "QR-Code erhalten",
+  stepShare: "Teilen & Verkaufen",
+  stepEarn: "Provision verdienen",
   
   featAutoQR: "Auto QR-Codes",
   featAutoQRDesc: "Einzigartiger Empfehlungs-QR-Code wird sofort für jeden Agenten generiert",
