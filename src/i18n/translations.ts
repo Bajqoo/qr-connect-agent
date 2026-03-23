@@ -592,6 +592,10 @@ const tr: typeof en = {
   partnersSubtitle: "Büyük havalimanlarında aktif varlık",
   partnerPristina: "Priştine Uluslararası Havalimanı",
   partnerTirana: "Tiran Uluslararası Havalimanı",
+  stepRegister: "Kayıt Ol",
+  stepGetQR: "QR Kod Al",
+  stepShare: "Paylaş & Sat",
+  stepEarn: "Komisyon Kazan",
   
   featAutoQR: "Otomatik QR Kodlar",
   featAutoQRDesc: "Her acente için anında benzersiz yönlendirme QR kodu oluşturulur",
