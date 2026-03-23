@@ -152,6 +152,10 @@ const en = {
   partnersSubtitle: "Active presence at major airports",
   partnerPristina: "Prishtina International Airport",
   partnerTirana: "Tirana International Airport",
+  stepRegister: "Register",
+  stepGetQR: "Get QR Code",
+  stepShare: "Share & Sell",
+  stepEarn: "Earn Commission",
   
   // Index features
   featAutoQR: "Auto QR Codes",
