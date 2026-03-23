@@ -1420,6 +1420,10 @@ const sq: typeof en = {
   partnersSubtitle: "Prezencë aktive në aeroportet kryesore",
   partnerPristina: "Aeroporti Ndërkombëtar i Prishtinës",
   partnerTirana: "Aeroporti Ndërkombëtar i Tiranës",
+  stepRegister: "Regjistrohu",
+  stepGetQR: "Merr Kodin QR",
+  stepShare: "Ndaj & Shit",
+  stepEarn: "Fito Komisione",
   
   featAutoQR: "QR Kode Automatike",
   featAutoQRDesc: "Kod QR unik referimi gjenerohet menjëherë për çdo agjent",
