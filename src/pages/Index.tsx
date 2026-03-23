@@ -1,14 +1,23 @@
-import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Users, QrCode, DollarSign, ArrowRight, Shield, BarChart3, Wallet, Plane } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { useTranslation } from "@/i18n/LanguageContext";
+import { useAuth } from "@/hooks/useAuth";
 import logoRed from "@/assets/logo-red.png";
 
 export default function Index() {
   const { t } = useTranslation();
+  const { user, loading: authLoading } = useAuth();
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    if (!authLoading && user) {
+      navigate("/dashboard", { replace: true });
+    }
+  }, [user, authLoading, navigate]);
   const features = [
     { icon: QrCode, title: t("featAutoQR"), desc: t("featAutoQRDesc") },
     { icon: BarChart3, title: t("featTracking"), desc: t("featTrackingDesc") },
