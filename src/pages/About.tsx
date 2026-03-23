@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, Wifi, Globe, Users, QrCode, Shield, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { PublicFooter } from "@/components/PublicFooter";
 import logoRed from "@/assets/logo-red.png";
 import aboutHero from "@/assets/about-hero.jpg";
 import aboutAgent from "@/assets/about-agent.jpg";

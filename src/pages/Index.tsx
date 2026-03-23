@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { useTranslation } from "@/i18n/LanguageContext";
 import { useAuth } from "@/hooks/useAuth";
+import { PublicFooter } from "@/components/PublicFooter";
 import logoRed from "@/assets/logo-red.png";
 import heroBg from "@/assets/hero-bg.jpg";
 
