@@ -7,6 +7,7 @@ import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { useTranslation } from "@/i18n/LanguageContext";
 import { useAuth } from "@/hooks/useAuth";
 import logoRed from "@/assets/logo-red.png";
+import heroBg from "@/assets/hero-bg.jpg";
 
 export default function Index() {
   const { t } = useTranslation();
