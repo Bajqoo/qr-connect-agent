@@ -152,6 +152,10 @@ const en = {
   partnersSubtitle: "Active presence at major airports",
   partnerPristina: "Prishtina International Airport",
   partnerTirana: "Tirana International Airport",
+  stepRegister: "Register",
+  stepGetQR: "Get QR Code",
+  stepShare: "Share & Sell",
+  stepEarn: "Earn Commission",
   
   // Index features
   featAutoQR: "Auto QR Codes",
@@ -588,6 +592,10 @@ const tr: typeof en = {
   partnersSubtitle: "Büyük havalimanlarında aktif varlık",
   partnerPristina: "Priştine Uluslararası Havalimanı",
   partnerTirana: "Tiran Uluslararası Havalimanı",
+  stepRegister: "Kayıt Ol",
+  stepGetQR: "QR Kod Al",
+  stepShare: "Paylaş & Sat",
+  stepEarn: "Komisyon Kazan",
   
   featAutoQR: "Otomatik QR Kodlar",
   featAutoQRDesc: "Her acente için anında benzersiz yönlendirme QR kodu oluşturulur",
@@ -998,6 +1006,10 @@ const ru: typeof en = {
   partnersSubtitle: "Активное присутствие в крупных аэропортах",
   partnerPristina: "Международный аэропорт Приштины",
   partnerTirana: "Международный аэропорт Тираны",
+  stepRegister: "Регистрация",
+  stepGetQR: "Получить QR",
+  stepShare: "Поделиться",
+  stepEarn: "Заработать",
   
   featAutoQR: "Авто QR-коды",
   featAutoQRDesc: "Уникальный реферальный QR-код генерируется для каждого агента мгновенно",
@@ -1408,6 +1420,10 @@ const sq: typeof en = {
   partnersSubtitle: "Prezencë aktive në aeroportet kryesore",
   partnerPristina: "Aeroporti Ndërkombëtar i Prishtinës",
   partnerTirana: "Aeroporti Ndërkombëtar i Tiranës",
+  stepRegister: "Regjistrohu",
+  stepGetQR: "Merr Kodin QR",
+  stepShare: "Ndaj & Shit",
+  stepEarn: "Fito Komisione",
   
   featAutoQR: "QR Kode Automatike",
   featAutoQRDesc: "Kod QR unik referimi gjenerohet menjëherë për çdo agjent",
@@ -1818,6 +1834,10 @@ const de: typeof en = {
   partnersSubtitle: "Aktive Präsenz an großen Flughäfen",
   partnerPristina: "Internationaler Flughafen Prishtina",
   partnerTirana: "Internationaler Flughafen Tirana",
+  stepRegister: "Registrieren",
+  stepGetQR: "QR-Code erhalten",
+  stepShare: "Teilen & Verkaufen",
+  stepEarn: "Provision verdienen",
   
   featAutoQR: "Auto QR-Codes",
   featAutoQRDesc: "Einzigartiger Empfehlungs-QR-Code wird sofort für jeden Agenten generiert",
