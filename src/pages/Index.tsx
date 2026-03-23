@@ -35,6 +35,9 @@ export default function Index() {
           <img src={logoRed} alt="Next eSIM" className="h-14" />
           <div className="flex items-center gap-3">
             <LanguageSwitcher />
+            <Link to="/about">
+              <Button variant="ghost" size="sm">About</Button>
+            </Link>
             <Link to="/login">
               <Button variant="ghost" size="sm">{t("signIn")}</Button>
             </Link>
